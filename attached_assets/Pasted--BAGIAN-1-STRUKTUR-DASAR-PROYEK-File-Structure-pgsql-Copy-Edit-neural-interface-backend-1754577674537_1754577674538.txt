@@ -1,0 +1,201 @@
+🧠 BAGIAN 1 – STRUKTUR DASAR PROYEK
+📁 File Structure
+pgsql
+Copy
+Edit
+/neural-interface/
+├── backend/
+│   ├── routes/
+│   │   ├── nft.js
+│   │   ├── token.js
+│   │   ├── referral.js
+│   └── server.js
+├── frontend/
+│   ├── components/
+│   │   ├── WalletConnect.jsx
+│   │   ├── TokenChecker.jsx
+│   │   ├── ReferralSystem.jsx
+│   │   ├── DegenMode.jsx
+│   │   ├── MiniGameTikus.jsx
+│   │   ├── KingLemmiViewer.jsx
+│   ├── App.jsx
+│   └── main.jsx
+├── public/
+│   ├── assets/
+│   │   ├── gerbil-icon.png
+│   │   ├── lemmi-token.png
+│   │   ├── king-lemmi.png
+│   │   ├── tikus-game/
+├── .env
+├── package.json
+└── neuralFeatures.json
+🧩 BAGIAN 2 – FITUR & KODE
+✅ 1. Wallet NFT Access Checker (WalletConnect.jsx)
+📦 Fitur:
+Cek wallet terhubung
+
+Verifikasi apakah user punya Gerbil NFT
+
+🧠 Logika:
+jsx
+Copy
+Edit
+import { useEffect, useState } from "react";
+import { ethers } from "ethers";
+
+export default function WalletConnect({ onNFTVerified }) {
+  const [address, setAddress] = useState(null);
+  const [hasNFT, setHasNFT] = useState(false);
+
+  const connectWallet = async () => {
+    if (window.ethereum) {
+      const [acc] = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      setAddress(acc);
+    }
+  };
+
+  const checkNFT = async () => {
+    const response = await fetch(`/api/nft/${address}`);
+    const data = await response.json();
+    const ownsGerbil = data.nfts.includes("GERBIL_CONTRACT_ADDRESS");
+    setHasNFT(ownsGerbil);
+    onNFTVerified(ownsGerbil);
+  };
+
+  useEffect(() => {
+    if (address) checkNFT();
+  }, [address]);
+
+  return (
+    <div className="neon-box">
+      <button onClick={connectWallet}>🔗 Connect Wallet</button>
+      <p>Wallet: {address || 'Not Connected'}</p>
+      <p>Status: {hasNFT ? '✅ Gerbil NFT Detected' : '❌ Not Detected'}</p>
+    </div>
+  );
+}
+🖥️ Backend /api/nft/:address (Mocked untuk sekarang)
+js
+Copy
+Edit
+router.get('/:address', (req, res) => {
+  const { address } = req.params;
+  // Mock check – replace with Moralis API or Alchemy NFT API
+  const nfts = address === "0xGerbilHolder" ? ["GERBIL_CONTRACT_ADDRESS"] : [];
+  res.json({ nfts });
+});
+✅ 2. $Lemmi Token Checker (TokenChecker.jsx)
+🧠 React Komponen:
+jsx
+Copy
+Edit
+import { useEffect, useState } from "react";
+
+export default function TokenChecker({ address }) {
+  const [balance, setBalance] = useState(0);
+
+  useEffect(() => {
+    if (!address) return;
+    fetch(`/api/token/${address}`)
+      .then(res => res.json())
+      .then(data => setBalance(data.balance));
+  }, [address]);
+
+  return (
+    <div className="neon-box">
+      <h3>$Lemmi Balance</h3>
+      <p>{balance} $Lemmi tokens</p>
+    </div>
+  );
+}
+🔧 Backend /api/token/:address (mock)
+js
+Copy
+Edit
+router.get('/:address', (req, res) => {
+  const { address } = req.params;
+  // Replace with actual contract interaction
+  res.json({ balance: address === "0xGerbilHolder" ? 120 : 0 });
+});
+✅ 3. Referral System (ReferralSystem.jsx)
+👾 React Komponen:
+jsx
+Copy
+Edit
+import { useEffect, useState } from "react";
+
+export default function ReferralSystem({ address }) {
+  const [refLink, setRefLink] = useState("");
+
+  const generateReferral = async () => {
+    const res = await fetch('/api/referral', {
+      method: 'POST',
+      body: JSON.stringify({ address }),
+      headers: { 'Content-Type': 'application/json' }
+    });
+    const data = await res.json();
+    setRefLink(`${window.location.origin}?ref=${data.code}`);
+  };
+
+  return (
+    <div className="neon-box">
+      <button onClick={generateReferral}>🎁 Generate Referral Link</button>
+      {refLink && <p>🔗 {refLink}</p>}
+    </div>
+  );
+}
+🛠️ Backend /api/referral
+js
+Copy
+Edit
+router.post('/', (req, res) => {
+  const { address } = req.body;
+  const code = Math.random().toString(36).substring(2, 8);
+  // Save to DB in real case
+  res.json({ code });
+});
+✅ 4. Degen Mode + Mini Game Tikus (DegenMode.jsx + MiniGameTikus.jsx)
+🧠 Logic Toggle:
+jsx
+Copy
+Edit
+export default function DegenMode({ onActivate }) {
+  const [clicks, setClicks] = useState(0);
+
+  useEffect(() => {
+    if (clicks === 3) onActivate(true);
+  }, [clicks]);
+
+  return (
+    <div className="neon-box">
+      <button onClick={() => setClicks(prev => prev + 1)}>🧨 Toggle Degen Mode</button>
+    </div>
+  );
+}
+🐭 MiniGameTikus.jsx
+Buat game tikus pakai canvas (placeholder dulu):
+
+jsx
+Copy
+Edit
+export default function MiniGameTikus() {
+  return (
+    <div className="neon-box">
+      <h3>🐭 Tikus Neural Escape</h3>
+      <p>[Mini-game canvas goes here – use WASD to move]</p>
+    </div>
+  );
+}
+✅ 5. King Lemmi Viewer (KingLemmiViewer.jsx)
+jsx
+Copy
+Edit
+export default function KingLemmiViewer() {
+  return (
+    <div className="neon-box">
+      <h3>👑 King Lemmi Visual Collection</h3>
+      <img src="/assets/king-lemmi.png" alt="King Lemmi" className="rounded-xl" />
+      <p>Back-view character cinematic preview</p>
+    </div>
+  );
+}

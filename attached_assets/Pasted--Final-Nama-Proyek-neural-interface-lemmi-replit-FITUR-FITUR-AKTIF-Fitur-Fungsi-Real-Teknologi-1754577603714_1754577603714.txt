@@ -1,0 +1,71 @@
+✅ Final Nama Proyek:
+neural-interface-lemmi-replit
+
+🧠 FITUR-FITUR AKTIF
+Fitur	Fungsi Real	Teknologi
+🟡 Free Access for Gerbil NFT Owners	Deteksi NFT via Wallet (EVM/Solana)	Moralis / Alchemy / QuickNode API
+💚 $Lemmi Token Payment System	Fetch saldo token $Lemmi dari smart contract	Ethers.js/Solana Web3
+🔵 Skill-Based Rewards System	Simulasi skor player via backend + update status real-time	Replit DB / Supabase
+🟣 Referral System	Generate & validasi link referral yang bisa diklik	Express API + DB
+🔴 Degen Mode (High Risk)	Easter Egg unlock mini-game Tikus + mode chaos	React State / Easter Egg
+🟠 King Lemmi Visual Collection	Galeri karakter dalam gaya sinematik	Asset manager + modal viewer
+🔴 Long-term Monetization Hub	Simulasi "connect ke brand" + UI skin NFT	JSON config + UI
+
+🎮 MINI GAME: TIKUS NEURAL MODE
+Ketika Degen Mode aktif 3x klik:
+
+txt
+Copy
+Edit
+🧠 "Accessing Neural Subsystem... 🐭 Unauthorized rodent detected!"
+
+🎮 Game: Tikus di lab NeuralNet harus menghindari laser
+- WASD untuk gerak
+- Klik untuk makan keju
+- High Score disimpan di localStorage atau backend
+✨ TAMPILAN
+Style: Cyberpunk Neural Terminal
+
+Full screen game-like UI
+
+Background: neon city, datastream, circuit board
+
+Glow & glass morphic card
+
+Suara klik, hover, dan musik lo-fi neural
+
+Komponen dibuka seperti "hacking panel"
+
+🔗 STRUKTUR FILE
+bash
+Copy
+Edit
+📦 neural-interface-lemmi-replit
+├── frontend/
+│   ├── components/
+│   │   ├── NeuralFeatureCard.jsx
+│   │   ├── WalletConnect.jsx
+│   │   ├── ReferralSystem.jsx
+│   │   ├── SkillRewardPanel.jsx
+│   │   ├── DegenMode.jsx
+│   │   ├── MiniGameTikus.jsx
+│   ├── assets/
+│   │   ├── sfx/, characters/, bg/
+│   └── App.jsx
+├── backend/
+│   ├── routes/
+│   │   ├── nft.js
+│   │   ├── token.js
+│   │   ├── referral.js
+│   └── server.js
+├── .env
+├── neuralFeatures.json
+🧪 TEKNOLOGI
+Stack	Detail
+React	Frontend SPA
+TailwindCSS	Styling & theme dark
+Express.js	Backend API
+Ethers.js + web3.js	Web3 integrasi
+Howler.js	Suara klik, musik
+Three.js / Parallax	Opsional efek 3D
+Replit DB / Supabase	Penyimpanan referral & skor

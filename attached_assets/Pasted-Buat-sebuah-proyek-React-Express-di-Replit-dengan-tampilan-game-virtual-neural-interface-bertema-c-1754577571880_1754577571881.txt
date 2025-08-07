@@ -1,0 +1,94 @@
+Buat sebuah proyek React + Express di Replit dengan tampilan game virtual neural interface bertema cyberpunk/futuristic yang:
+
+🔗 Web3 Integration:
+Integrasi MetaMask (Ethereum) dan Phantom (Solana)
+
+Cek apakah wallet terhubung memiliki Gerbil NFT → unlock fitur "Free Access"
+
+Cek balance token ERC20/SPL $Lemmi → tampilkan balance real-time
+
+Fallback ke “Guest Mode” jika tidak punya wallet/NFT
+
+🕹 Fitur Utama (dengan status real-time):
+Buat antarmuka dashboard 3D bertema game berisi:
+
+✅ Free Access for Gerbil NFT Owners → aktif jika wallet punya NFT
+
+✅ $Lemmi Token Payment System → tampilkan jumlah token
+
+✅ Skill-Based Rewards System → tracker performance (mock data OK)
+
+✅ Referral System → generate link dengan kode unik, counter diklik
+
+✅ Degen Mode (High Risk, High Reward) → tombol toggle + status "Beta"
+
+✅ King Lemmi Visual Collection → tampilkan animasi atau karakter gambar
+
+✅ Long-term Monetization Hub → status infrastruktur siap + ikon brand
+
+🎮 Visual Style:
+Desain seperti UI game fiksi sains (cyberpunk, neon, transparan, grid holo)
+
+Efek parallax background (3D) dengan bangunan kota malam
+
+Font futuristik (Orbitron, Rajdhani, dsb)
+
+Efek scanline, glitch, hologram, dan animasi hover glowing
+
+Responsive untuk desktop dan mobile
+
+Gunakan TailwindCSS + @tailwindcss/typography + custom theme dark
+
+Tambahkan sound effect click (gunakan Howler.js atau Audio API)
+
+🧩 Komponen React:
+<NeuralInterface /> → tampilan utama, daftar fitur
+
+<NeuralFeatureCard /> → setiap fitur punya card dengan icon, status, animasi
+
+<WalletConnect /> → koneksi dan verifikasi NFT
+
+<ReferralPanel /> → generate kode referral + tampilkan link klik
+
+<TokenDisplay /> → tampilkan jumlah $Lemmi
+
+<DegenModeToggle /> → tombol untuk mengaktifkan mode degen (dengan efek)
+
+<JackInButton /> → tombol "JACK INTO THE NEURAL NETWORK" (aktif hanya jika 3 fitur aktif)
+
+⚙️ Backend Express API:
+GET /api/wallet/:address/nfts → return list NFT (mock atau Moralis API)
+
+GET /api/wallet/:address/lemmi → return token balance (mock atau smart contract call)
+
+POST /api/referral → generate referral link dan simpan (pakai Replit DB atau Supabase)
+
+GET /api/referral/:code → counter jumlah klik link
+
+GET /api/features → return status semua fitur (dari JSON)
+
+📁 File Awal:
+/frontend/components/NeuralInterface.jsx
+
+/frontend/components/WalletConnect.jsx
+
+/backend/routes/nft.js
+
+/backend/routes/lemmi.js
+
+/public/assets/neon-bg.png, /sfx/click.wav, /fonts/Orbitron.ttf
+
+.env → isikan CONTRACT_ADDRESS_GERBIL, TOKEN_ADDRESS_LEMMI, CHAIN_ID
+
+🎁 Bonus:
+Tambahkan efek terminal-style typewriter saat status loading
+
+Tambahkan animasi karakter Lemmi (telur lucu?) dalam sudut kanan bawah
+
+Tambahkan mini-game Easter Egg saat klik 3x di Degen Mode
+
+Tambahkan audio saat hover tombol (hover → suara bleep UI)
+
+Simpan semua status di JSON neuralFeatures.json, bisa diedit
+
+Tambahkan DarkGlassEffect pada semua card (transparansi + blur + neon)
