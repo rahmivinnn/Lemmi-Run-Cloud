@@ -6,9 +6,22 @@ interface LoadingScreenProps {
 
 export function LoadingScreen({ onLoadingComplete }: LoadingScreenProps) {
   return (
-    <div className="fixed inset-0 bg-black flex items-center justify-center z-50 font-mono">
-      {/* CRT Effect */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-500/5 to-transparent animate-pulse"></div>
+    <div className="fixed inset-0 bg-black flex items-center justify-center z-50 font-mono scanlines crt-monitor">
+      {/* Retro Grid Background */}
+      <div className="absolute inset-0 opacity-20">
+        <div className="grid grid-cols-20 grid-rows-15 h-full w-full">
+          {Array.from({ length: 300 }, (_, i) => (
+            <div 
+              key={i} 
+              className="border border-cyan-400/20"
+              style={{
+                boxShadow: Math.random() > 0.98 ? '0 0 4px #00ffff' : 'none',
+                animation: `flicker ${3 + Math.random() * 4}s infinite alternate`
+              }}
+            />
+          ))}
+        </div>
+      </div>
       
       <div className="text-center w-full h-full flex flex-col items-center justify-center px-6">
         {/* Logo/Title */}
@@ -16,10 +29,10 @@ export function LoadingScreen({ onLoadingComplete }: LoadingScreenProps) {
           <div className="text-xs text-cyan-400/60 mb-2">
             &gt; BOOTING_SYSTEM.EXE
           </div>
-          <h1 className="text-5xl font-orbitron font-black text-cyan-400 mb-2 animate-pulse tracking-wider">
+          <h1 className="retro-title text-5xl font-black mb-2 tracking-wider">
             LEMMI.RUN
           </h1>
-          <h2 className="text-lg font-orbitron font-bold text-green-400 mb-2 tracking-widest">
+          <h2 className="text-lg font-bold text-green-400 mb-2 tracking-widest retro-loading">
             GERBIL_EDITION_v2.1
           </h2>
           <div className="text-xs text-cyan-300/60">

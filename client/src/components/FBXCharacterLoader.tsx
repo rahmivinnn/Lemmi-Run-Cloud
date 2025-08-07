@@ -119,14 +119,18 @@ export function FBXCharacterLoader({ variant, onAnimationComplete }: FBXCharacte
         '/character.fbx',
         (object) => {
           console.log('FBX loaded successfully:', object);
-          console.log('Object children:', object.children);
-          console.log('Object scale:', object.scale);
-          console.log('Object position:', object.position);
+          console.log('Object children:', object.children.length);
+          console.log('Object boundingBox:', new THREE.Box3().setFromObject(object));
+          console.log('Object visible:', object.visible);
           
           // Scale and position the character
-          object.scale.setScalar(0.05); // Bigger scale for visibility
-          object.position.set(0, -1, 0);
+          object.scale.setScalar(0.1); // Much bigger scale for visibility
+          object.position.set(0, -2, 0);
           object.rotation.y = 0; // Face forward towards camera
+          
+          // Make sure object is visible
+          object.visible = true;
+          object.frustumCulled = false;
         
           // Count and log meshes
           let meshCount = 0;

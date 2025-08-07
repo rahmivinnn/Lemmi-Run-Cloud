@@ -14,6 +14,7 @@ import { LoadingScreen } from "@/components/LoadingScreen";
 import { CharacterSelection } from "@/components/CharacterSelection";
 import { GameRunner } from "@/components/GameRunner";
 import { RetroWalletScanner } from "@/components/RetroWalletScanner";
+import { RetroWalletButton } from "@/components/RetroWalletButton";
 import { HDCharacterAnimation } from "@/components/HDCharacterAnimation";
 import { FBXCharacterLoader } from "@/components/FBXCharacterLoader";
 import { useWallet } from "@/hooks/useWallet";
@@ -284,13 +285,16 @@ export default function NeuralInterface() {
               </div>
             </div>
             
-            {/* Retro Wallet Scanner */}
-            <RetroWalletScanner
-              onConnect={connectWallet}
-              isConnected={isConnected}
-              address={walletAddress || undefined}
-              hasNft={hasGerbilNft}
-            />
+            {/* Lace Wallet Integration */}
+            <div className="flex items-center space-x-2">
+              <RetroWalletButton />
+              <RetroWalletScanner
+                onConnect={connectWallet}
+                isConnected={isConnected}
+                address={walletAddress || undefined}
+                hasNft={hasGerbilNft}
+              />
+            </div>
           </div>
         </div>
 
