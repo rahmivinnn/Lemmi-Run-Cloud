@@ -85,6 +85,45 @@ export default function NeuralInterface() {
 
   const canJackIn = activeFeaturesCount >= 3;
 
+  // Handler untuk menyelesaikan loading screen
+  const handleLoadingComplete = () => {
+    setGameState('main');
+  };
+
+  // Handler untuk memulai character selection
+  const handleStartCharacterSelect = () => {
+    setGameState('character-select');
+  };
+
+  // Handler untuk memulai game
+  const handleStartGame = (character: Character) => {
+    setSelectedCharacter(character);
+    setGameState('game');
+  };
+
+  // Render berdasarkan game state
+  if (gameState === 'loading') {
+    return <LoadingScreen onLoadingComplete={handleLoadingComplete} />;
+  }
+
+  if (gameState === 'character-select') {
+    return (
+      <CharacterSelection 
+        onCharacterSelect={handleStartGame}
+        onBack={() => setGameState('main')}
+      />
+    );
+  }
+
+  if (gameState === 'game' && selectedCharacter) {
+    return (
+      <GameRunner 
+        character={selectedCharacter}
+        onGameEnd={() => setGameState('main')}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen overflow-hidden relative bg-black">
       {/* Cyberpunk Skyscraper Background */}
@@ -325,7 +364,39 @@ export default function NeuralInterface() {
                 </button>
                 
                 <button 
-                  onClick={() => window.location.href = '/game'}
+                  onClick={() => {
+                    playClick();
+                    handleStartCharacterSelect();
+                  }}
+                  className="w-full bg-black border font-mono transition-all duration-200 relative border-orange-400 text-orange-400 hover:bg-orange-900/20 group mb-4"
+                  onMouseEnter={playHover}
+                >
+                  <div className="px-4 py-3 flex items-center space-x-3">
+                    <div className="absolute -top-1 -left-1 w-2 h-2 bg-orange-400"></div>
+                    <div className="absolute -top-1 -right-1 w-2 h-2 bg-orange-400"></div>
+                    <div className="absolute inset-0 bg-orange-400/10 animate-pulse"></div>
+                    <div className="text-sm text-orange-400 group-hover:animate-bounce">&gt;&gt;</div>
+                    <div className="text-left">
+                      <div className="text-sm font-bold tracking-wider">CHARACTER.DLL</div>
+                      <div className="text-xs opacity-60">avatar_selection</div>
+                    </div>
+                    <div className="text-orange-400 text-lg animate-pulse ml-auto">👤</div>
+                  </div>
+                </button>
+
+                <button 
+                  onClick={() => {
+                    playClick();
+                    // Quick game launch with default character
+                    const defaultCharacter: Character = {
+                      id: 'ashina',
+                      name: 'Ashina',
+                      image: AshinaImage,
+                      description: 'Swift neural warrior',
+                      stats: { speed: 85, jump: 80, special: 90 }
+                    };
+                    handleStartGame(defaultCharacter);
+                  }}
                   className="w-full bg-black border font-mono transition-all duration-200 relative border-green-400 text-green-400 hover:bg-green-900/20 group"
                   onMouseEnter={playHover}
                 >
