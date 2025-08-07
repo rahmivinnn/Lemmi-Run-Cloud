@@ -8,7 +8,7 @@ interface WalletState {
   isConnected: boolean;
   hasGerbilNft: boolean;
   lemmiBalance: number;
-  chain: 'ethereum' | 'solana' | null;
+  chain: 'ethereum' | 'solana' | 'cardano' | null;
 }
 
 export function useWallet() {
@@ -30,24 +30,37 @@ export function useWallet() {
 
   const checkExistingConnection = async () => {
     try {
+      // Wait for page to load completely
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
       // Check Lace wallet for Cardano
-      if (window.cardano?.lace) {
+      if (typeof window !== 'undefined' && window.cardano?.lace) {
         const lace = window.cardano.lace;
+        console.log("Lace wallet detected, checking connection...");
+        
         const isEnabled = await lace.isEnabled();
+        console.log("Lace enabled:", isEnabled);
+        
         if (isEnabled) {
           const addresses = await lace.getUsedAddresses();
+          console.log("Lace addresses:", addresses);
+          
           if (addresses && addresses.length > 0) {
+            const address = addresses[0];
             setWalletState(prev => ({
               ...prev,
-              walletAddress: addresses[0],
+              walletAddress: address,
               isConnected: true,
               chain: 'cardano'
             }));
+            console.log("Lace wallet reconnected:", address);
           }
         }
+      } else {
+        console.log("Lace wallet not found or not available yet");
       }
     } catch (error) {
-      console.log("No existing Lace wallet connection");
+      console.log("Error checking Lace connection:", error);
     }
   };
 
@@ -78,26 +91,52 @@ export function useWallet() {
 
   const connectWallet = useCallback(async () => {
     try {
+      console.log("Attempting to connect to Lace wallet...");
+      
+      // Check if window and cardano are available
+      if (typeof window === 'undefined') {
+        throw new Error("Window object not available");
+      }
+      
+      // Wait for Lace to be fully loaded
+      let attempts = 0;
+      while (!window.cardano?.lace && attempts < 10) {
+        console.log(`Waiting for Lace... attempt ${attempts + 1}`);
+        await new Promise(resolve => setTimeout(resolve, 500));
+        attempts++;
+      }
+      
       if (!window.cardano?.lace) {
-        throw new Error("Lace wallet not installed. Please install Lace wallet extension for Cardano.");
+        throw new Error("Lace wallet tidak terinstall! Silakan install Lace wallet extension untuk Cardano di browser Anda.");
       }
 
       const lace = window.cardano.lace;
-      const isEnabled = await lace.isEnabled();
+      console.log("Lace wallet found, requesting access...");
       
-      if (!isEnabled) {
-        const enabledLace = await lace.enable();
-        if (!enabledLace) {
-          throw new Error('Lace wallet access denied by user');
-        }
+      // Request access to wallet
+      const api = await lace.enable();
+      console.log("Lace API enabled:", api);
+      
+      if (!api) {
+        throw new Error('Akses ke Lace wallet ditolak. Silakan coba lagi dan izinkan akses.');
       }
       
-      const addresses = await lace.getUsedAddresses();
-      if (!addresses || addresses.length === 0) {
-        throw new Error('No addresses found in Lace wallet');
+      // Get addresses
+      const addresses = await api.getUsedAddresses();
+      console.log("Got addresses:", addresses);
+      
+      let finalAddresses = addresses;
+      if (!finalAddresses || finalAddresses.length === 0) {
+        // Try to get unused addresses if no used addresses
+        const unusedAddresses = await api.getUnusedAddresses();
+        if (!unusedAddresses || unusedAddresses.length === 0) {
+          throw new Error('Tidak ditemukan address di wallet Lace. Pastikan wallet Anda sudah memiliki address Cardano.');
+        }
+        finalAddresses = unusedAddresses;
       }
 
-      const address = addresses[0];
+      const address = finalAddresses[0];
+      console.log("Using address:", address);
       
       setWalletState(prev => ({
         ...prev,
@@ -110,19 +149,20 @@ export function useWallet() {
       await walletMutation.mutateAsync({
         address,
         chain: 'cardano',
-        hasGerbilNft: false,
-        lemmiBalance: 0
+        hasGerbilNft: true, // Set to true for demo
+        lemmiBalance: 1000 // Demo balance
       });
 
       toast({
-        title: "Lace Connected",
-        description: `Connected to Cardano: ${address.slice(0, 8)}...${address.slice(-6)}`,
+        title: "🎮 Lace Wallet Terhubung!",
+        description: `Berhasil terhubung ke Cardano: ${address.slice(0, 12)}...${address.slice(-8)}`,
       });
 
     } catch (error: any) {
+      console.error("Lace connection error:", error);
       toast({
-        title: "Connection Failed",
-        description: error.message || "Failed to connect to Lace wallet",
+        title: "❌ Koneksi Gagal",
+        description: error.message || "Gagal terhubung ke Lace wallet. Pastikan extension sudah terinstall dan aktif.",
         variant: "destructive",
       });
     }
@@ -175,5 +215,15 @@ declare global {
   interface Window {
     ethereum?: any;
     solana?: any;
+    cardano?: {
+      lace?: {
+        enable(): Promise<any>;
+        isEnabled(): Promise<boolean>;
+        getUsedAddresses(): Promise<string[]>;
+        getUnusedAddresses(): Promise<string[]>;
+        getBalance(): Promise<string>;
+        getNetworkId(): Promise<number>;
+      };
+    };
   }
 }

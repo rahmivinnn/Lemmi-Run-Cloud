@@ -210,6 +210,110 @@
   51%, 100% { border-right-color: var(--cyber-cyan); }
 }
 
+@keyframes unity-scan {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes unity-flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes unity-border-glow {
+  0%, 100% { 
+    border-color: rgba(255, 165, 0, 0.5);
+    box-shadow: 0 0 10px rgba(255, 165, 0, 0.2);
+  }
+  50% { 
+    border-color: rgba(255, 165, 0, 1);
+    box-shadow: 0 0 20px rgba(255, 165, 0, 0.4), inset 0 0 10px rgba(255, 165, 0, 0.1);
+  }
+}
+
+@keyframes unity-panel-slide {
+  from { transform: translateY(-10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Unity-style HUD elements */
+.unity-hud-panel {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(20, 20, 20, 0.9) 100%);
+  border: 2px solid rgba(255, 165, 0, 0.6);
+  box-shadow: 0 0 20px rgba(255, 165, 0, 0.2), inset 0 0 10px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+.unity-button {
+  background: linear-gradient(145deg, rgba(255, 165, 0, 0.2), rgba(255, 100, 0, 0.2));
+  border: 2px solid rgba(255, 165, 0, 0.6);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.unity-button:hover {
+  background: linear-gradient(145deg, rgba(255, 165, 0, 0.3), rgba(255, 100, 0, 0.3));
+  border-color: rgba(255, 165, 0, 0.8);
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(255, 165, 0, 0.4);
+}
+
+.unity-button::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transform: rotate(45deg) translateX(-100%);
+  transition: transform 0.6s;
+}
+
+.unity-button:hover::before {
+  transform: rotate(45deg) translateX(100%);
+}
+
+.unity-scan {
+  position: relative;
+  overflow: hidden;
+}
+
+.unity-scan::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.3), transparent);
+  animation: unity-scan 3s infinite;
+}
+
+.unity-flicker {
+  animation: unity-flicker 0.15s infinite alternate;
+}
+
+.unity-border-glow {
+  animation: unity-border-glow 2s ease-in-out infinite;
+}
+
+.unity-panel-slide {
+  animation: unity-panel-slide 0.5s ease-out;
+}
+
+/* Unity-style status indicators */
+.unity-status-online {
+  background: radial-gradient(circle, rgba(0, 255, 0, 0.8) 0%, rgba(0, 200, 0, 0.4) 100%);
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.6);
+}
+
+.unity-status-offline {
+  background: radial-gradient(circle, rgba(255, 0, 0, 0.8) 0%, rgba(200, 0, 0, 0.4) 100%);
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
+}
+
 /* Scanline overlay */
 .scanline-overlay::before {
   content: '';

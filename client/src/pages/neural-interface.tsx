@@ -137,47 +137,47 @@ export default function NeuralInterface() {
       <div className="relative z-10 min-h-screen flex flex-col">
         
         {/* Unity-style Top HUD */}
-        <div className="h-16 bg-gradient-to-r from-black/95 via-gray-900/90 to-black/95 backdrop-blur-md border-b border-orange-500/30">
+        <div className="h-16 unity-hud-panel unity-scan backdrop-blur-md border-b unity-border-glow">
           <div className="flex items-center justify-between h-full px-6">
             
             {/* Game Logo & Title */}
             <div className="flex items-center space-x-4">
               <div className="relative">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-red-600 p-0.5 animate-pulse">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-red-600 p-0.5 animate-pulse unity-border-glow">
                   <div className="w-full h-full rounded-full bg-black flex items-center justify-center">
-                    <span className="text-lg animate-spin">🏃</span>
+                    <span className="text-lg animate-spin unity-flicker">🏃</span>
                   </div>
                 </div>
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-ping" />
+                <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-ping unity-status-online" />
               </div>
               <div>
-                <h1 className="text-lg font-orbitron font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-500">
+                <h1 className="text-lg font-orbitron font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-red-500 to-orange-400 animate-glow">
                   LEMMI RUN
                 </h1>
-                <p className="text-xs font-mono text-orange-300/70">CARDANO • GERBIL EDITION</p>
+                <p className="text-xs font-mono text-orange-300/70">[ CARDANO • GERBIL EDITION ]</p>
               </div>
             </div>
             
             {/* Center HUD - Game Stats */}
             <div className="flex items-center space-x-4">
-              <div className="bg-black/80 border border-green-500/30 rounded px-3 py-1 min-w-[200px]">
+              <div className="bg-black/80 border border-green-500/30 rounded px-3 py-1 min-w-[200px] unity-hud-panel">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono text-green-400">STATUS:</span>
-                  <span className="text-xs font-mono text-green-300 animate-pulse">{terminalText}</span>
+                  <span className="text-xs font-mono text-green-400">[ STATUS ]:</span>
+                  <span className="text-xs font-mono text-green-300 animate-pulse unity-flicker">{terminalText}</span>
                 </div>
               </div>
               
-              <div className="bg-black/80 border border-blue-500/30 rounded px-3 py-1">
+              <div className="bg-black/80 border border-blue-500/30 rounded px-3 py-1 unity-hud-panel">
                 <div className="flex items-center space-x-2">
-                  <span className="text-xs font-mono text-blue-400">LEVEL:</span>
-                  <span className="text-xs font-mono text-blue-300 font-bold">1</span>
+                  <span className="text-xs font-mono text-blue-400">[ LEVEL ]:</span>
+                  <span className="text-xs font-mono text-blue-300 font-bold animate-pulse">1</span>
                 </div>
               </div>
               
-              <div className="bg-black/80 border border-purple-500/30 rounded px-3 py-1">
+              <div className="bg-black/80 border border-purple-500/30 rounded px-3 py-1 unity-hud-panel">
                 <div className="flex items-center space-x-2">
-                  <span className="text-xs font-mono text-purple-400">SCORE:</span>
-                  <span className="text-xs font-mono text-purple-300 font-bold">0</span>
+                  <span className="text-xs font-mono text-purple-400">[ SCORE ]:</span>
+                  <span className="text-xs font-mono text-purple-300 font-bold animate-pulse">0</span>
                 </div>
               </div>
             </div>
@@ -196,46 +196,47 @@ export default function NeuralInterface() {
         <div className="flex-1 flex flex-col md:flex-row">
           
           {/* Unity-style Game Menu */}
-          <div className="w-full md:w-72 bg-gradient-to-b from-gray-900/95 to-black/95 backdrop-blur-md border-b md:border-b-0 md:border-r border-orange-500/20">
-            <div className="p-4">
+          <div className="w-full md:w-72 unity-hud-panel unity-panel-slide border-b md:border-b-0 md:border-r unity-border-glow">
+            <div className="p-4 unity-scan">
               <div className="text-center mb-6">
-                <h3 className="font-orbitron font-bold text-orange-400 text-sm">GAME MODULES</h3>
-                <div className="w-full h-0.5 bg-gradient-to-r from-transparent via-orange-500 to-transparent mt-2" />
+                <h3 className="font-orbitron font-bold text-orange-400 text-sm tracking-wider unity-flicker">⚡ GAME MODULES ⚡</h3>
+                <div className="w-full h-1 bg-gradient-to-r from-transparent via-orange-500 to-transparent mt-2 animate-pulse" />
+                <div className="text-xs text-orange-300/60 font-mono mt-1">[ NEURAL INTERFACE ACTIVE ]</div>
               </div>
               
               <div className="flex md:flex-col space-x-2 md:space-x-0 md:space-y-3">
                 <button 
                   onClick={() => setActiveScreen('main')}
-                  className={`group flex-1 md:w-full px-4 py-4 rounded-lg border-2 font-orbitron transition-all duration-300 ${
+                  className={`group flex-1 md:w-full px-4 py-4 rounded-lg font-orbitron transition-all duration-300 unity-button ${
                     activeScreen === 'main' 
-                      ? 'bg-orange-500/20 border-orange-500 text-orange-300 shadow-lg shadow-orange-500/20' 
+                      ? 'bg-gradient-to-r from-orange-500/30 to-red-500/30 border-orange-400 text-orange-300 shadow-lg shadow-orange-500/20 unity-status-online' 
                       : 'border-gray-600/50 text-gray-400 hover:border-orange-500/50 hover:text-orange-400 hover:bg-orange-500/5'
                   }`}
                   onMouseEnter={playHover}
                 >
                   <div className="flex items-center justify-center md:justify-start space-x-3">
-                    <span className="text-lg">🎮</span>
+                    <div className="text-lg animate-pulse">🎮</div>
                     <div className="hidden md:block text-left">
-                      <div className="text-sm font-bold">GAME HUB</div>
-                      <div className="text-xs opacity-70">Main Dashboard</div>
+                      <div className="text-sm font-bold tracking-wider">GAME HUB</div>
+                      <div className="text-xs opacity-70 font-mono">[ Main Dashboard ]</div>
                     </div>
                   </div>
                 </button>
                 
                 <button 
                   onClick={() => setActiveScreen('inventory')}
-                  className={`group flex-1 md:w-full px-4 py-4 rounded-lg border-2 font-orbitron transition-all duration-300 ${
+                  className={`group flex-1 md:w-full px-4 py-4 rounded-lg font-orbitron transition-all duration-300 unity-button ${
                     activeScreen === 'inventory' 
-                      ? 'bg-purple-500/20 border-purple-500 text-purple-300 shadow-lg shadow-purple-500/20' 
+                      ? 'bg-gradient-to-r from-purple-500/30 to-pink-500/30 border-purple-400 text-purple-300 shadow-lg shadow-purple-500/20 animate-glow' 
                       : 'border-gray-600/50 text-gray-400 hover:border-purple-500/50 hover:text-purple-400 hover:bg-purple-500/5'
                   }`}
                   onMouseEnter={playHover}
                 >
                   <div className="flex items-center justify-center md:justify-start space-x-3">
-                    <span className="text-lg">💎</span>
+                    <div className="text-lg animate-pulse">💎</div>
                     <div className="hidden md:block text-left">
-                      <div className="text-sm font-bold">INVENTORY</div>
-                      <div className="text-xs opacity-70">Assets & Items</div>
+                      <div className="text-sm font-bold tracking-wider">INVENTORY</div>
+                      <div className="text-xs opacity-70 font-mono">[ Assets & Items ]</div>
                     </div>
                   </div>
                 </button>
