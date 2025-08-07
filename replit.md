@@ -86,3 +86,14 @@ Preferred communication style: Simple, everyday language.
 - Updated branding from "Neural Interface" to "Lemmi Run - Gerbil Edition"
 - Enhanced mobile responsiveness with game-style UI elements
 - Real Lace wallet API integration replacing mock wallet connections
+- **NEW: Story/Narrative Screen Implementation**
+  - Added cinematic story screen after loading with 6 character portraits
+  - Features auto-advancing slides with English narrative
+  - Retro gaming aesthetic with CRT effects and scanlines
+  - Keyboard controls (SPACE/ENTER to advance, ESC to skip)
+  - Character icons: Grim Reaper, Gunslinger, Gentleman, Viking, Hunter, Barbarian
+  - Smooth transitions and progress indicators
+- **VPS Deployment Ready**
+  - Complete deployment package created for Debian 12 VPS
+  - Automated deployment scripts with Nginx, PM2, and Node.js setup
+  - Production build optimization and server configuration

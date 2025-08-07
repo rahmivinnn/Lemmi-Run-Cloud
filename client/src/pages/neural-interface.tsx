@@ -11,6 +11,7 @@ import MiniGameTikus from "@/components/MiniGameTikus";
 import GerbilNftGallery from "@/components/GerbilNftGallery";
 import CardanoTransactionTracker from "@/components/CardanoTransactionTracker";
 import { LoadingScreen } from "@/components/LoadingScreen";
+import { StoryScreen } from "@/components/StoryScreen";
 import { CharacterSelection } from "@/components/CharacterSelection";
 import { GameRunner } from "@/components/GameRunner";
 import { RetroWalletScanner } from "@/components/RetroWalletScanner";
@@ -34,7 +35,7 @@ interface Character {
 }
 
 export default function NeuralInterface() {
-  const [gameState, setGameState] = useState<'loading' | 'main' | 'character-select' | 'game'>('loading');
+  const [gameState, setGameState] = useState<'loading' | 'story' | 'main' | 'character-select' | 'game'>('loading');
   const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null);
   const [showMiniGame, setShowMiniGame] = useState(false);
   const [activeScreen, setActiveScreen] = useState<'main' | 'inventory' | 'skills' | 'network'>('main');
@@ -89,6 +90,11 @@ export default function NeuralInterface() {
 
   // Handler untuk menyelesaikan loading screen
   const handleLoadingComplete = () => {
+    setGameState('story');
+  };
+
+  // Handler untuk menyelesaikan story screen
+  const handleStoryComplete = () => {
     setGameState('main');
   };
 
@@ -108,6 +114,10 @@ export default function NeuralInterface() {
     return <LoadingScreen onLoadingComplete={handleLoadingComplete} />;
   }
 
+  if (gameState === 'story') {
+    return <StoryScreen onComplete={handleStoryComplete} />;
+  }
+
   if (gameState === 'character-select') {
     return (
       <CharacterSelection 
@@ -122,6 +132,7 @@ export default function NeuralInterface() {
       <GameRunner 
         character={selectedCharacter}
         onGameEnd={() => setGameState('main')}
+        onBack={() => setGameState('character-select')}
       />
     );
   }
