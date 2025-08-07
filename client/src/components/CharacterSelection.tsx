@@ -22,28 +22,28 @@ export function CharacterSelection({ onCharacterSelect, onBack }: CharacterSelec
     {
       id: 'ashina',
       name: 'KING LEMMI',
-      image: '/attached_assets/ashina_1754580592322.webp',
+      image: '',
       description: 'Royal warrior with balanced abilities',
       stats: { speed: 8, jump: 7, special: 9 }
     },
     {
       id: 'cowboy',
       name: 'COWBOY GERBIL',
-      image: '/attached_assets/cowboy_1754579357037.webp',
+      image: '',
       description: 'Quick draw specialist',
       stats: { speed: 9, jump: 6, special: 7 }
     },
     {
       id: 'snow',
       name: 'SNOW GERBIL',
-      image: '/attached_assets/snow_1754579357039.webp',
+      image: '',
       description: 'Ice powers and agility',
       stats: { speed: 7, jump: 9, special: 8 }
     },
     {
       id: 'grim',
       name: 'GRIM REAPER',
-      image: '/attached_assets/grim reaper_1754579357037.webp',
+      image: '',
       description: 'Dark magic wielder',
       stats: { speed: 6, jump: 8, special: 10 }
     }
@@ -97,8 +97,29 @@ export function CharacterSelection({ onCharacterSelect, onBack }: CharacterSelec
               )}
               
               <div className="p-4">
-                <div className="w-full h-48 mb-4 bg-gray-900 border border-gray-700 flex items-center justify-center">
-                  <img src={character.image} alt={character.name} className="max-w-full max-h-full object-contain" />
+                <div className="w-full h-48 mb-4 bg-gray-900 border border-gray-700 flex items-center justify-center relative">
+                  {character.image ? (
+                    <img 
+                      src={character.image} 
+                      alt={character.name} 
+                      className="max-w-full max-h-full object-contain"
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                        if (e.currentTarget.nextSibling) {
+                          (e.currentTarget.nextSibling as HTMLElement).style.display = 'flex';
+                        }
+                      }}
+                    />
+                  ) : null}
+                  <div 
+                    className="absolute inset-0 flex items-center justify-center text-orange-400 font-orbitron font-bold text-2xl"
+                    style={{ display: character.image ? 'none' : 'flex' }}
+                  >
+                    {character.id === 'ashina' && '👑'}
+                    {character.id === 'cowboy' && '🤠'}
+                    {character.id === 'snow' && '❄️'}
+                    {character.id === 'grim' && '💀'}
+                  </div>
                 </div>
                 
                 <h3 className="font-orbitron font-bold text-orange-400 text-center mb-2 tracking-wider">

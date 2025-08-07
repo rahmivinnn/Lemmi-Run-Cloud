@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { LoadingScreen } from '@/components/LoadingScreen';
 import { CharacterSelection } from '@/components/CharacterSelection';
-import { GameRunner } from '@/components/GameRunner';
+import { Game3DRunner } from '@/components/Game3DRunner';
 
 interface Character {
   id: string;
@@ -55,7 +55,7 @@ export default function GameSystem() {
   }
 
   if (gameState === 'game' && selectedCharacter) {
-    return <GameRunner character={selectedCharacter} onGameEnd={handleGameEnd} onBack={handleBackToCharacterSelect} />;
+    return <Game3DRunner character={selectedCharacter} onGameEnd={handleGameEnd} onBack={handleBackToCharacterSelect} />;
   }
 
   // This shouldn't happen, but redirect to character select as fallback
