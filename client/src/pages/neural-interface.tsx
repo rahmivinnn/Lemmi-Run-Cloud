@@ -10,10 +10,28 @@ import KingLemmiViewer from "@/components/KingLemmiViewer";
 import MiniGameTikus from "@/components/MiniGameTikus";
 import GerbilNftGallery from "@/components/GerbilNftGallery";
 import CardanoTransactionTracker from "@/components/CardanoTransactionTracker";
+import { LoadingScreen } from "@/components/LoadingScreen";
+import { CharacterSelection } from "@/components/CharacterSelection";
+import { GameRunner } from "@/components/GameRunner";
 import { useWallet } from "@/hooks/useWallet";
 import { useAudio } from "@/hooks/useAudio";
+import AshinaImage from "@assets/ashina_1754580592322.webp";
+
+interface Character {
+  id: string;
+  name: string;
+  image: string;
+  description: string;
+  stats: {
+    speed: number;
+    jump: number;
+    special: number;
+  };
+}
 
 export default function NeuralInterface() {
+  const [gameState, setGameState] = useState<'loading' | 'main' | 'character-select' | 'game'>('loading');
+  const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null);
   const [showMiniGame, setShowMiniGame] = useState(false);
   const [activeScreen, setActiveScreen] = useState<'main' | 'inventory' | 'skills' | 'network'>('main');
   const [terminalText, setTerminalText] = useState("");
@@ -150,7 +168,7 @@ export default function NeuralInterface() {
             <div className="flex items-center space-x-6">
               <div className="relative">
                 <div className="w-12 h-12 bg-black border border-orange-400 flex items-center justify-center relative">
-                  <span className="text-2xl">🏃</span>
+                  <img src={AshinaImage} alt="Lemmi" className="w-10 h-10 object-contain" />
                   <div className="absolute -top-1 -left-1 w-2 h-2 bg-orange-400"></div>
                   <div className="absolute -top-1 -right-1 w-2 h-2 bg-orange-400"></div>
                   <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-orange-400"></div>
@@ -274,37 +292,65 @@ export default function NeuralInterface() {
                 </button>
                 
                 <button 
+                  onClick={() => window.location.href = '/game'}
+                  className="w-full bg-black border font-orbitron transition-all duration-200 relative border-green-400 text-green-400 hover:bg-green-900/20"
+                  onMouseEnter={playHover}
+                >
+                  <div className="px-6 py-4 flex items-center space-x-4">
+                    <div className="absolute -top-1 -left-1 w-2 h-2 bg-green-400"></div>
+                    <div className="absolute -top-1 -right-1 w-2 h-2 bg-green-400"></div>
+                    <div className="text-xl">🎯</div>
+                    <div className="text-left">
+                      <div className="font-bold tracking-wider">START GAME</div>
+                      <div className="text-xs opacity-70 font-mono">Lemmi Run Arena</div>
+                    </div>
+                  </div>
+                </button>
+                
+                <button 
                   onClick={() => setActiveScreen('skills')}
-                  className={`group flex-1 md:w-full px-4 py-4 rounded-lg border-2 font-orbitron transition-all duration-300 ${
+                  className={`w-full bg-black border font-orbitron transition-all duration-200 relative ${
                     activeScreen === 'skills' 
-                      ? 'bg-green-500/20 border-green-500 text-green-300 shadow-lg shadow-green-500/20' 
-                      : 'border-gray-600/50 text-gray-400 hover:border-green-500/50 hover:text-green-400 hover:bg-green-500/5'
+                      ? 'border-cyan-400 text-cyan-300 bg-cyan-900/20' 
+                      : 'border-gray-600 text-gray-400 hover:border-cyan-400 hover:text-cyan-400'
                   }`}
                   onMouseEnter={playHover}
                 >
-                  <div className="flex items-center justify-center md:justify-start space-x-3">
-                    <span className="text-lg">⚡</span>
-                    <div className="hidden md:block text-left">
-                      <div className="text-sm font-bold">SKILLS</div>
-                      <div className="text-xs opacity-70">Abilities & Stats</div>
+                  <div className="px-6 py-4 flex items-center space-x-4">
+                    {activeScreen === 'skills' && (
+                      <>
+                        <div className="absolute -top-1 -left-1 w-2 h-2 bg-cyan-400"></div>
+                        <div className="absolute -top-1 -right-1 w-2 h-2 bg-cyan-400"></div>
+                      </>
+                    )}
+                    <div className="text-xl">⚡</div>
+                    <div className="text-left">
+                      <div className="font-bold tracking-wider">SKILL TREE</div>
+                      <div className="text-xs opacity-70 font-mono">Power Upgrades</div>
                     </div>
                   </div>
                 </button>
                 
                 <button 
                   onClick={() => setActiveScreen('network')}
-                  className={`group flex-1 md:w-full px-4 py-4 rounded-lg border-2 font-orbitron transition-all duration-300 ${
+                  className={`w-full bg-black border font-orbitron transition-all duration-200 relative ${
                     activeScreen === 'network' 
-                      ? 'bg-blue-500/20 border-blue-500 text-blue-300 shadow-lg shadow-blue-500/20' 
-                      : 'border-gray-600/50 text-gray-400 hover:border-blue-500/50 hover:text-blue-400 hover:bg-blue-500/5'
+                      ? 'border-blue-400 text-blue-300 bg-blue-900/20' 
+                      : 'border-gray-600 text-gray-400 hover:border-blue-400 hover:text-blue-400'
                   }`}
                   onMouseEnter={playHover}
                 >
-                  <div className="flex items-center justify-center md:justify-start space-x-3">
-                    <span className="text-lg">🌐</span>
-                    <div className="hidden md:block text-left">
-                      <div className="text-sm font-bold">NETWORK</div>
-                      <div className="text-xs opacity-70">Social & Guild</div>
+                  <div className="px-6 py-4 flex items-center space-x-4">
+                    {activeScreen === 'network' && (
+                      <>
+                        <div className="absolute -top-1 -left-1 w-2 h-2 bg-blue-400"></div>
+                        <div className="absolute -top-1 -right-1 w-2 h-2 bg-blue-400"></div>
+                      </>
+                    )}
+                    <div className="text-xl">🌐</div>
+                    <div className="text-left">
+                      <div className="font-bold tracking-wider">NETWORK</div>
+                      <div className="text-xs opacity-70 font-mono">Social System</div>
                     </div>
                   </div>
                 </button>
