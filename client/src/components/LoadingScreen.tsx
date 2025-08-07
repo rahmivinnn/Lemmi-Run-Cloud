@@ -1,4 +1,4 @@
-import { HDCharacterAnimation } from './HDCharacterAnimation';
+import { FBXCharacterLoader } from './FBXCharacterLoader';
 
 interface LoadingScreenProps {
   onLoadingComplete: () => void;
@@ -27,9 +27,9 @@ export function LoadingScreen({ onLoadingComplete }: LoadingScreenProps) {
           </div>
         </div>
         
-        {/* HD Character Animation - Full Screen */}
-        <div className="flex-1 w-full max-w-lg mx-auto">
-          <HDCharacterAnimation 
+        {/* FBX Character Animation - Full Screen */}
+        <div className="flex-1 w-full max-w-2xl mx-auto">
+          <FBXCharacterLoader 
             variant="loading" 
             onAnimationComplete={onLoadingComplete}
           />
