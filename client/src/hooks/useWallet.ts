@@ -151,7 +151,7 @@ export function useWallet() {
     if (nftData) {
       setWalletState(prev => ({
         ...prev,
-        hasGerbilNft: nftData.hasGerbilNft || false
+        hasGerbilNft: (nftData as any).hasGerbilNft || false
       }));
     }
   }, [nftData]);
@@ -160,7 +160,7 @@ export function useWallet() {
     if (tokenData) {
       setWalletState(prev => ({
         ...prev,
-        lemmiBalance: tokenData.balance || 0
+        lemmiBalance: (tokenData as any).balance || 0
       }));
     }
   }, [tokenData]);

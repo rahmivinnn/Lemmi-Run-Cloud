@@ -14,8 +14,8 @@ export default function SkillRewardPanel({ walletAddress }: SkillRewardPanelProp
     enabled: !!walletAddress,
   });
 
-  const efficiency = skillsData?.efficiency || 0;
-  const neuralSync = skillsData?.neuralSync || 0;
+  const efficiency = (skillsData as any)?.efficiency || 0;
+  const neuralSync = (skillsData as any)?.neuralSync || 0;
   const maxSync = 1000;
   const syncPercentage = Math.min((neuralSync / maxSync) * 100, 100);
 
@@ -61,7 +61,7 @@ export default function SkillRewardPanel({ walletAddress }: SkillRewardPanelProp
         
         <div className="bg-cyber-dark/50 rounded p-2 font-mono text-xs">
           <span className="text-cyber-cyan">TOTAL_REWARDS:</span> 
-          <span className="ml-2">{skillsData?.totalRewards || 0}</span>
+          <span className="ml-2">{(skillsData as any)?.totalRewards || 0}</span>
         </div>
         
         <Button 

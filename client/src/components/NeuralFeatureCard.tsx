@@ -38,39 +38,41 @@ export default function NeuralFeatureCard({
   };
 
   return (
-    <div 
-      className="glass-morph rounded-lg p-6 neon-border hover:bg-cyber-cyan/5 transition-all duration-300 animate-float"
-      style={{ animationDelay: `${delay}s` }}
-      onMouseEnter={playHover}
-    >
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center space-x-3">
-          <div className={`w-10 h-10 rounded-lg bg-gradient-to-br from-${gradientFrom} to-${gradientTo} p-0.5`}>
-            <div className="w-full h-full rounded-lg bg-cyber-dark flex items-center justify-center">
-              <span className="text-lg">{icon}</span>
-            </div>
-          </div>
-          <div>
-            <h3 className="font-orbitron font-bold text-cyber-green">{title}</h3>
-            <p className="text-xs text-gray-400">{subtitle}</p>
+    <div className="h-full">
+      <div className="flex items-center space-x-3 mb-4">
+        <div className="w-12 h-12 rounded bg-gradient-to-br from-cyber-green to-cyber-cyan p-0.5">
+          <div className="w-full h-full rounded bg-black flex items-center justify-center">
+            <span className="text-2xl">{icon}</span>
           </div>
         </div>
-        <div className={`w-3 h-3 rounded-full animate-pulse ${status ? 'bg-cyber-green' : 'bg-gray-500'}`} />
+        <div>
+          <h3 className="font-orbitron font-bold text-cyber-green">{title}</h3>
+          <p className="text-xs text-gray-400">{subtitle}</p>
+        </div>
+        <div className="ml-auto">
+          <div className={`w-4 h-4 rounded-full animate-pulse ${status ? 'bg-cyber-green' : 'bg-red-500'}`} />
+        </div>
       </div>
       
-      <div className="space-y-2">
-        <div className="bg-cyber-dark/50 rounded p-2 font-mono text-xs">
-          <span className="text-cyber-cyan">NFT_COUNT:</span> 
-          <span className="ml-2">
-            {nftData?.hasGerbilNft ? "1 Gerbil" : "0 NFTs"}
-          </span>
+      <div className="space-y-3">
+        <div className="bg-black/50 rounded border border-cyber-green/20 p-3">
+          <div className="font-mono text-xs text-cyber-green mb-1">NFT VERIFICATION</div>
+          <div className="text-sm font-bold">
+            {(nftData as any)?.hasGerbilNft ? "✅ GERBIL DETECTED" : "❌ NO NFT FOUND"}
+          </div>
         </div>
+        
+        <div className="bg-black/50 rounded border border-cyber-cyan/20 p-3">
+          <div className="font-mono text-xs text-cyber-cyan mb-1">ACCESS LEVEL</div>
+          <div className="text-sm font-bold">{status ? "PREMIUM" : "GUEST"}</div>
+        </div>
+        
         <Button 
           onClick={handleVerifyNFT}
-          className="w-full glass-morph rounded px-3 py-2 text-sm font-mono hover:bg-cyber-green/10 transition-all"
+          className="w-full bg-cyber-green/20 border border-cyber-green/50 rounded px-3 py-2 text-sm font-mono hover:bg-cyber-green/30 transition-all text-cyber-green"
           onMouseEnter={playHover}
         >
-          VERIFY OWNERSHIP
+          SCAN WALLET
         </Button>
       </div>
     </div>

@@ -54,7 +54,7 @@ export default function ReferralPanel({ walletAddress }: ReferralPanelProps) {
     }
   };
 
-  const totalReferred = referralData?.totalReferred || 0;
+  const totalReferred = (referralData as any)?.totalReferred || 0;
 
   return (
     <div 
@@ -95,7 +95,7 @@ export default function ReferralPanel({ walletAddress }: ReferralPanelProps) {
         
         <div className="bg-cyber-dark/50 rounded p-2 font-mono text-xs">
           <span className="text-cyber-cyan">ACTIVE_REFS:</span> 
-          <span className="ml-2">{referralData?.activeReferrals || 0}</span>
+          <span className="ml-2">{(referralData as any)?.activeReferrals || 0}</span>
         </div>
         
         <Button 
