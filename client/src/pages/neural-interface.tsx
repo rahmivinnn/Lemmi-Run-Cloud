@@ -65,50 +65,84 @@ export default function NeuralInterface() {
 
   return (
     <div className="min-h-screen overflow-hidden relative bg-black">
-      {/* Game-style Background */}
+      {/* Unity Game Background */}
       <div className="fixed inset-0 z-0">
         <div 
-          className="absolute inset-0 opacity-40"
+          className="absolute inset-0 opacity-30"
           style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
+            backgroundImage: `linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #e94560 100%)`,
           }}
         />
-        <div className="absolute inset-0 grid-overlay" />
-        <div className="scanline-overlay absolute inset-0" />
+        <div className="absolute inset-0" style={{
+          backgroundImage: `radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                           radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                           radial-gradient(circle at 40% 40%, rgba(120, 219, 226, 0.2) 0%, transparent 50%)`
+        }} />
+        <div className="absolute inset-0 bg-black/20" />
+        
+        {/* Floating UI Elements */}
+        <div className="absolute top-20 left-10 w-2 h-2 bg-orange-400 rounded-full animate-pulse opacity-60" />
+        <div className="absolute top-32 right-20 w-1 h-1 bg-cyan-400 rounded-full animate-ping opacity-40" />
+        <div className="absolute bottom-40 left-1/4 w-3 h-3 bg-purple-400 rounded-full animate-bounce opacity-30" />
+        
+        {/* Grid Pattern */}
+        <div className="absolute inset-0 opacity-10" style={{
+          backgroundImage: `linear-gradient(rgba(0,255,255,0.1) 1px, transparent 1px),
+                           linear-gradient(90deg, rgba(0,255,255,0.1) 1px, transparent 1px)`,
+          backgroundSize: '50px 50px'
+        }} />
       </div>
 
       {/* Unity-style Game Layout */}
       <div className="relative z-10 min-h-screen flex flex-col">
         
-        {/* Top HUD Bar */}
-        <div className="h-20 border-b-2 border-cyber-cyan/30 bg-black/90 backdrop-blur-sm">
+        {/* Unity-style Top HUD */}
+        <div className="h-16 bg-gradient-to-r from-black/95 via-gray-900/90 to-black/95 backdrop-blur-md border-b border-orange-500/30">
           <div className="flex items-center justify-between h-full px-6">
-            {/* Left: Game Logo */}
-            <div className="flex items-center space-x-3">
-              <div className="w-12 h-12 rounded bg-gradient-to-br from-cyber-cyan to-cyber-magenta p-0.5">
-                <div className="w-full h-full rounded bg-black flex items-center justify-center">
-                  <span className="text-2xl">🧠</span>
+            
+            {/* Game Logo & Title */}
+            <div className="flex items-center space-x-4">
+              <div className="relative">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-red-600 p-0.5 animate-pulse">
+                  <div className="w-full h-full rounded-full bg-black flex items-center justify-center">
+                    <span className="text-lg animate-spin">🏃</span>
+                  </div>
                 </div>
+                <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-ping" />
               </div>
               <div>
-                <h1 className="text-xl font-orbitron font-bold text-cyber-cyan">NEURAL INTERFACE</h1>
-                <p className="text-xs font-mono text-gray-400">v2.1.0</p>
+                <h1 className="text-lg font-orbitron font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-500">
+                  LEMMI RUN
+                </h1>
+                <p className="text-xs font-mono text-orange-300/70">CARDANO • GERBIL EDITION</p>
               </div>
             </div>
             
-            {/* Center: Status Display */}
-            <div className="flex-1 mx-8">
-              <div className="bg-black/70 rounded border border-cyber-green/30 px-4 py-2">
+            {/* Center HUD - Game Stats */}
+            <div className="flex items-center space-x-4">
+              <div className="bg-black/80 border border-green-500/30 rounded px-3 py-1 min-w-[200px]">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-mono text-green-400">STATUS:</span>
+                  <span className="text-xs font-mono text-green-300 animate-pulse">{terminalText}</span>
+                </div>
+              </div>
+              
+              <div className="bg-black/80 border border-blue-500/30 rounded px-3 py-1">
                 <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-cyber-green rounded-full animate-pulse" />
-                  <span className="font-mono text-xs text-cyber-green">{terminalText}</span>
+                  <span className="text-xs font-mono text-blue-400">LEVEL:</span>
+                  <span className="text-xs font-mono text-blue-300 font-bold">1</span>
+                </div>
+              </div>
+              
+              <div className="bg-black/80 border border-purple-500/30 rounded px-3 py-1">
+                <div className="flex items-center space-x-2">
+                  <span className="text-xs font-mono text-purple-400">SCORE:</span>
+                  <span className="text-xs font-mono text-purple-300 font-bold">0</span>
                 </div>
               </div>
             </div>
             
-            {/* Right: Wallet */}
+            {/* Wallet HUD */}
             <WalletConnect 
               onConnect={connectWallet}
               isConnected={isConnected}
@@ -121,84 +155,103 @@ export default function NeuralInterface() {
         {/* Main Game Area */}
         <div className="flex-1 flex flex-col md:flex-row">
           
-          {/* Left Sidebar - Navigation */}
-          <div className="w-full md:w-64 border-b-2 md:border-b-0 md:border-r-2 border-cyber-cyan/30 bg-black/90 backdrop-blur-sm">
-            <div className="p-4 space-y-2">
-              <h3 className="font-orbitron text-cyber-cyan mb-4 text-center md:text-left">NEURAL MODULES</h3>
+          {/* Unity-style Game Menu */}
+          <div className="w-full md:w-72 bg-gradient-to-b from-gray-900/95 to-black/95 backdrop-blur-md border-b md:border-b-0 md:border-r border-orange-500/20">
+            <div className="p-4">
+              <div className="text-center mb-6">
+                <h3 className="font-orbitron font-bold text-orange-400 text-sm">GAME MODULES</h3>
+                <div className="w-full h-0.5 bg-gradient-to-r from-transparent via-orange-500 to-transparent mt-2" />
+              </div>
               
-              <div className="flex md:flex-col space-x-2 md:space-x-0 md:space-y-2">
+              <div className="flex md:flex-col space-x-2 md:space-x-0 md:space-y-3">
                 <button 
                   onClick={() => setActiveScreen('main')}
-                  className={`flex-1 md:w-full text-left px-4 py-3 rounded border font-mono transition-all ${
+                  className={`group flex-1 md:w-full px-4 py-4 rounded-lg border-2 font-orbitron transition-all duration-300 ${
                     activeScreen === 'main' 
-                      ? 'bg-cyber-cyan/20 border-cyber-cyan text-cyber-cyan' 
-                      : 'border-gray-600 text-gray-400 hover:border-cyber-cyan/50'
+                      ? 'bg-orange-500/20 border-orange-500 text-orange-300 shadow-lg shadow-orange-500/20' 
+                      : 'border-gray-600/50 text-gray-400 hover:border-orange-500/50 hover:text-orange-400 hover:bg-orange-500/5'
                   }`}
                   onMouseEnter={playHover}
                 >
-                  <div className="flex items-center justify-center md:justify-start space-x-2">
-                    <span>🏠</span>
-                    <span className="hidden md:inline">DASHBOARD</span>
+                  <div className="flex items-center justify-center md:justify-start space-x-3">
+                    <span className="text-lg">🎮</span>
+                    <div className="hidden md:block text-left">
+                      <div className="text-sm font-bold">GAME HUB</div>
+                      <div className="text-xs opacity-70">Main Dashboard</div>
+                    </div>
                   </div>
                 </button>
                 
                 <button 
                   onClick={() => setActiveScreen('inventory')}
-                  className={`flex-1 md:w-full text-left px-4 py-3 rounded border font-mono transition-all ${
+                  className={`group flex-1 md:w-full px-4 py-4 rounded-lg border-2 font-orbitron transition-all duration-300 ${
                     activeScreen === 'inventory' 
-                      ? 'bg-cyber-magenta/20 border-cyber-magenta text-cyber-magenta' 
-                      : 'border-gray-600 text-gray-400 hover:border-cyber-magenta/50'
+                      ? 'bg-purple-500/20 border-purple-500 text-purple-300 shadow-lg shadow-purple-500/20' 
+                      : 'border-gray-600/50 text-gray-400 hover:border-purple-500/50 hover:text-purple-400 hover:bg-purple-500/5'
                   }`}
                   onMouseEnter={playHover}
                 >
-                  <div className="flex items-center justify-center md:justify-start space-x-2">
-                    <span>💎</span>
-                    <span className="hidden md:inline">ASSETS</span>
+                  <div className="flex items-center justify-center md:justify-start space-x-3">
+                    <span className="text-lg">💎</span>
+                    <div className="hidden md:block text-left">
+                      <div className="text-sm font-bold">INVENTORY</div>
+                      <div className="text-xs opacity-70">Assets & Items</div>
+                    </div>
                   </div>
                 </button>
                 
                 <button 
                   onClick={() => setActiveScreen('skills')}
-                  className={`flex-1 md:w-full text-left px-4 py-3 rounded border font-mono transition-all ${
+                  className={`group flex-1 md:w-full px-4 py-4 rounded-lg border-2 font-orbitron transition-all duration-300 ${
                     activeScreen === 'skills' 
-                      ? 'bg-cyber-green/20 border-cyber-green text-cyber-green' 
-                      : 'border-gray-600 text-gray-400 hover:border-cyber-green/50'
+                      ? 'bg-green-500/20 border-green-500 text-green-300 shadow-lg shadow-green-500/20' 
+                      : 'border-gray-600/50 text-gray-400 hover:border-green-500/50 hover:text-green-400 hover:bg-green-500/5'
                   }`}
                   onMouseEnter={playHover}
                 >
-                  <div className="flex items-center justify-center md:justify-start space-x-2">
-                    <span>⚡</span>
-                    <span className="hidden md:inline">SKILLS</span>
+                  <div className="flex items-center justify-center md:justify-start space-x-3">
+                    <span className="text-lg">⚡</span>
+                    <div className="hidden md:block text-left">
+                      <div className="text-sm font-bold">SKILLS</div>
+                      <div className="text-xs opacity-70">Abilities & Stats</div>
+                    </div>
                   </div>
                 </button>
                 
                 <button 
                   onClick={() => setActiveScreen('network')}
-                  className={`flex-1 md:w-full text-left px-4 py-3 rounded border font-mono transition-all ${
+                  className={`group flex-1 md:w-full px-4 py-4 rounded-lg border-2 font-orbitron transition-all duration-300 ${
                     activeScreen === 'network' 
-                      ? 'bg-cyber-gold/20 border-cyber-gold text-cyber-gold' 
-                      : 'border-gray-600 text-gray-400 hover:border-cyber-gold/50'
+                      ? 'bg-blue-500/20 border-blue-500 text-blue-300 shadow-lg shadow-blue-500/20' 
+                      : 'border-gray-600/50 text-gray-400 hover:border-blue-500/50 hover:text-blue-400 hover:bg-blue-500/5'
                   }`}
                   onMouseEnter={playHover}
                 >
-                  <div className="flex items-center justify-center md:justify-start space-x-2">
-                    <span>🔗</span>
-                    <span className="hidden md:inline">NETWORK</span>
+                  <div className="flex items-center justify-center md:justify-start space-x-3">
+                    <span className="text-lg">🌐</span>
+                    <div className="hidden md:block text-left">
+                      <div className="text-sm font-bold">NETWORK</div>
+                      <div className="text-xs opacity-70">Social & Guild</div>
+                    </div>
                   </div>
                 </button>
               </div>
             </div>
           </div>
 
-          {/* Main Screen Area */}
-          <div className="flex-1 bg-black/80 backdrop-blur-sm">
+          {/* Unity Game Main Area */}
+          <div className="flex-1 bg-gradient-to-br from-black/90 via-gray-900/80 to-black/90 backdrop-blur-md">
             
             {activeScreen === 'main' && (
-              <div className="p-3 md:p-6 h-full overflow-y-auto">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6 h-full">
+              <div className="p-4 md:p-6 h-full overflow-y-auto">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 h-full">
                   
-                  {/* Access Control */}
-                  <div className="bg-black/70 rounded-lg border-2 border-cyber-green/30 p-4 md:p-6 min-h-[200px] md:min-h-[250px]">
+                  {/* Player Access Panel */}
+                  <div className="group bg-gradient-to-br from-green-900/20 to-black/60 rounded-xl border-2 border-green-500/30 p-4 md:p-6 min-h-[220px] hover:border-green-400/50 transition-all duration-300 hover:shadow-lg hover:shadow-green-500/20">
+                    <div className="flex items-center space-x-3 mb-4">
+                      <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse" />
+                      <h3 className="font-orbitron font-bold text-green-400">PLAYER ACCESS</h3>
+                    </div>
                     <NeuralFeatureCard 
                       title="ACCESS CONTROL"
                       subtitle="Gerbil NFT Verification"
@@ -211,18 +264,30 @@ export default function NeuralInterface() {
                     />
                   </div>
                   
-                  {/* Token Balance */}
-                  <div className="bg-black/70 rounded-lg border-2 border-cyber-magenta/30 p-4 md:p-6 min-h-[200px] md:min-h-[250px]">
+                  {/* Currency Panel */}
+                  <div className="group bg-gradient-to-br from-purple-900/20 to-black/60 rounded-xl border-2 border-purple-500/30 p-4 md:p-6 min-h-[220px] hover:border-purple-400/50 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20">
+                    <div className="flex items-center space-x-3 mb-4">
+                      <div className="w-3 h-3 bg-purple-400 rounded-full animate-pulse" />
+                      <h3 className="font-orbitron font-bold text-purple-400">CURRENCY</h3>
+                    </div>
                     <TokenDisplay walletAddress={walletAddress} />
                   </div>
                   
-                  {/* Degen Mode */}
-                  <div className="bg-black/70 rounded-lg border-2 border-red-500/30 p-4 md:p-6 min-h-[200px] md:min-h-[250px]">
+                  {/* Special Mode Panel */}
+                  <div className="group bg-gradient-to-br from-red-900/20 to-black/60 rounded-xl border-2 border-red-500/30 p-4 md:p-6 min-h-[220px] hover:border-red-400/50 transition-all duration-300 hover:shadow-lg hover:shadow-red-500/20">
+                    <div className="flex items-center space-x-3 mb-4">
+                      <div className="w-3 h-3 bg-red-400 rounded-full animate-pulse" />
+                      <h3 className="font-orbitron font-bold text-red-400">CHAOS MODE</h3>
+                    </div>
                     <DegenModeToggle onActivateMiniGame={() => setShowMiniGame(true)} />
                   </div>
                   
-                  {/* King Lemmi */}
-                  <div className="bg-black/70 rounded-lg border-2 border-purple-500/30 p-4 md:p-6 min-h-[200px] md:min-h-[250px]">
+                  {/* Character Collection Panel */}
+                  <div className="group bg-gradient-to-br from-orange-900/20 to-black/60 rounded-xl border-2 border-orange-500/30 p-4 md:p-6 min-h-[220px] hover:border-orange-400/50 transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/20">
+                    <div className="flex items-center space-x-3 mb-4">
+                      <div className="w-3 h-3 bg-orange-400 rounded-full animate-pulse" />
+                      <h3 className="font-orbitron font-bold text-orange-400">COLLECTION</h3>
+                    </div>
                     <KingLemmiViewer walletAddress={walletAddress} />
                   </div>
                 </div>
@@ -306,11 +371,11 @@ export default function NeuralInterface() {
         <MiniGameTikus onClose={() => setShowMiniGame(false)} walletAddress={walletAddress} />
       )}
 
-      {/* Mobile Jack In Button (Shows only on mobile) */}
+      {/* Mobile Game Button */}
       <div className="lg:hidden fixed bottom-20 left-1/2 transform -translate-x-1/2 z-20">
         <button 
-          className={`px-8 py-4 bg-gradient-to-r from-cyber-cyan via-cyber-magenta to-cyber-green rounded-full font-orbitron font-bold text-sm transition-all duration-300 ${
-            canJackIn ? 'hover:animate-glow cursor-pointer' : 'opacity-50 cursor-not-allowed'
+          className={`px-8 py-3 bg-gradient-to-r from-orange-500 via-red-500 to-purple-600 rounded-full font-orbitron font-bold text-sm transition-all duration-300 shadow-lg ${
+            canJackIn ? 'hover:scale-105 cursor-pointer animate-pulse' : 'opacity-50 cursor-not-allowed'
           }`}
           disabled={!canJackIn}
           onClick={() => {
@@ -320,18 +385,27 @@ export default function NeuralInterface() {
           }}
           onMouseEnter={playHover}
         >
-          JACK IN ({activeFeaturesCount}/7)
+          🏃 START GAME ({activeFeaturesCount}/4)
         </button>
       </div>
 
-      {/* Floating Lemmi Assistant */}
+      {/* Game Character Helper */}
       <div className="fixed bottom-6 right-6 z-20">
-        <div className="w-14 h-14 rounded-full bg-gradient-to-br from-cyber-gold to-cyber-magenta p-1 animate-float">
-          <div className="w-full h-full rounded-full bg-black flex items-center justify-center border border-cyber-cyan/30 cursor-pointer hover:scale-110 transition-transform">
-            <span className="text-2xl animate-pulse-slow">🤖</span>
+        <div className="relative group cursor-pointer">
+          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-500 to-red-600 p-1 animate-bounce">
+            <div className="w-full h-full rounded-full bg-black flex items-center justify-center border border-orange-400/50 group-hover:scale-110 transition-transform">
+              <span className="text-xl">🐹</span>
+            </div>
+          </div>
+          <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-ping" />
+          
+          {/* Tooltip */}
+          <div className="absolute bottom-full right-0 mb-2 hidden group-hover:block">
+            <div className="bg-black/90 text-orange-300 text-xs font-mono px-2 py-1 rounded border border-orange-500/50 whitespace-nowrap">
+              Gerbil Guide 🐹
+            </div>
           </div>
         </div>
-        <div className="absolute -top-1 -right-1 w-3 h-3 bg-cyber-green rounded-full animate-ping" />
       </div>
     </div>
   );

@@ -12,7 +12,7 @@ export const users = pgTable("users", {
 export const wallets = pgTable("wallets", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   address: text("address").notNull().unique(),
-  chain: text("chain").notNull(), // 'ethereum' or 'solana'
+  chain: text("chain").notNull(), // 'cardano' for Lace wallet
   hasGerbilNft: boolean("has_gerbil_nft").default(false),
   lemmiBalance: integer("lemmi_balance").default(0),
   createdAt: timestamp("created_at").defaultNow(),
@@ -83,3 +83,30 @@ export type InsertGameScore = z.infer<typeof insertGameScoreSchema>;
 export type GameScore = typeof gameScores.$inferSelect;
 export type InsertSkillReward = z.infer<typeof insertSkillRewardSchema>;
 export type SkillReward = typeof skillRewards.$inferSelect;
+
+// Wallet interface for frontend
+export interface WalletState {
+  walletAddress: string | null;
+  isConnected: boolean;
+  hasGerbilNft: boolean;
+  lemmiBalance: number;
+  chain: 'cardano' | null;
+}
+
+// Lace Wallet API Types for Cardano
+declare global {
+  interface Window {
+    cardano?: {
+      lace?: {
+        enable(): Promise<any>;
+        isEnabled(): Promise<boolean>;
+        getUsedAddresses(): Promise<string[]>;
+        getUnusedAddresses(): Promise<string[]>;
+        getBalance(): Promise<string>;
+        getUtxos(): Promise<any[]>;
+        signTx(tx: string): Promise<string>;
+        submitTx(tx: string): Promise<string>;
+      };
+    };
+  }
+}

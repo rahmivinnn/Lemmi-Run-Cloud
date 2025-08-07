@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useAudio } from "@/hooks/useAudio";
 
 interface WalletConnectProps {
-  onConnect: (chain: 'ethereum' | 'solana') => Promise<void>;
+  onConnect: () => Promise<void>;
   isConnected: boolean;
   address: string | null;
   hasNft: boolean;
@@ -13,11 +13,11 @@ export default function WalletConnect({ onConnect, isConnected, address, hasNft 
   const [isConnecting, setIsConnecting] = useState(false);
   const { playClick, playHover } = useAudio();
 
-  const handleConnect = async (chain: 'ethereum' | 'solana') => {
+  const handleConnect = async () => {
     setIsConnecting(true);
     playClick();
     try {
-      await onConnect(chain);
+      await onConnect();
     } finally {
       setIsConnecting(false);
     }
@@ -25,18 +25,18 @@ export default function WalletConnect({ onConnect, isConnected, address, hasNft 
 
   if (isConnected && address) {
     return (
-      <div className="flex items-center space-x-4">
-        <div className="glass-morph rounded-lg p-3 neon-border">
+      <div className="flex items-center space-x-3">
+        <div className="bg-black/70 border border-orange-500/50 rounded px-3 py-2">
           <div className="flex items-center space-x-2">
-            <div className={`w-3 h-3 rounded-full animate-pulse ${hasNft ? 'bg-cyber-green' : 'bg-cyber-cyan'}`} />
-            <span className="text-sm font-mono">
-              {address.slice(0, 6)}...{address.slice(-4)}
+            <div className="w-3 h-3 rounded-full bg-orange-500 animate-pulse" />
+            <span className="text-xs font-mono text-orange-300">
+              LACE: {address.slice(0, 8)}...{address.slice(-6)}
             </span>
           </div>
         </div>
         {hasNft && (
-          <div className="text-xs text-cyber-green font-mono">
-            ✅ GERBIL NFT
+          <div className="text-xs text-cyber-green font-mono bg-cyber-green/10 px-2 py-1 rounded">
+            ✅ GERBIL
           </div>
         )}
       </div>
@@ -44,28 +44,13 @@ export default function WalletConnect({ onConnect, isConnected, address, hasNft 
   }
 
   return (
-    <div className="flex items-center space-x-2">
-      <Button
-        onClick={() => handleConnect('ethereum')}
-        disabled={isConnecting}
-        className="glass-morph rounded-lg px-4 py-2 neon-border hover:bg-cyber-cyan/10 transition-all duration-300 hover:animate-glow"
-        onMouseEnter={playHover}
-      >
-        <span className="font-orbitron text-sm">
-          {isConnecting ? 'CONNECTING...' : 'METAMASK'}
-        </span>
-      </Button>
-      
-      <Button
-        onClick={() => handleConnect('solana')}
-        disabled={isConnecting}
-        className="glass-morph rounded-lg px-4 py-2 neon-border hover:bg-purple-500/10 transition-all duration-300 hover:animate-glow"
-        onMouseEnter={playHover}
-      >
-        <span className="font-orbitron text-sm">
-          {isConnecting ? 'CONNECTING...' : 'PHANTOM'}
-        </span>
-      </Button>
-    </div>
+    <Button
+      onClick={handleConnect}
+      disabled={isConnecting}
+      className="bg-orange-500/20 border border-orange-500/50 hover:bg-orange-500/30 text-orange-300 font-orbitron px-6 py-2 transition-all"
+      onMouseEnter={playHover}
+    >
+      {isConnecting ? 'CONNECTING...' : '🟠 CONNECT LACE'}
+    </Button>
   );
 }

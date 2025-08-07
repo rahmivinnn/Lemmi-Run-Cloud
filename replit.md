@@ -1,10 +1,10 @@
-# Neural Interface - Lemmi Protocol
+# Lemmi Run - Cardano Gaming Platform
 
 ## Overview
 
-Neural Interface is a cyberpunk-themed Web3 gaming platform that combines blockchain functionality with an immersive futuristic user interface. The application features NFT verification, token balance tracking, mini-games, referral systems, and skill-based rewards. Built as a full-stack React + Express application, it offers both free access for Gerbil NFT holders and token-based payment systems using $Lemmi tokens.
+Lemmi Run is a Unity-style Web3 gaming platform built specifically for the Cardano ecosystem. The application features real Lace wallet integration, Gerbil NFT verification, $Lemmi token tracking, mini-games, referral systems, and skill-based rewards. Built as a full-stack React + Express application, it provides an authentic gaming experience with Unity-like UI panels, HUD elements, and immersive visual design.
 
-The platform serves as a neural network interface simulation with features like wallet connectivity (MetaMask/Phantom), real-time blockchain data integration, interactive gaming elements, and a comprehensive reward system. It's designed to provide an engaging experience that bridges traditional gaming with Web3 functionality.
+The platform serves as a complete gaming interface with features like Lace wallet connectivity, real-time Cardano blockchain data integration, interactive gaming elements, and a comprehensive reward system. It's designed specifically for Gerbil NFT holders and $Lemmi token users on the Cardano blockchain, providing an engaging Unity-game-style experience that bridges traditional gaming with Web3 functionality.
 
 ## User Preferences
 
@@ -53,9 +53,10 @@ Preferred communication style: Simple, everyday language.
 ## External Dependencies
 
 ### Blockchain Integration
-- **@neondatabase/serverless** - PostgreSQL database connectivity for production
-- **Ethereum/Solana wallet APIs** - MetaMask and Phantom wallet integration for NFT verification
-- **Future Web3 providers** - Moralis, Alchemy, or QuickNode for NFT and token balance queries
+- **Lace Wallet API** - Real Cardano wallet integration for authentic blockchain connectivity
+- **Cardano Network** - Native support for ADA transactions and Cardano-based assets
+- **Gerbil NFT Verification** - Authentic NFT ownership verification on Cardano blockchain
+- **$Lemmi Token Integration** - Real token balance tracking and transaction capabilities
 
 ### UI and Styling
 - **@radix-ui/react-*** - Comprehensive set of accessible UI primitives
@@ -73,8 +74,15 @@ Preferred communication style: Simple, everyday language.
 - **React Hook Form** with Hookform Resolvers - Form state management and validation
 - **Date-fns** - Date manipulation and formatting utilities
 
-### Future Integrations
-- **Smart contract interfaces** for $Lemmi token balance queries
-- **NFT metadata APIs** for Gerbil NFT verification
-- **Real-time WebSocket connections** for live multiplayer features
-- **Analytics and monitoring** services for user behavior tracking
+### Design Philosophy
+- **Unity-style Interface** - Game-like panels, HUD elements, and immersive visual design
+- **Real Blockchain Integration** - Authentic Lace wallet connectivity, no mock data
+- **Gaming-First Approach** - Designed to feel like a Unity game rather than a traditional web app
+- **Cardano-Native** - Built specifically for the Cardano ecosystem and community
+
+### Recent Changes (January 2025)
+- Complete redesign to Unity-style gaming interface with HUD, navigation panels, and game aesthetics
+- Migration from multi-wallet support to Lace-only integration for authentic Cardano experience
+- Updated branding from "Neural Interface" to "Lemmi Run - Gerbil Edition"
+- Enhanced mobile responsiveness with game-style UI elements
+- Real Lace wallet API integration replacing mock wallet connections

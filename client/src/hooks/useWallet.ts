@@ -30,33 +30,24 @@ export function useWallet() {
 
   const checkExistingConnection = async () => {
     try {
-      // Check MetaMask
-      if (window.ethereum) {
-        const accounts = await window.ethereum.request({ method: 'eth_accounts' });
-        if (accounts.length > 0) {
-          setWalletState(prev => ({
-            ...prev,
-            walletAddress: accounts[0],
-            isConnected: true,
-            chain: 'ethereum'
-          }));
-        }
-      }
-      
-      // Check Phantom
-      if (window.solana && window.solana.isPhantom) {
-        const response = await window.solana.connect({ onlyIfTrusted: true });
-        if (response.publicKey) {
-          setWalletState(prev => ({
-            ...prev,
-            walletAddress: response.publicKey.toString(),
-            isConnected: true,
-            chain: 'solana'
-          }));
+      // Check Lace wallet for Cardano
+      if (window.cardano?.lace) {
+        const lace = window.cardano.lace;
+        const isEnabled = await lace.isEnabled();
+        if (isEnabled) {
+          const addresses = await lace.getUsedAddresses();
+          if (addresses && addresses.length > 0) {
+            setWalletState(prev => ({
+              ...prev,
+              walletAddress: addresses[0],
+              isConnected: true,
+              chain: 'cardano'
+            }));
+          }
         }
       }
     } catch (error) {
-      console.log("No existing wallet connection");
+      console.log("No existing Lace wallet connection");
     }
   };
 
@@ -85,47 +76,53 @@ export function useWallet() {
     },
   });
 
-  const connectWallet = useCallback(async (preferredChain: 'ethereum' | 'solana' = 'ethereum') => {
+  const connectWallet = useCallback(async () => {
     try {
-      let address = "";
-      let chain: 'ethereum' | 'solana' = preferredChain;
-
-      if (preferredChain === 'ethereum' && window.ethereum) {
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        address = accounts[0];
-        chain = 'ethereum';
-      } else if (preferredChain === 'solana' && window.solana && window.solana.isPhantom) {
-        const response = await window.solana.connect();
-        address = response.publicKey.toString();
-        chain = 'solana';
-      } else {
-        throw new Error(`${preferredChain} wallet not found`);
+      if (!window.cardano?.lace) {
+        throw new Error("Lace wallet not installed. Please install Lace wallet extension for Cardano.");
       }
 
+      const lace = window.cardano.lace;
+      const isEnabled = await lace.isEnabled();
+      
+      if (!isEnabled) {
+        const enabledLace = await lace.enable();
+        if (!enabledLace) {
+          throw new Error('Lace wallet access denied by user');
+        }
+      }
+      
+      const addresses = await lace.getUsedAddresses();
+      if (!addresses || addresses.length === 0) {
+        throw new Error('No addresses found in Lace wallet');
+      }
+
+      const address = addresses[0];
+      
       setWalletState(prev => ({
         ...prev,
         walletAddress: address,
         isConnected: true,
-        chain
+        chain: 'cardano'
       }));
 
       // Create/update wallet in backend
       await walletMutation.mutateAsync({
         address,
-        chain,
+        chain: 'cardano',
         hasGerbilNft: false,
         lemmiBalance: 0
       });
 
       toast({
-        title: "Wallet Connected",
-        description: `Connected to ${chain} wallet: ${address.slice(0, 6)}...${address.slice(-4)}`,
+        title: "Lace Connected",
+        description: `Connected to Cardano: ${address.slice(0, 8)}...${address.slice(-6)}`,
       });
 
     } catch (error: any) {
       toast({
         title: "Connection Failed",
-        description: error.message || "Failed to connect wallet",
+        description: error.message || "Failed to connect to Lace wallet",
         variant: "destructive",
       });
     }
