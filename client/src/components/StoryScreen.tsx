@@ -2,13 +2,22 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight, SkipForward } from 'lucide-react';
 
-// Import character icons
+// Import character icons - All Gerbil Army Characters
 import deathIcon from '@assets/684454fcbe07a0afb75ea3d6_1754585543317.webp';
 import cowboyIcon from '@assets/684c0005df53811557867294_1754585543349.webp';
 import gentlemanIcon from '@assets/684eb083e4a202c865cdf17c_1754585543350.webp';
 import vikingIcon from '@assets/68515ddf952acc6fb103bb7a_1754585543350.webp';
 import hunterIcon from '@assets/685298e107b04350232f659a_1754585543350.webp';
 import barbarianIcon from '@assets/68553e66ded7b33867483f05_1754585543351.webp';
+import ashinaIcon from '@assets/ashina_1754579357036.webp';
+import bomoIcon from '@assets/bomo_1754579357038.webp';
+import cowboyClassicIcon from '@assets/cowboy_1754579357037.webp';
+import grimReaperIcon from '@assets/grim reaper_1754579357037.webp';
+import icoIcon from '@assets/ico_1754579357038.webp';
+import jeffIcon from '@assets/jeff_1754579357023.webp';
+import mumrikIcon from '@assets/mumrik_1754579357038.webp';
+import snowIcon from '@assets/snow_1754579357039.webp';
+import undeadIcon from '@assets/undead_1754579357037.webp';
 
 interface StoryScreenProps {
   onComplete: () => void;
@@ -25,45 +34,87 @@ interface StorySlide {
 const storySlides: StorySlide[] = [
   {
     id: 1,
-    character: "The Grim Reaper",
-    characterIcon: deathIcon,
-    text: "In the year 2087, the realm between life and death has collapsed...",
-    subtitle: "Ancient forces have awakened"
+    character: "King Lemmi",
+    characterIcon: jeffIcon,
+    text: "In the mystical realm of Cardano, King Lemmi ruled over a legendary army of brave gerbil warriors...",
+    subtitle: "The golden age begins"
   },
   {
     id: 2,
-    character: "The Gunslinger",
-    characterIcon: cowboyIcon,
-    text: "The last survivors must race through dimensional rifts to escape the chaos.",
-    subtitle: "Time is running out"
+    character: "The Grim Reaper",
+    characterIcon: deathIcon,
+    text: "When darkness threatened the kingdom, the Death Walker emerged from the shadows.",
+    subtitle: "Guardian of the underworld"
   },
   {
     id: 3,
-    character: "The Gentleman",
-    characterIcon: gentlemanIcon,
-    text: "Only the fastest and most skilled can navigate the Lemmi Run arena.",
-    subtitle: "Where legends are born"
+    character: "Ashina the Ninja",
+    characterIcon: ashinaIcon,
+    text: "Swift as lightning, Ashina mastered the ancient arts of stealth and precision.",
+    subtitle: "Master of shadows"
   },
   {
     id: 4,
-    character: "The Viking Warrior",
-    characterIcon: vikingIcon,
-    text: "Ancient warriors from different eras have been summoned to compete.",
-    subtitle: "Honor awaits the victor"
+    character: "Bomo the Berserker",
+    characterIcon: bomoIcon,
+    text: "With unstoppable fury, Bomo charged through every battlefield with wild courage.",
+    subtitle: "Unstoppable force"
   },
   {
     id: 5,
-    character: "The Forest Hunter",
-    characterIcon: hunterIcon,
-    text: "Each runner carries the power of their realm and the hope of their people.",
-    subtitle: "Choose your destiny"
+    character: "The Cowboy",
+    characterIcon: cowboyIcon,
+    text: "From the western badlands, the lone gunslinger brought justice to lawless lands.",
+    subtitle: "Quick draw champion"
   },
   {
     id: 6,
-    character: "The Wild Barbarian",
-    characterIcon: barbarianIcon,
-    text: "The ultimate test begins now. Are you ready to join the Lemmi Run?",
-    subtitle: "Your legend starts here"
+    character: "The Gentleman",
+    characterIcon: gentlemanIcon,
+    text: "With refined manners and deadly precision, the Gentleman was both scholar and warrior.",
+    subtitle: "Elegance in battle"
+  },
+  {
+    id: 7,
+    character: "The Viking",
+    characterIcon: vikingIcon,
+    text: "From the frozen northlands, the Viking warrior brought ancient strength and honor.",
+    subtitle: "Valhalla awaits"
+  },
+  {
+    id: 8,
+    character: "Ico the Mystic",
+    characterIcon: icoIcon,
+    text: "Master of arcane arts, Ico wielded magical powers beyond mortal comprehension.",
+    subtitle: "Keeper of ancient secrets"
+  },
+  {
+    id: 9,
+    character: "Mumrik the Wild",
+    characterIcon: mumrikIcon,
+    text: "Living in harmony with nature, Mumrik commanded the powers of earth and forest.",
+    subtitle: "Child of the wilderness"
+  },
+  {
+    id: 10,
+    character: "Snow the Arctic Warrior",
+    characterIcon: snowIcon,
+    text: "From the eternal winter lands, Snow brought the chill of absolute determination.",
+    subtitle: "Heart of ice, soul of fire"
+  },
+  {
+    id: 11,
+    character: "The Undead Champion",
+    characterIcon: undeadIcon,
+    text: "Rising from ancient battlefields, the Undead Champion fights with immortal fury.",
+    subtitle: "Death is not the end"
+  },
+  {
+    id: 12,
+    character: "The Forest Hunter",
+    characterIcon: hunterIcon,
+    text: "Now these legendary warriors must unite for the ultimate challenge - the Lemmi Run!",
+    subtitle: "Choose your champion"
   }
 ];
 
@@ -76,7 +127,7 @@ export function StoryScreen({ onComplete }: StoryScreenProps) {
     if (autoAdvance && currentSlide < storySlides.length - 1) {
       const timer = setTimeout(() => {
         setCurrentSlide(prev => prev + 1);
-      }, 4000);
+      }, 2500); // Faster auto-advance since there are 12 slides
       return () => clearTimeout(timer);
     }
   }, [currentSlide, autoAdvance]);
@@ -314,7 +365,7 @@ export function StoryScreen({ onComplete }: StoryScreenProps) {
           {/* Bottom UI Elements */}
           <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
             <div className="text-center text-cyan-400/60 font-mono text-sm">
-              <p>Press SPACE or click to advance • ESC to skip</p>
+              <p>SPACE/ENTER to advance • ESC to skip • Click to disable auto-advance</p>
             </div>
           </div>
         </motion.div>
