@@ -14,6 +14,7 @@ import { LoadingScreen } from "@/components/LoadingScreen";
 import { CharacterSelection } from "@/components/CharacterSelection";
 import { GameRunner } from "@/components/GameRunner";
 import { RetroWalletScanner } from "@/components/RetroWalletScanner";
+import { HDCharacterAnimation } from "@/components/HDCharacterAnimation";
 import { useWallet } from "@/hooks/useWallet";
 import { useAudio } from "@/hooks/useAudio";
 import AshinaImage from "@assets/ashina_1754580592322.webp";
@@ -190,15 +191,16 @@ export default function NeuralInterface() {
             {/* Retro Terminal Logo */}
             <div className="flex items-center space-x-4">
               <div className="relative">
-                <div className="w-16 h-16 bg-black border border-cyan-400 flex items-center justify-center relative">
-                  <img src={AshinaImage} alt="Lemmi" className="w-12 h-12 object-contain opacity-90" />
+                {/* HD Character Animation in HUD */}
+                <div className="w-16 h-16 border border-cyan-400 bg-black relative overflow-hidden">
+                  <HDCharacterAnimation variant="menu" />
                   {/* Pixel corners */}
-                  <div className="absolute -top-1 -left-1 w-2 h-2 bg-cyan-400"></div>
-                  <div className="absolute -top-1 -right-1 w-2 h-2 bg-cyan-400"></div>
-                  <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-cyan-400"></div>
-                  <div className="absolute -bottom-1 -right-1 w-2 h-2 bg-cyan-400"></div>
+                  <div className="absolute -top-1 -left-1 w-2 h-2 bg-cyan-400 z-10"></div>
+                  <div className="absolute -top-1 -right-1 w-2 h-2 bg-cyan-400 z-10"></div>
+                  <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-cyan-400 z-10"></div>
+                  <div className="absolute -bottom-1 -right-1 w-2 h-2 bg-cyan-400 z-10"></div>
                   {/* Glitch overlay */}
-                  <div className="absolute inset-0 bg-red-500 opacity-5 animate-pulse" style={{ animationDuration: '3s' }}></div>
+                  <div className="absolute inset-0 bg-red-500 opacity-5 animate-pulse pointer-events-none z-5" style={{ animationDuration: '3s' }}></div>
                 </div>
               </div>
               <div>
@@ -246,7 +248,7 @@ export default function NeuralInterface() {
             <RetroWalletScanner
               onConnect={connectWallet}
               isConnected={isConnected}
-              address={walletAddress}
+              address={walletAddress || undefined}
               hasNft={hasGerbilNft}
             />
           </div>

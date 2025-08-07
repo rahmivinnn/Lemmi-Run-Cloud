@@ -417,3 +417,39 @@
   z-index: 1;
   animation: scanlines 2s linear infinite;
 }
+
+/* HD Character Animation Styles */
+.hd-character-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-crisp-edges;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.hd-character-canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: auto;
+  image-rendering: high-quality;
+  image-rendering: -webkit-optimize-contrast;
+}
+
+/* Particle glow effects */
+.particle-glow {
+  box-shadow: 0 0 4px rgba(0, 255, 255, 0.8), 0 0 8px rgba(0, 255, 255, 0.4);
+}
+
+/* Neural interface glow */
+.neural-glow {
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3), 0 0 20px rgba(0, 255, 255, 0.1);
+  animation: pulse-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-glow {
+  0% { box-shadow: 0 0 10px rgba(0, 255, 255, 0.3), 0 0 20px rgba(0, 255, 255, 0.1); }
+  100% { box-shadow: 0 0 15px rgba(0, 255, 255, 0.5), 0 0 30px rgba(0, 255, 255, 0.2); }
+}
