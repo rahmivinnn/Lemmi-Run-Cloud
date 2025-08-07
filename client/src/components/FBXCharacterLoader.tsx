@@ -78,6 +78,25 @@ export function FBXCharacterLoader({ variant, onAnimationComplete }: FBXCharacte
     neuralLight2.position.set(-1, 1.5, 0.5);
     scene.add(neuralLight2);
 
+    // Texture loader for character texture
+    const textureLoader = new THREE.TextureLoader();
+    let characterTexture: THREE.Texture | null = null;
+    
+    // Load texture first
+    textureLoader.load(
+      '/tekstur.png',
+      (texture) => {
+        texture.flipY = false;
+        texture.wrapS = THREE.RepeatWrapping;
+        texture.wrapT = THREE.RepeatWrapping;
+        characterTexture = texture;
+      },
+      undefined,
+      (error) => {
+        console.warn('Could not load character texture:', error);
+      }
+    );
+
     // FBX Loader
     const loader = new FBXLoader();
     
@@ -88,22 +107,22 @@ export function FBXCharacterLoader({ variant, onAnimationComplete }: FBXCharacte
         object.scale.setScalar(0.01); // Adjust scale as needed
         object.position.set(0, -1, 0);
         
-        // Apply cyberpunk materials
+        // Apply cyberpunk materials with custom texture
         object.traverse((child) => {
           if (child instanceof THREE.Mesh) {
             child.castShadow = true;
             child.receiveShadow = true;
             
-            // Create cyberpunk material
-            const originalMaterial = child.material as THREE.MeshStandardMaterial;
+            // Create cyberpunk material with custom texture
             const cyberpunkMaterial = new THREE.MeshStandardMaterial({
-              map: originalMaterial.map,
-              normalMap: originalMaterial.normalMap,
+              map: characterTexture, // Use our custom texture
               color: new THREE.Color(1, 1, 1),
               emissive: new THREE.Color(0x001122),
               emissiveIntensity: 0.3,
               metalness: 0.8,
               roughness: 0.2,
+              transparent: true,
+              alphaTest: 0.1,
             });
             
             child.material = cyberpunkMaterial;
@@ -137,7 +156,52 @@ export function FBXCharacterLoader({ variant, onAnimationComplete }: FBXCharacte
       },
       (error) => {
         console.error('Error loading FBX:', error);
-        // Fallback to complete loading after error
+        console.error('FBX file path: /character.fbx');
+        
+        // Create a fallback humanoid-like character with texture
+        const group = new THREE.Group();
+        
+        // Body
+        const bodyGeometry = new THREE.BoxGeometry(0.6, 1.2, 0.3);
+        const bodyMaterial = new THREE.MeshStandardMaterial({
+          map: characterTexture,
+          color: new THREE.Color(1, 1, 1),
+          emissive: new THREE.Color(0x001122),
+          emissiveIntensity: 0.3,
+        });
+        const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+        body.position.set(0, 0.6, 0);
+        group.add(body);
+        
+        // Head
+        const headGeometry = new THREE.SphereGeometry(0.25, 16, 16);
+        const head = new THREE.Mesh(headGeometry, bodyMaterial.clone());
+        head.position.set(0, 1.4, 0);
+        group.add(head);
+        
+        // Arms
+        const armGeometry = new THREE.BoxGeometry(0.15, 0.8, 0.15);
+        const leftArm = new THREE.Mesh(armGeometry, bodyMaterial.clone());
+        leftArm.position.set(-0.5, 0.6, 0);
+        group.add(leftArm);
+        
+        const rightArm = new THREE.Mesh(armGeometry, bodyMaterial.clone());
+        rightArm.position.set(0.5, 0.6, 0);
+        group.add(rightArm);
+        
+        // Legs
+        const legGeometry = new THREE.BoxGeometry(0.2, 0.8, 0.2);
+        const leftLeg = new THREE.Mesh(legGeometry, bodyMaterial.clone());
+        leftLeg.position.set(-0.15, -0.4, 0);
+        group.add(leftLeg);
+        
+        const rightLeg = new THREE.Mesh(legGeometry, bodyMaterial.clone());
+        rightLeg.position.set(0.15, -0.4, 0);
+        group.add(rightLeg);
+        
+        group.position.set(0, -0.5, 0);
+        scene.add(group);
+        
         setIsLoaded(true);
         if (variant === 'loading') {
           setTimeout(() => {
