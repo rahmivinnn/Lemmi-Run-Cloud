@@ -1,5 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
+import express from "express";
+import path from "path";
 import { storage } from "./storage";
 import { 
   insertWalletSchema, 
@@ -11,6 +13,21 @@ import {
 } from "@shared/schema";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Serve static files from public directory with correct MIME types
+  app.use('/character.fbx', express.static(path.join(process.cwd(), 'public/character.fbx'), {
+    setHeaders: (res) => {
+      res.set('Content-Type', 'application/octet-stream');
+    }
+  }));
+  
+  app.use('/tekstur.png', express.static(path.join(process.cwd(), 'public/tekstur.png'), {
+    setHeaders: (res) => {
+      res.set('Content-Type', 'image/png');
+    }
+  }));
+  
+  // Serve all public files with proper MIME types
+  app.use(express.static(path.join(process.cwd(), 'public')));
   // Wallet NFT verification endpoint
   app.get("/api/wallet/:address/nfts", async (req, res) => {
     try {

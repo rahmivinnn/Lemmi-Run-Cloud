@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
-import { FBXLoader } from 'three-stdlib';
+import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
 
 interface FBXCharacterLoaderProps {
   variant: 'loading' | 'menu';
@@ -97,15 +97,18 @@ export function FBXCharacterLoader({ variant, onAnimationComplete }: FBXCharacte
       }
     );
 
-    // FBX Loader
+    // FBX Loader with better error handling
     const loader = new FBXLoader();
+    console.log('Starting FBX load from:', '/character.fbx');
     
     loader.load(
       '/character.fbx',
       (object) => {
+        console.log('FBX loaded successfully:', object);
+        
         // Scale and position the character
-        object.scale.setScalar(0.01); // Adjust scale as needed
-        object.position.set(0, -1, 0);
+        object.scale.setScalar(0.02); // Increased scale for visibility
+        object.position.set(0, -0.5, 0);
         
         // Apply cyberpunk materials with custom texture
         object.traverse((child) => {
@@ -152,11 +155,17 @@ export function FBXCharacterLoader({ variant, onAnimationComplete }: FBXCharacte
       },
       (progress) => {
         const percentage = (progress.loaded / progress.total) * 100;
+        console.log(`FBX loading progress: ${percentage.toFixed(1)}% (${progress.loaded}/${progress.total})`);
         setLoadingProgress(percentage);
       },
       (error) => {
         console.error('Error loading FBX:', error);
         console.error('FBX file path: /character.fbx');
+        console.error('Error details:', {
+          type: error.constructor.name,
+          message: error.message,
+          stack: error.stack
+        });
         
         // Create a fallback humanoid-like character with texture
         const group = new THREE.Group();
