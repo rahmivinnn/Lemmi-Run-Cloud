@@ -87,12 +87,14 @@ export function FBXCharacterLoader({ variant, onAnimationComplete }: FBXCharacte
       '/tekstur.png',
       (texture) => {
         texture.flipY = false;
-        texture.wrapS = THREE.RepeatWrapping;
-        texture.wrapT = THREE.RepeatWrapping;
+        texture.wrapS = THREE.ClampToEdgeWrapping;
+        texture.wrapT = THREE.ClampToEdgeWrapping;
         texture.minFilter = THREE.LinearFilter;
         texture.magFilter = THREE.LinearFilter;
+        texture.generateMipmaps = false;
+        texture.needsUpdate = true;
         characterTexture = texture;
-        console.log('Character texture loaded successfully:', texture);
+        console.log('Character texture loaded successfully. Size:', texture.image?.width || 'unknown', 'x', texture.image?.height || 'unknown');
         
         // Load FBX after texture is ready
         loadFBXModel();
@@ -124,7 +126,7 @@ export function FBXCharacterLoader({ variant, onAnimationComplete }: FBXCharacte
           // Scale and position the character
           object.scale.setScalar(0.05); // Bigger scale for visibility
           object.position.set(0, -1, 0);
-          object.rotation.y = Math.PI; // Face camera
+          object.rotation.y = 0; // Face forward towards camera
         
           // Count and log meshes
           let meshCount = 0;
@@ -146,30 +148,30 @@ export function FBXCharacterLoader({ variant, onAnimationComplete }: FBXCharacte
               
               // Apply the tekstur.png texture to all materials
               if (characterTexture) {
+                console.log('Character texture available, applying to mesh:', child.name);
                 // Create new material with custom texture
-                const material = new THREE.MeshStandardMaterial({
+                const material = new THREE.MeshLambertMaterial({
                   map: characterTexture,
-                  color: new THREE.Color(1, 1, 1),
-                  emissive: new THREE.Color(0x001122),
-                  emissiveIntensity: 0.3,
-                  metalness: 0.4,
-                  roughness: 0.6,
+                  color: 0xffffff,
                   transparent: false,
-                  side: THREE.DoubleSide
+                  side: THREE.FrontSide
                 });
+                
+                // Ensure texture is properly configured
+                characterTexture.flipY = false;
+                characterTexture.needsUpdate = true;
+                
                 child.material = material;
-                console.log('Applied texture material to:', child.name);
+                child.material.needsUpdate = true;
+                console.log('Applied texture material to:', child.name, 'Texture:', characterTexture);
               } else {
+                console.log('No texture available, using fallback for:', child.name);
                 // Create bright material without texture for debugging
-                const fallbackMaterial = new THREE.MeshStandardMaterial({
-                  color: new THREE.Color(0xff0088),
-                  emissive: new THREE.Color(0x002211),
-                  emissiveIntensity: 0.3,
-                  metalness: 0.4,
-                  roughness: 0.6
+                const fallbackMaterial = new THREE.MeshLambertMaterial({
+                  color: 0xff0088,
                 });
                 child.material = fallbackMaterial;
-                console.log('Applied fallback material to:', child.name);
+                console.log('Applied fallback pink material to:', child.name);
               }
             }
           });
@@ -180,7 +182,7 @@ export function FBXCharacterLoader({ variant, onAnimationComplete }: FBXCharacte
           console.log('Object added to scene, scene children count:', scene.children.length);
           
           // Store reference for animation
-          characterRef.current = object;
+          // characterRef.current = object;
 
           // Animation setup
           if (object.animations && object.animations.length > 0) {
