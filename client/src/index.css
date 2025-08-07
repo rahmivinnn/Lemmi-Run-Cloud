@@ -238,25 +238,52 @@
 
 /* Unity-style HUD elements */
 .unity-hud-panel {
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(20, 20, 20, 0.9) 100%);
-  border: 2px solid rgba(255, 165, 0, 0.6);
-  box-shadow: 0 0 20px rgba(255, 165, 0, 0.2), inset 0 0 10px rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(10px);
+  background: 
+    linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(15, 15, 20, 0.95) 50%, rgba(0, 0, 0, 0.95) 100%),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(255, 165, 0, 0.02) 2px,
+      rgba(255, 165, 0, 0.02) 4px
+    );
+  border: 1px solid rgba(255, 165, 0, 0.8);
+  border-radius: 0px;
+  box-shadow: 
+    0 0 15px rgba(255, 165, 0, 0.3), 
+    inset 0 0 15px rgba(0, 0, 0, 0.8),
+    0 2px 0 rgba(255, 165, 0, 0.4),
+    0 -2px 0 rgba(255, 165, 0, 0.4);
+  backdrop-filter: blur(8px);
+  position: relative;
 }
 
 .unity-button {
-  background: linear-gradient(145deg, rgba(255, 165, 0, 0.2), rgba(255, 100, 0, 0.2));
-  border: 2px solid rgba(255, 165, 0, 0.6);
-  transition: all 0.3s ease;
+  background: 
+    linear-gradient(145deg, rgba(30, 30, 30, 0.9), rgba(15, 15, 15, 0.9)),
+    linear-gradient(90deg, rgba(255, 165, 0, 0.1) 0%, rgba(255, 165, 0, 0.2) 50%, rgba(255, 165, 0, 0.1) 100%);
+  border: 1px solid rgba(255, 165, 0, 0.7);
+  border-radius: 0px;
+  transition: all 0.2s ease;
   position: relative;
   overflow: hidden;
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 165, 0, 0.3),
+    inset 0 -1px 0 rgba(255, 165, 0, 0.3);
 }
 
 .unity-button:hover {
-  background: linear-gradient(145deg, rgba(255, 165, 0, 0.3), rgba(255, 100, 0, 0.3));
-  border-color: rgba(255, 165, 0, 0.8);
-  transform: scale(1.05);
-  box-shadow: 0 0 25px rgba(255, 165, 0, 0.4);
+  background: 
+    linear-gradient(145deg, rgba(40, 40, 40, 0.9), rgba(25, 25, 25, 0.9)),
+    linear-gradient(90deg, rgba(255, 165, 0, 0.2) 0%, rgba(255, 165, 0, 0.4) 50%, rgba(255, 165, 0, 0.2) 100%);
+  border-color: rgba(255, 165, 0, 1);
+  transform: translateY(-1px);
+  box-shadow: 
+    0 4px 8px rgba(0, 0, 0, 0.6),
+    0 0 15px rgba(255, 165, 0, 0.4),
+    inset 0 1px 0 rgba(255, 165, 0, 0.5),
+    inset 0 -1px 0 rgba(255, 165, 0, 0.5);
 }
 
 .unity-button::before {
