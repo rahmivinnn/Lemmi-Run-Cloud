@@ -1,7 +1,14 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertWalletSchema, insertReferralSchema, insertGameScoreSchema, insertSkillRewardSchema } from "@shared/schema";
+import { 
+  insertWalletSchema, 
+  insertGerbilNftSchema,
+  insertCardanoTransactionSchema,
+  insertReferralSchema, 
+  insertGameScoreSchema, 
+  insertSkillRewardSchema 
+} from "@shared/schema";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Wallet NFT verification endpoint
@@ -59,6 +66,74 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(wallet);
     } catch (error) {
       res.status(400).json({ error: "Invalid wallet data" });
+    }
+  });
+
+  // Gerbil NFTs endpoints
+  app.get("/api/nfts/gerbils", async (req, res) => {
+    try {
+      const { ownerId } = req.query;
+      const nfts = await storage.getGerbilNfts(ownerId as string);
+      res.json(nfts);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch Gerbil NFTs" });
+    }
+  });
+
+  app.get("/api/nfts/gerbils/:tokenId", async (req, res) => {
+    try {
+      const { tokenId } = req.params;
+      const nft = await storage.getGerbilNft(tokenId);
+      if (!nft) {
+        return res.status(404).json({ error: "Gerbil NFT not found" });
+      }
+      res.json(nft);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch Gerbil NFT" });
+    }
+  });
+
+  app.post("/api/nfts/gerbils", async (req, res) => {
+    try {
+      const nftData = insertGerbilNftSchema.parse(req.body);
+      const nft = await storage.createGerbilNft(nftData);
+      res.json(nft);
+    } catch (error) {
+      res.status(400).json({ error: "Invalid NFT data" });
+    }
+  });
+
+  // Cardano transactions endpoints
+  app.get("/api/cardano/transactions", async (req, res) => {
+    try {
+      const { userId } = req.query;
+      const transactions = await storage.getCardanoTransactions(userId as string);
+      res.json(transactions);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch transactions" });
+    }
+  });
+
+  app.get("/api/cardano/transactions/:txHash", async (req, res) => {
+    try {
+      const { txHash } = req.params;
+      const transaction = await storage.getCardanoTransaction(txHash);
+      if (!transaction) {
+        return res.status(404).json({ error: "Transaction not found" });
+      }
+      res.json(transaction);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch transaction" });
+    }
+  });
+
+  app.post("/api/cardano/transactions", async (req, res) => {
+    try {
+      const transactionData = insertCardanoTransactionSchema.parse(req.body);
+      const transaction = await storage.createCardanoTransaction(transactionData);
+      res.json(transaction);
+    } catch (error) {
+      res.status(400).json({ error: "Invalid transaction data" });
     }
   });
 

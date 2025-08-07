@@ -8,6 +8,8 @@ import SkillRewardPanel from "@/components/SkillRewardPanel";
 import DegenModeToggle from "@/components/DegenModeToggle";
 import KingLemmiViewer from "@/components/KingLemmiViewer";
 import MiniGameTikus from "@/components/MiniGameTikus";
+import GerbilNftGallery from "@/components/GerbilNftGallery";
+import CardanoTransactionTracker from "@/components/CardanoTransactionTracker";
 import { useWallet } from "@/hooks/useWallet";
 import { useAudio } from "@/hooks/useAudio";
 
@@ -65,31 +67,69 @@ export default function NeuralInterface() {
 
   return (
     <div className="min-h-screen overflow-hidden relative bg-black">
-      {/* Unity Game Background */}
+      {/* Cyberpunk Skyscraper Background */}
       <div className="fixed inset-0 z-0">
-        <div 
-          className="absolute inset-0 opacity-30"
-          style={{
-            backgroundImage: `linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #e94560 100%)`,
-          }}
-        />
-        <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-                           radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
-                           radial-gradient(circle at 40% 40%, rgba(120, 219, 226, 0.2) 0%, transparent 50%)`
-        }} />
-        <div className="absolute inset-0 bg-black/20" />
+        {/* Night Sky */}
+        <div className="absolute inset-0 bg-gradient-to-b from-purple-900 via-blue-900 to-black" />
         
-        {/* Floating UI Elements */}
-        <div className="absolute top-20 left-10 w-2 h-2 bg-orange-400 rounded-full animate-pulse opacity-60" />
-        <div className="absolute top-32 right-20 w-1 h-1 bg-cyan-400 rounded-full animate-ping opacity-40" />
-        <div className="absolute bottom-40 left-1/4 w-3 h-3 bg-purple-400 rounded-full animate-bounce opacity-30" />
+        {/* City Silhouette Layer 1 - Far Buildings */}
+        <div className="absolute bottom-0 left-0 w-full h-3/4 opacity-60">
+          <div className="absolute bottom-0 left-0 w-24 h-64 bg-gradient-to-t from-gray-800 to-gray-700 transform skew-x-2" />
+          <div className="absolute bottom-0 left-20 w-32 h-80 bg-gradient-to-t from-gray-700 to-gray-600" />
+          <div className="absolute bottom-0 left-48 w-28 h-72 bg-gradient-to-t from-gray-800 to-gray-600 transform -skew-x-1" />
+          <div className="absolute bottom-0 left-72 w-36 h-96 bg-gradient-to-t from-gray-600 to-gray-500" />
+          <div className="absolute bottom-0 left-96 w-24 h-56 bg-gradient-to-t from-gray-700 to-gray-600 transform skew-x-1" />
+        </div>
         
-        {/* Grid Pattern */}
-        <div className="absolute inset-0 opacity-10" style={{
-          backgroundImage: `linear-gradient(rgba(0,255,255,0.1) 1px, transparent 1px),
-                           linear-gradient(90deg, rgba(0,255,255,0.1) 1px, transparent 1px)`,
-          backgroundSize: '50px 50px'
+        {/* City Silhouette Layer 2 - Mid Buildings */}
+        <div className="absolute bottom-0 right-0 w-full h-4/5 opacity-80">
+          <div className="absolute bottom-0 right-0 w-28 h-72 bg-gradient-to-t from-gray-600 to-gray-500 transform -skew-x-2" />
+          <div className="absolute bottom-0 right-24 w-40 h-88 bg-gradient-to-t from-gray-700 to-gray-500" />
+          <div className="absolute bottom-0 right-56 w-32 h-76 bg-gradient-to-t from-gray-600 to-gray-400 transform skew-x-1" />
+          <div className="absolute bottom-0 right-80 w-36 h-84 bg-gradient-to-t from-gray-700 to-gray-500" />
+        </div>
+        
+        {/* Neon Building Lights */}
+        <div className="absolute bottom-20 left-8 w-1 h-12 bg-cyan-400 animate-pulse opacity-80" />
+        <div className="absolute bottom-32 left-12 w-1 h-8 bg-pink-400 animate-pulse opacity-70" />
+        <div className="absolute bottom-28 left-52 w-1 h-10 bg-green-400 animate-pulse opacity-75" />
+        <div className="absolute bottom-36 left-76 w-1 h-14 bg-purple-400 animate-pulse opacity-80" />
+        <div className="absolute bottom-40 left-100 w-1 h-6 bg-orange-400 animate-pulse opacity-70" />
+        
+        {/* Right side neon lights */}
+        <div className="absolute bottom-24 right-8 w-1 h-16 bg-blue-400 animate-pulse opacity-80" />
+        <div className="absolute bottom-44 right-28 w-1 h-12 bg-red-400 animate-pulse opacity-75" />
+        <div className="absolute bottom-30 right-60 w-1 h-18 bg-yellow-400 animate-pulse opacity-70" />
+        <div className="absolute bottom-48 right-84 w-1 h-10 bg-green-400 animate-pulse opacity-80" />
+        
+        {/* Window Lights Pattern */}
+        <div className="absolute bottom-32 left-24 w-0.5 h-1 bg-yellow-200 opacity-60" />
+        <div className="absolute bottom-40 left-24 w-0.5 h-1 bg-yellow-200 opacity-60" />
+        <div className="absolute bottom-48 left-24 w-0.5 h-1 bg-yellow-200 opacity-60" />
+        <div className="absolute bottom-56 left-28 w-0.5 h-1 bg-white opacity-40" />
+        <div className="absolute bottom-64 left-28 w-0.5 h-1 bg-white opacity-40" />
+        
+        {/* More scattered window lights */}
+        <div className="absolute bottom-36 left-56 w-0.5 h-1 bg-cyan-200 opacity-50" />
+        <div className="absolute bottom-52 left-56 w-0.5 h-1 bg-cyan-200 opacity-50" />
+        <div className="absolute bottom-44 left-80 w-0.5 h-1 bg-purple-200 opacity-50" />
+        <div className="absolute bottom-60 left-80 w-0.5 h-1 bg-purple-200 opacity-50" />
+        
+        {/* Right side windows */}
+        <div className="absolute bottom-40 right-32 w-0.5 h-1 bg-orange-200 opacity-50" />
+        <div className="absolute bottom-56 right-32 w-0.5 h-1 bg-orange-200 opacity-50" />
+        <div className="absolute bottom-48 right-64 w-0.5 h-1 bg-pink-200 opacity-50" />
+        <div className="absolute bottom-68 right-64 w-0.5 h-1 bg-pink-200 opacity-50" />
+        
+        {/* Atmospheric Glow */}
+        <div className="absolute inset-0 bg-gradient-to-t from-purple-900/30 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-transparent to-pink-500/5" />
+        
+        {/* Subtle Grid Overlay */}
+        <div className="absolute inset-0 opacity-5" style={{
+          backgroundImage: `linear-gradient(rgba(0,255,255,0.3) 1px, transparent 1px),
+                           linear-gradient(90deg, rgba(0,255,255,0.3) 1px, transparent 1px)`,
+          backgroundSize: '60px 60px'
         }} />
       </div>
 
@@ -295,11 +335,20 @@ export default function NeuralInterface() {
             )}
 
             {activeScreen === 'inventory' && (
-              <div className="p-6 h-full">
-                <h2 className="text-2xl font-orbitron text-cyber-magenta mb-6">DIGITAL ASSETS</h2>
-                <div className="grid grid-cols-1 gap-6">
-                  <TokenDisplay walletAddress={walletAddress} />
-                  <KingLemmiViewer walletAddress={walletAddress} />
+              <div className="p-6 h-full overflow-y-auto">
+                <h2 className="text-2xl font-orbitron text-purple-400 mb-6">🎮 DIGITAL INVENTORY</h2>
+                <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                  {/* NFT Collection */}
+                  <div className="bg-black/60 rounded-lg border-2 border-purple-500/50 p-4">
+                    <h3 className="text-xl font-orbitron text-orange-400 mb-4">🐹 GERBIL NFT COLLECTION</h3>
+                    <GerbilNftGallery walletAddress={walletAddress} />
+                  </div>
+                  
+                  {/* Token Display */}
+                  <div className="bg-black/60 rounded-lg border-2 border-green-500/50 p-4">
+                    <h3 className="text-xl font-orbitron text-green-400 mb-4">💰 TOKEN ASSETS</h3>
+                    <TokenDisplay walletAddress={walletAddress} />
+                  </div>
                 </div>
               </div>
             )}
@@ -312,9 +361,21 @@ export default function NeuralInterface() {
             )}
 
             {activeScreen === 'network' && (
-              <div className="p-6 h-full">
-                <h2 className="text-2xl font-orbitron text-cyber-gold mb-6">NETWORK HUB</h2>
-                <ReferralPanel walletAddress={walletAddress} />
+              <div className="p-6 h-full overflow-y-auto">
+                <h2 className="text-2xl font-orbitron text-blue-400 mb-6">🌐 BLOCKCHAIN NETWORK</h2>
+                <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                  {/* Transaction Tracker */}
+                  <div className="bg-black/60 rounded-lg border-2 border-blue-500/50 p-4">
+                    <h3 className="text-xl font-orbitron text-cyan-400 mb-4">🔗 CARDANO TRANSACTIONS</h3>
+                    <CardanoTransactionTracker walletAddress={walletAddress} />
+                  </div>
+                  
+                  {/* Referral Network */}
+                  <div className="bg-black/60 rounded-lg border-2 border-yellow-500/50 p-4">
+                    <h3 className="text-xl font-orbitron text-yellow-400 mb-4">👥 REFERRAL NETWORK</h3>
+                    <ReferralPanel walletAddress={walletAddress} />
+                  </div>
+                </div>
               </div>
             )}
           </div>
