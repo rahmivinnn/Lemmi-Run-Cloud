@@ -116,61 +116,89 @@ export function FBXCharacterLoader({ variant, onAnimationComplete }: FBXCharacte
       loader.load(
         '/character.fbx',
         (object) => {
-        console.log('FBX loaded successfully:', object);
+          console.log('FBX loaded successfully:', object);
+          console.log('Object children:', object.children);
+          console.log('Object scale:', object.scale);
+          console.log('Object position:', object.position);
+          
+          // Scale and position the character
+          object.scale.setScalar(0.05); // Bigger scale for visibility
+          object.position.set(0, -1, 0);
+          object.rotation.y = Math.PI; // Face camera
         
-        // Scale and position the character
-        object.scale.setScalar(0.02); // Increased scale for visibility
-        object.position.set(0, -0.5, 0);
-        
-        // Apply custom texture to all meshes
-        object.traverse((child) => {
-          if (child instanceof THREE.Mesh) {
-            child.castShadow = true;
-            child.receiveShadow = true;
-            
-            // Apply the tekstur.png texture to all materials
-            if (characterTexture) {
-              // Create new material with custom texture
-              const material = new THREE.MeshStandardMaterial({
-                map: characterTexture,
-                color: new THREE.Color(1, 1, 1),
-                emissive: new THREE.Color(0x001122),
-                emissiveIntensity: 0.2,
-                metalness: 0.6,
-                roughness: 0.3,
-              });
-              child.material = material;
-            } else {
-              // Keep original material if texture not loaded
-              const originalMaterial = Array.isArray(child.material) 
-                ? child.material[0] 
-                : child.material;
+          // Count and log meshes
+          let meshCount = 0;
+          object.traverse((child) => {
+            if (child instanceof THREE.Mesh) {
+              meshCount++;
+              console.log(`Mesh ${meshCount}:`, child.name, child.geometry, child.material);
+            }
+          });
+          console.log('Total meshes found:', meshCount);
+          
+          // Apply custom texture to all meshes
+          object.traverse((child) => {
+            if (child instanceof THREE.Mesh) {
+              child.castShadow = true;
+              child.receiveShadow = true;
               
-              if (originalMaterial instanceof THREE.MeshStandardMaterial) {
-                originalMaterial.emissive = new THREE.Color(0x001122);
-                originalMaterial.emissiveIntensity = 0.2;
-                originalMaterial.metalness = 0.6;
-                originalMaterial.roughness = 0.3;
+              console.log('Applying material to mesh:', child.name);
+              
+              // Apply the tekstur.png texture to all materials
+              if (characterTexture) {
+                // Create new material with custom texture
+                const material = new THREE.MeshStandardMaterial({
+                  map: characterTexture,
+                  color: new THREE.Color(1, 1, 1),
+                  emissive: new THREE.Color(0x001122),
+                  emissiveIntensity: 0.3,
+                  metalness: 0.4,
+                  roughness: 0.6,
+                  transparent: false,
+                  side: THREE.DoubleSide
+                });
+                child.material = material;
+                console.log('Applied texture material to:', child.name);
+              } else {
+                // Create bright material without texture for debugging
+                const fallbackMaterial = new THREE.MeshStandardMaterial({
+                  color: new THREE.Color(0xff0088),
+                  emissive: new THREE.Color(0x002211),
+                  emissiveIntensity: 0.3,
+                  metalness: 0.4,
+                  roughness: 0.6
+                });
+                child.material = fallbackMaterial;
+                console.log('Applied fallback material to:', child.name);
               }
             }
-          }
-        });
+          });
 
-        scene.add(object);
-
-        // Animation setup
-        if (object.animations && object.animations.length > 0) {
-          const mixer = new THREE.AnimationMixer(object);
-          mixerRef.current = mixer;
+          // Add to scene
+          console.log('Adding object to scene...');
+          scene.add(object);
+          console.log('Object added to scene, scene children count:', scene.children.length);
           
-          // Play the first animation if available
-          const action = mixer.clipAction(object.animations[0]);
-          action.play();
-        }
+          // Store reference for animation
+          characterRef.current = object;
 
-        setIsLoaded(true);
-        
-        // Loading complete callback for loading variant
+          // Animation setup
+          if (object.animations && object.animations.length > 0) {
+            console.log('Setting up animations:', object.animations.length);
+            const mixer = new THREE.AnimationMixer(object);
+            mixerRef.current = mixer;
+            
+            // Play the first animation if available
+            const action = mixer.clipAction(object.animations[0]);
+            action.play();
+          } else {
+            console.log('No animations found in FBX');
+          }
+
+          setIsLoaded(true);
+          console.log('Character loading completed');
+          
+          // Loading complete callback for loading variant
           if (variant === 'loading') {
             setTimeout(() => {
               onAnimationComplete?.();
