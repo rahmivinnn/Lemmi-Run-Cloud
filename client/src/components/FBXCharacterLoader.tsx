@@ -82,53 +82,77 @@ export function FBXCharacterLoader({ variant, onAnimationComplete }: FBXCharacte
     const textureLoader = new THREE.TextureLoader();
     let characterTexture: THREE.Texture | null = null;
     
-    // Load texture first
+    // Load texture first - wait for texture to load before loading FBX
     textureLoader.load(
       '/tekstur.png',
       (texture) => {
         texture.flipY = false;
         texture.wrapS = THREE.RepeatWrapping;
         texture.wrapT = THREE.RepeatWrapping;
+        texture.minFilter = THREE.LinearFilter;
+        texture.magFilter = THREE.LinearFilter;
         characterTexture = texture;
+        console.log('Character texture loaded successfully:', texture);
+        
+        // Load FBX after texture is ready
+        loadFBXModel();
       },
-      undefined,
+      (progress) => {
+        console.log('Texture loading progress:', (progress.loaded / progress.total) * 100);
+      },
       (error) => {
         console.warn('Could not load character texture:', error);
+        // Load FBX anyway without texture
+        loadFBXModel();
       }
     );
 
-    // FBX Loader with better error handling
-    const loader = new FBXLoader();
-    console.log('Starting FBX load from:', '/character.fbx');
-    
-    loader.load(
-      '/character.fbx',
-      (object) => {
+    function loadFBXModel() {
+
+      // FBX Loader with better error handling
+      const loader = new FBXLoader();
+      console.log('Starting FBX load from:', '/character.fbx');
+      
+      loader.load(
+        '/character.fbx',
+        (object) => {
         console.log('FBX loaded successfully:', object);
         
         // Scale and position the character
         object.scale.setScalar(0.02); // Increased scale for visibility
         object.position.set(0, -0.5, 0);
         
-        // Apply cyberpunk materials with custom texture
+        // Apply custom texture to all meshes
         object.traverse((child) => {
           if (child instanceof THREE.Mesh) {
             child.castShadow = true;
             child.receiveShadow = true;
             
-            // Create cyberpunk material with custom texture
-            const cyberpunkMaterial = new THREE.MeshStandardMaterial({
-              map: characterTexture, // Use our custom texture
-              color: new THREE.Color(1, 1, 1),
-              emissive: new THREE.Color(0x001122),
-              emissiveIntensity: 0.3,
-              metalness: 0.8,
-              roughness: 0.2,
-              transparent: true,
-              alphaTest: 0.1,
-            });
-            
-            child.material = cyberpunkMaterial;
+            // Apply the tekstur.png texture to all materials
+            if (characterTexture) {
+              // Create new material with custom texture
+              const material = new THREE.MeshStandardMaterial({
+                map: characterTexture,
+                color: new THREE.Color(1, 1, 1),
+                emissive: new THREE.Color(0x001122),
+                emissiveIntensity: 0.2,
+                metalness: 0.6,
+                roughness: 0.3,
+              });
+              child.material = material;
+            } else {
+              // Keep original material if texture not loaded
+              const originalMaterial = Array.isArray(child.material) 
+                ? child.material[0] 
+                : child.material;
+              
+              if (originalMaterial instanceof THREE.MeshStandardMaterial) {
+                originalMaterial.emissive = new THREE.Color(0x001122);
+                originalMaterial.emissiveIntensity = 0.2;
+                originalMaterial.metalness = 0.6;
+                originalMaterial.roughness = 0.3;
+              }
+            }
           }
         });
 
@@ -147,24 +171,25 @@ export function FBXCharacterLoader({ variant, onAnimationComplete }: FBXCharacte
         setIsLoaded(true);
         
         // Loading complete callback for loading variant
-        if (variant === 'loading') {
-          setTimeout(() => {
-            onAnimationComplete?.();
-          }, 3000); // 3 second delay for loading animation
-        }
-      },
-      (progress) => {
+          if (variant === 'loading') {
+            setTimeout(() => {
+              onAnimationComplete?.();
+            }, 3000); // 3 second delay for loading animation
+          }
+        },
+        (progress) => {
         const percentage = (progress.loaded / progress.total) * 100;
-        console.log(`FBX loading progress: ${percentage.toFixed(1)}% (${progress.loaded}/${progress.total})`);
-        setLoadingProgress(percentage);
-      },
-      (error) => {
+          console.log(`FBX loading progress: ${percentage.toFixed(1)}% (${progress.loaded}/${progress.total})`);
+          setLoadingProgress(percentage);
+        },
+        (error: unknown) => {
         console.error('Error loading FBX:', error);
         console.error('FBX file path: /character.fbx');
+        const err = error as Error;
         console.error('Error details:', {
-          type: error.constructor.name,
-          message: error.message,
-          stack: error.stack
+          type: err?.constructor?.name || 'Unknown',
+          message: err?.message || 'Unknown error',
+          stack: err?.stack || 'No stack trace'
         });
         
         // Create a fallback humanoid-like character with texture
@@ -212,13 +237,14 @@ export function FBXCharacterLoader({ variant, onAnimationComplete }: FBXCharacte
         scene.add(group);
         
         setIsLoaded(true);
-        if (variant === 'loading') {
-          setTimeout(() => {
-            onAnimationComplete?.();
-          }, 2000);
+          if (variant === 'loading') {
+            setTimeout(() => {
+              onAnimationComplete?.();
+            }, 2000);
+          }
         }
-      }
-    );
+      );
+    }
 
     // Animation loop
     const clock = new THREE.Clock();
