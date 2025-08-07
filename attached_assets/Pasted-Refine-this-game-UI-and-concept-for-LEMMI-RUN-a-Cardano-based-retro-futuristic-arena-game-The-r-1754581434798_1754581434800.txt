@@ -1,0 +1,37 @@
+Refine this game UI and concept for "LEMMI RUN" — a Cardano-based retro-futuristic arena game. The result should **not look like it was AI-generated**, but instead feel **handcrafted**, as if developed in Unity by a small passionate indie team in 2003–2006 who are inspired by classic arcade games and cyberpunk aesthetics. Retain a mix of *pixel-perfect retro UI*, *vibrant neon colors*, and *low-poly 3D models* if applicable.
+
+❇️ VISUAL GOALS:
+- Maintain the retro sci-fi vibe (e.g., neon HUDs, early 2000s UI shapes, old-school font styles)
+- Avoid generic AI style artifacts or overly polished assets
+- Use visual glitches, CRT-style scanlines, and imperfect edges subtly for realism
+- Ensure the NFT/Wallet elements blend *diegetically* into the game lore (not like a DeFi dashboard)
+- Make the interface feel like it was part of a console terminal in a rogue AI's arena
+
+🎮 FUNCTIONAL GOALS:
+- "SCAN WALLET" should feel like a mini-game or console command, not a button
+- "NFT VERIFICATION" and "ACCESS LEVEL" should change based on real-time input (simulate)
+- Add ambient audio cues (e.g., digital humming, static) and retro SFX to interaction
+- Currency ($LEMMI Tokens) should feel like in-game arcade tokens, not crypto
+- Levels and points should have progression feedback (e.g., XP bar, retro animations)
+- Every system should act like part of the *Neural Interface v2.1*, not isolated menus
+
+📦 UI/UX COMPONENTS TO REFINE:
+- Player Access
+- Neural Status
+- Inventory
+- Skill Tree
+- Token Display
+- Chaos Mode / Collection (if any)
+- Main Hub & Start Game (should be gamified more)
+
+🎨 STYLE REFERENCES (Visual direction):
+- *Tron: Legacy* meets *Metal Slug UI*
+- Old arcade machines with card reader ports
+- Unity 5 retro sci-fi templates
+- Hacker terminals from *The Matrix*
+- SNES/Sega Saturn game menus
+
+💡 GOAL:
+Make this feel like a playable, addictive retro-futuristic Unity game where the blockchain elements are fully **immersed into the game's universe** (not bolted-on). All NFTs, tokens, and wallet elements should serve the gameplay, not the other way around.
+
+Generate assets, descriptions, improvements, and UI/UX interactions that reflect the above.

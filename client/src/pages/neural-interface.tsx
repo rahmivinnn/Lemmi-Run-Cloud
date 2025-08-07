@@ -13,6 +13,7 @@ import CardanoTransactionTracker from "@/components/CardanoTransactionTracker";
 import { LoadingScreen } from "@/components/LoadingScreen";
 import { CharacterSelection } from "@/components/CharacterSelection";
 import { GameRunner } from "@/components/GameRunner";
+import { RetroWalletScanner } from "@/components/RetroWalletScanner";
 import { useWallet } from "@/hooks/useWallet";
 import { useAudio } from "@/hooks/useAudio";
 import AshinaImage from "@assets/ashina_1754580592322.webp";
@@ -154,67 +155,95 @@ export default function NeuralInterface() {
       {/* Unity-style Game Layout */}
       <div className="relative z-10 min-h-screen flex flex-col">
         
-        {/* Unity-style Top HUD */}
-        <div className="h-20 bg-gradient-to-r from-black via-gray-900 to-black border-b-2 border-orange-400 relative">
-          {/* Unity-style corner decorations */}
-          <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-orange-400"></div>
-          <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-orange-400"></div>
-          <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-orange-400"></div>
-          <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-orange-400"></div>
+        {/* Retro CRT-style HUD with Scanlines */}
+        <div className="h-24 bg-gradient-to-r from-black via-gray-900 to-black border-b border-cyan-400 relative overflow-hidden">
+          {/* CRT Scanlines Effect */}
+          <div className="absolute inset-0" style={{
+            backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 255, 255, 0.03) 2px, rgba(0, 255, 255, 0.03) 4px)',
+            animation: 'scanlines 2s linear infinite'
+          }} />
+          
+          {/* Retro corner brackets */}
+          <div className="absolute top-1 left-1 w-8 h-8">
+            <div className="absolute top-0 left-0 w-4 h-1 bg-cyan-400"></div>
+            <div className="absolute top-0 left-0 w-1 h-4 bg-cyan-400"></div>
+          </div>
+          <div className="absolute top-1 right-1 w-8 h-8">
+            <div className="absolute top-0 right-0 w-4 h-1 bg-cyan-400"></div>
+            <div className="absolute top-0 right-0 w-1 h-4 bg-cyan-400"></div>
+          </div>
+          <div className="absolute bottom-1 left-1 w-8 h-8">
+            <div className="absolute bottom-0 left-0 w-4 h-1 bg-cyan-400"></div>
+            <div className="absolute bottom-0 left-0 w-1 h-4 bg-cyan-400"></div>
+          </div>
+          <div className="absolute bottom-1 right-1 w-8 h-8">
+            <div className="absolute bottom-0 right-0 w-4 h-1 bg-cyan-400"></div>
+            <div className="absolute bottom-0 right-0 w-1 h-4 bg-cyan-400"></div>
+          </div>
+          
+          {/* Glitch bars */}
+          <div className="absolute top-6 left-0 w-full h-px bg-red-500 opacity-30 animate-pulse"></div>
+          <div className="absolute bottom-6 left-0 w-full h-px bg-green-500 opacity-20 animate-pulse" style={{ animationDelay: '1s' }}></div>
           
           <div className="flex items-center justify-between h-full px-8">
             
-            {/* Game Logo & Title */}
-            <div className="flex items-center space-x-6">
+            {/* Retro Terminal Logo */}
+            <div className="flex items-center space-x-4">
               <div className="relative">
-                <div className="w-12 h-12 bg-black border border-orange-400 flex items-center justify-center relative">
-                  <img src={AshinaImage} alt="Lemmi" className="w-10 h-10 object-contain" />
-                  <div className="absolute -top-1 -left-1 w-2 h-2 bg-orange-400"></div>
-                  <div className="absolute -top-1 -right-1 w-2 h-2 bg-orange-400"></div>
-                  <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-orange-400"></div>
-                  <div className="absolute -bottom-1 -right-1 w-2 h-2 bg-orange-400"></div>
+                <div className="w-16 h-16 bg-black border border-cyan-400 flex items-center justify-center relative">
+                  <img src={AshinaImage} alt="Lemmi" className="w-12 h-12 object-contain opacity-90" />
+                  {/* Pixel corners */}
+                  <div className="absolute -top-1 -left-1 w-2 h-2 bg-cyan-400"></div>
+                  <div className="absolute -top-1 -right-1 w-2 h-2 bg-cyan-400"></div>
+                  <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-cyan-400"></div>
+                  <div className="absolute -bottom-1 -right-1 w-2 h-2 bg-cyan-400"></div>
+                  {/* Glitch overlay */}
+                  <div className="absolute inset-0 bg-red-500 opacity-5 animate-pulse" style={{ animationDuration: '3s' }}></div>
                 </div>
               </div>
               <div>
-                <h1 className="text-2xl font-orbitron font-black text-orange-400 tracking-widest">
-                  LEMMI RUN
+                <div className="font-mono text-xs text-cyan-400/60 tracking-wider mb-1">
+                  &gt; SYSTEM_BOOT.EXE
+                </div>
+                <h1 className="text-xl font-orbitron font-black text-cyan-400 tracking-widest relative">
+                  LEMMI.RUN
+                  <span className="absolute -right-2 top-0 w-1 h-full bg-cyan-400 animate-pulse"></span>
                 </h1>
-                <p className="text-sm font-mono text-orange-300/80 tracking-wider">CARDANO GAMING SYSTEM</p>
+                <p className="text-xs font-mono text-green-400/70 tracking-wider">
+                  v2.1.2006 | CARDANO_NET
+                </p>
               </div>
             </div>
             
-            {/* Center HUD - Game Stats */}
-            <div className="flex items-center space-x-6">
-              <div className="bg-black border border-green-400 px-4 py-2 min-w-[180px] relative">
+            {/* Retro Terminal Stats */}
+            <div className="flex items-center space-x-3">
+              <div className="bg-black border border-green-400 px-3 py-1 min-w-[140px] relative font-mono">
                 <div className="absolute -top-1 -left-1 w-2 h-2 bg-green-400"></div>
-                <div className="absolute -top-1 -right-1 w-2 h-2 bg-green-400"></div>
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono text-green-400 tracking-wider">STATUS</span>
-                  <span className="text-xs font-mono text-green-300 font-bold">{terminalText}</span>
-                </div>
+                <div className="text-xs text-green-400/60">NEURAL_LINK:</div>
+                <div className="text-sm text-green-300 font-bold tracking-wider">{terminalText}</div>
               </div>
               
-              <div className="bg-black border border-blue-400 px-4 py-2 relative">
-                <div className="absolute -top-1 -left-1 w-2 h-2 bg-blue-400"></div>
-                <div className="absolute -top-1 -right-1 w-2 h-2 bg-blue-400"></div>
-                <div className="flex items-center space-x-3">
-                  <span className="text-xs font-mono text-blue-400 tracking-wider">LVL</span>
-                  <span className="text-lg font-mono text-blue-300 font-bold">01</span>
-                </div>
+              <div className="bg-black border border-cyan-400 px-3 py-1 relative font-mono">
+                <div className="absolute -top-1 -left-1 w-2 h-2 bg-cyan-400"></div>
+                <div className="text-xs text-cyan-400/60">ACCESS_LV:</div>
+                <div className="text-lg text-cyan-300 font-bold">01</div>
               </div>
               
-              <div className="bg-black border border-purple-400 px-4 py-2 relative">
+              <div className="bg-black border border-yellow-400 px-3 py-1 relative font-mono">
+                <div className="absolute -top-1 -left-1 w-2 h-2 bg-yellow-400"></div>
+                <div className="text-xs text-yellow-400/60">TOKENS:</div>
+                <div className="text-lg text-yellow-300 font-bold">0000</div>
+              </div>
+              
+              <div className="bg-black border border-purple-400 px-3 py-1 relative font-mono">
                 <div className="absolute -top-1 -left-1 w-2 h-2 bg-purple-400"></div>
-                <div className="absolute -top-1 -right-1 w-2 h-2 bg-purple-400"></div>
-                <div className="flex items-center space-x-3">
-                  <span className="text-xs font-mono text-purple-400 tracking-wider">PTS</span>
-                  <span className="text-lg font-mono text-purple-300 font-bold">0000</span>
-                </div>
+                <div className="text-xs text-purple-400/60">XP:</div>
+                <div className="text-lg text-purple-300 font-bold">0000</div>
               </div>
             </div>
             
-            {/* Wallet HUD */}
-            <WalletConnect 
+            {/* Retro Wallet Scanner */}
+            <RetroWalletScanner
               onConnect={connectWallet}
               isConnected={isConnected}
               address={walletAddress}
@@ -245,112 +274,118 @@ export default function NeuralInterface() {
               <div className="space-y-4">
                 <button 
                   onClick={() => setActiveScreen('main')}
-                  className={`w-full bg-black border font-orbitron transition-all duration-200 relative ${
+                  className={`w-full bg-black border font-mono transition-all duration-200 relative ${
                     activeScreen === 'main' 
-                      ? 'border-orange-400 text-orange-300 bg-orange-900/20' 
-                      : 'border-gray-600 text-gray-400 hover:border-orange-400 hover:text-orange-400'
+                      ? 'border-cyan-400 text-cyan-300 bg-cyan-900/20' 
+                      : 'border-gray-600 text-gray-400 hover:border-cyan-400 hover:text-cyan-400'
                   }`}
                   onMouseEnter={playHover}
                 >
-                  <div className="px-6 py-4 flex items-center space-x-4">
+                  <div className="px-4 py-3 flex items-center space-x-3">
                     {activeScreen === 'main' && (
                       <>
-                        <div className="absolute -top-1 -left-1 w-2 h-2 bg-orange-400"></div>
-                        <div className="absolute -top-1 -right-1 w-2 h-2 bg-orange-400"></div>
+                        <div className="absolute -top-1 -left-1 w-2 h-2 bg-cyan-400"></div>
+                        <div className="absolute -top-1 -right-1 w-2 h-2 bg-cyan-400"></div>
+                        <div className="absolute inset-0 bg-cyan-400/5 animate-pulse"></div>
                       </>
                     )}
-                    <div className="text-xl">🎮</div>
+                    <div className="text-sm text-cyan-400">&gt;</div>
                     <div className="text-left">
-                      <div className="font-bold tracking-wider">MAIN HUB</div>
-                      <div className="text-xs opacity-70 font-mono">System Control</div>
+                      <div className="text-sm font-bold tracking-wider">MAIN_HUB.EXE</div>
+                      <div className="text-xs opacity-60">system_control</div>
                     </div>
                   </div>
                 </button>
                 
                 <button 
                   onClick={() => setActiveScreen('inventory')}
-                  className={`w-full bg-black border font-orbitron transition-all duration-200 relative ${
+                  className={`w-full bg-black border font-mono transition-all duration-200 relative ${
                     activeScreen === 'inventory' 
                       ? 'border-purple-400 text-purple-300 bg-purple-900/20' 
                       : 'border-gray-600 text-gray-400 hover:border-purple-400 hover:text-purple-400'
                   }`}
                   onMouseEnter={playHover}
                 >
-                  <div className="px-6 py-4 flex items-center space-x-4">
+                  <div className="px-4 py-3 flex items-center space-x-3">
                     {activeScreen === 'inventory' && (
                       <>
                         <div className="absolute -top-1 -left-1 w-2 h-2 bg-purple-400"></div>
                         <div className="absolute -top-1 -right-1 w-2 h-2 bg-purple-400"></div>
+                        <div className="absolute inset-0 bg-purple-400/5 animate-pulse"></div>
                       </>
                     )}
-                    <div className="text-xl">💎</div>
+                    <div className="text-sm text-purple-400">&gt;</div>
                     <div className="text-left">
-                      <div className="font-bold tracking-wider">INVENTORY</div>
-                      <div className="text-xs opacity-70 font-mono">Asset Management</div>
+                      <div className="text-sm font-bold tracking-wider">INVENTORY.BAT</div>
+                      <div className="text-xs opacity-60">nft_collection</div>
                     </div>
                   </div>
                 </button>
                 
                 <button 
                   onClick={() => window.location.href = '/game'}
-                  className="w-full bg-black border font-orbitron transition-all duration-200 relative border-green-400 text-green-400 hover:bg-green-900/20"
+                  className="w-full bg-black border font-mono transition-all duration-200 relative border-green-400 text-green-400 hover:bg-green-900/20 group"
                   onMouseEnter={playHover}
                 >
-                  <div className="px-6 py-4 flex items-center space-x-4">
+                  <div className="px-4 py-3 flex items-center space-x-3">
                     <div className="absolute -top-1 -left-1 w-2 h-2 bg-green-400"></div>
                     <div className="absolute -top-1 -right-1 w-2 h-2 bg-green-400"></div>
-                    <div className="text-xl">🎯</div>
+                    <div className="absolute inset-0 bg-green-400/10 animate-pulse"></div>
+                    <div className="text-sm text-green-400 group-hover:animate-bounce">&gt;&gt;</div>
                     <div className="text-left">
-                      <div className="font-bold tracking-wider">START GAME</div>
-                      <div className="text-xs opacity-70 font-mono">Lemmi Run Arena</div>
+                      <div className="text-sm font-bold tracking-wider">RUN_ARENA.EXE</div>
+                      <div className="text-xs opacity-60">lemmi_runner_v21</div>
                     </div>
+                    <div className="text-green-400 text-lg animate-pulse ml-auto">▶</div>
                   </div>
                 </button>
                 
                 <button 
                   onClick={() => setActiveScreen('skills')}
-                  className={`w-full bg-black border font-orbitron transition-all duration-200 relative ${
+                  className={`w-full bg-black border font-mono transition-all duration-200 relative ${
                     activeScreen === 'skills' 
-                      ? 'border-cyan-400 text-cyan-300 bg-cyan-900/20' 
-                      : 'border-gray-600 text-gray-400 hover:border-cyan-400 hover:text-cyan-400'
+                      ? 'border-yellow-400 text-yellow-300 bg-yellow-900/20' 
+                      : 'border-gray-600 text-gray-400 hover:border-yellow-400 hover:text-yellow-400'
                   }`}
                   onMouseEnter={playHover}
                 >
-                  <div className="px-6 py-4 flex items-center space-x-4">
+                  <div className="px-4 py-3 flex items-center space-x-3">
                     {activeScreen === 'skills' && (
                       <>
-                        <div className="absolute -top-1 -left-1 w-2 h-2 bg-cyan-400"></div>
-                        <div className="absolute -top-1 -right-1 w-2 h-2 bg-cyan-400"></div>
+                        <div className="absolute -top-1 -left-1 w-2 h-2 bg-yellow-400"></div>
+                        <div className="absolute -top-1 -right-1 w-2 h-2 bg-yellow-400"></div>
+                        <div className="absolute inset-0 bg-yellow-400/5 animate-pulse"></div>
                       </>
                     )}
-                    <div className="text-xl">⚡</div>
+                    <div className="text-sm text-yellow-400">&gt;</div>
                     <div className="text-left">
-                      <div className="font-bold tracking-wider">SKILL TREE</div>
-                      <div className="text-xs opacity-70 font-mono">Power Upgrades</div>
+                      <div className="text-sm font-bold tracking-wider">SKILLS.SYS</div>
+                      <div className="text-xs opacity-60">neural_upgrades</div>
                     </div>
                   </div>
                 </button>
                 
                 <button 
                   onClick={() => setActiveScreen('network')}
-                  className={`w-full bg-black border font-orbitron transition-all duration-200 relative ${
+                  className={`w-full bg-black border font-mono transition-all duration-200 relative ${
                     activeScreen === 'network' 
                       ? 'border-blue-400 text-blue-300 bg-blue-900/20' 
                       : 'border-gray-600 text-gray-400 hover:border-blue-400 hover:text-blue-400'
                   }`}
                   onMouseEnter={playHover}
                 >
-                  <div className="px-6 py-4 flex items-center space-x-4">
+                  <div className="px-4 py-3 flex items-center space-x-3">
                     {activeScreen === 'network' && (
                       <>
                         <div className="absolute -top-1 -left-1 w-2 h-2 bg-blue-400"></div>
                         <div className="absolute -top-1 -right-1 w-2 h-2 bg-blue-400"></div>
+                        <div className="absolute inset-0 bg-blue-400/5 animate-pulse"></div>
                       </>
                     )}
-                    <div className="text-xl">🌐</div>
+                    <div className="text-sm text-blue-400">&gt;</div>
                     <div className="text-left">
-                      <div className="font-bold tracking-wider">NETWORK</div>
-                      <div className="text-xs opacity-70 font-mono">Social System</div>
+                      <div className="text-sm font-bold tracking-wider">NETWORK.DLL</div>
+                      <div className="text-xs opacity-60">cardano_nodes</div>
                     </div>
                   </div>
                 </button>
