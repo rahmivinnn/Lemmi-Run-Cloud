@@ -1,0 +1,47 @@
+import { useState } from 'react';
+import lemmiAvatar from '@assets/mi lemmi_1755245950570.jpg';
+
+interface LemmiAvatarProps {
+  variant?: 'small' | 'large';
+  className?: string;
+}
+
+export function LemmiAvatar({ variant = 'small', className = '' }: LemmiAvatarProps) {
+  const [isHovered, setIsHovered] = useState(false);
+  
+  const size = variant === 'large' ? 'w-32 h-32' : 'w-full h-full';
+  
+  return (
+    <div 
+      className={`relative overflow-hidden ${size} ${className}`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {/* Avatar Image */}
+      <img
+        src={lemmiAvatar}
+        alt="Lemmi Avatar"
+        className={`w-full h-full object-cover transition-all duration-300 ${
+          isHovered ? 'scale-110 brightness-110' : 'scale-100'
+        }`}
+      />
+      
+      {/* Neural scan overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-cyan-400/0 via-cyan-400/20 to-cyan-400/0 animate-pulse" />
+      
+      {/* Scan lines */}
+      <div 
+        className="absolute inset-0 opacity-30"
+        style={{
+          backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 255, 255, 0.3) 2px, rgba(0, 255, 255, 0.3) 4px)',
+          animation: 'scanlines 2s linear infinite'
+        }}
+      />
+      
+      {/* Glitch effect on hover */}
+      {isHovered && (
+        <div className="absolute inset-0 bg-red-500/10 animate-pulse duration-150" />
+      )}
+    </div>
+  );
+}

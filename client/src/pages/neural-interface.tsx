@@ -17,7 +17,7 @@ import { GameRunner } from "@/components/GameRunner";
 import { RetroWalletScanner } from "@/components/RetroWalletScanner";
 import { RetroWalletButton } from "@/components/RetroWalletButton";
 import { HDCharacterAnimation } from "@/components/HDCharacterAnimation";
-import { FBXCharacterLoader } from "@/components/FBXCharacterLoader";
+import { LemmiAvatar } from "@/components/LemmiAvatar";
 import { useWallet } from "@/hooks/useWallet";
 import { useAudio } from "@/hooks/useAudio";
 import AshinaImage from "@assets/ashina_1754580592322.webp";
@@ -245,7 +245,7 @@ export default function NeuralInterface() {
               <div className="relative">
                 {/* FBX Character Animation in HUD */}
                 <div className="w-16 h-16 border border-cyan-400 bg-black relative overflow-hidden">
-                  <FBXCharacterLoader variant="menu" />
+                  <LemmiAvatar variant="small" />
                   {/* Pixel corners */}
                   <div className="absolute -top-1 -left-1 w-2 h-2 bg-cyan-400 z-10"></div>
                   <div className="absolute -top-1 -right-1 w-2 h-2 bg-cyan-400 z-10"></div>

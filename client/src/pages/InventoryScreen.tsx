@@ -1,5 +1,6 @@
 import { Link } from 'wouter';
 import { ArrowLeft } from 'lucide-react';
+import { LemmiAvatar } from '@/components/LemmiAvatar';
 import { useLaceWallet } from '@/hooks/useLaceWallet';
 
 export default function InventoryScreen() {

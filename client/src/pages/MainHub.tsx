@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'wouter';
-import { FBXCharacterLoader } from '@/components/FBXCharacterLoader';
+import { LemmiAvatar } from '@/components/LemmiAvatar';
 import { RetroWalletButton } from '@/components/RetroWalletButton';
 
 export default function MainHub() {
@@ -28,7 +28,7 @@ export default function MainHub() {
         <div className="flex items-center justify-between h-full px-8 relative z-10">
           <div className="flex items-center space-x-4">
             <div className="w-16 h-16 border border-cyan-400 bg-black relative overflow-hidden">
-              <FBXCharacterLoader variant="menu" />
+              <LemmiAvatar variant="small" />
               <div className="absolute -top-1 -left-1 w-2 h-2 bg-cyan-400"></div>
               <div className="absolute -top-1 -right-1 w-2 h-2 bg-cyan-400"></div>
               <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-cyan-400"></div>

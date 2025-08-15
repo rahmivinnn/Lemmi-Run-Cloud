@@ -2,6 +2,7 @@ import { Link } from 'wouter';
 import { ArrowLeft } from 'lucide-react';
 import { RetroWalletButton } from '@/components/RetroWalletButton';
 import { RetroWalletScanner } from '@/components/RetroWalletScanner';
+import { LemmiAvatar } from '@/components/LemmiAvatar';
 import { useLaceWallet } from '@/hooks/useLaceWallet';
 
 export default function WalletScreen() {
