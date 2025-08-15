@@ -4,8 +4,8 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
-// Import 10 separate screens
-import MainHub from "@/pages/MainHub";
+// Import game flow and screens
+import GameFlow from "@/pages/GameFlow";
 import WalletScreen from "@/pages/WalletScreen";
 import CurrencyScreen from "@/pages/CurrencyScreen";
 import InventoryScreen from "@/pages/InventoryScreen";
@@ -20,7 +20,7 @@ import NotFound from "@/pages/not-found";
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={MainHub} />
+      <Route path="/" component={GameFlow} />
       <Route path="/wallet" component={WalletScreen} />
       <Route path="/currency" component={CurrencyScreen} />
       <Route path="/inventory" component={InventoryScreen} />
