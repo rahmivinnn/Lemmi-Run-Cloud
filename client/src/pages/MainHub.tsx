@@ -122,8 +122,8 @@ export default function MainHub() {
             
             <div className="p-6">
               <div className="text-center mb-6">
-                <h2 className="text-3xl font-bold text-blue-700 mb-2 tracking-wide" style={{ fontFamily: 'Source Code Pro' }}>
-                  NEURAL INTERFACE v2.1
+                <h2 className="text-3xl font-bold text-white mb-2 tracking-wide" style={{ fontFamily: 'Source Code Pro' }}>
+                  LEMMI RUN v2.1
                 </h2>
                 <p className="text-gray-400 font-mono text-sm">
                   Select system module to initialize • {screens.length} modules loaded
