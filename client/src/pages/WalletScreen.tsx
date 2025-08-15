@@ -200,7 +200,12 @@ export default function WalletScreen() {
                 <div className="mt-8">
                   <div className="unity-panel p-6">
                     <div className="unity-header mb-4">BLOCKCHAIN SCANNER</div>
-                    <RetroWalletScanner />
+                    <RetroWalletScanner 
+                      onConnect={connectWallet}
+                      isConnected={isConnected}
+                      address={address || undefined}
+                      hasNft={false}
+                    />
                   </div>
                 </div>
               )}
