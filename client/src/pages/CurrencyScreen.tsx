@@ -107,15 +107,15 @@ export default function CurrencyScreen() {
                 </div>
                 
                 {/* Market Cap */}
-                <div className="game-ui-card border-cyan-400/60 hover:border-cyan-400">
-                  <div className="unity-tab active bg-cyan-500/20 border-b border-cyan-400/40 px-3 py-2">
+                <div className="game-ui-card border-blue-800/60 hover:border-blue-800">
+                  <div className="unity-tab active bg-blue-800/20 border-b border-blue-800/40 px-3 py-2">
                     <div className="flex items-center space-x-2">
-                      <BarChart3 className="w-3 h-3 text-cyan-400" />
+                      <BarChart3 className="w-3 h-3 text-blue-800" />
                       <span className="text-xs font-mono font-bold text-gray-300">MARKET CAP</span>
                     </div>
                   </div>
                   <div className="p-4 text-center">
-                    <div className="text-2xl font-bold text-cyan-300 font-mono mb-1">
+                    <div className="text-2xl font-bold text-blue-700 font-mono mb-1">
                       {marketCap}
                     </div>
                     <div className="text-xs text-gray-400 font-mono">Total value locked</div>
@@ -435,7 +435,7 @@ export default function CurrencyScreen() {
                       <div className="flex items-center space-x-3">
                         <div className="text-lg">🛒</div>
                         <div>
-                          <div className="text-sm text-cyan-300 font-mono font-bold">IN-GAME PURCHASES</div>
+                          <div className="text-sm text-blue-700 font-mono font-bold">IN-GAME PURCHASES</div>
                           <div className="text-xs text-gray-400 font-mono">Buy items and upgrades</div>
                         </div>
                       </div>

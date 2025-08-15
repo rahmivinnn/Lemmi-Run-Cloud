@@ -49,7 +49,7 @@ export function RetroWalletButton() {
         <div className="text-green-400 text-xs font-mono mb-1">
           🔗 WALLET CONNECTED
         </div>
-        <div className="text-cyan-300 text-xs font-mono mb-1">
+        <div className="text-blue-700 text-xs font-mono mb-1">
           {formatAddress(address)}
         </div>
         <div className="text-yellow-400 text-xs font-mono mb-2">

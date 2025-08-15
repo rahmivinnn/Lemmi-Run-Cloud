@@ -33,7 +33,7 @@ export default function MainHub() {
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden">
       {/* Professional Unity-style Header */}
-      <div className="unity-toolbar bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 border-b-2 border-cyan-400 relative overflow-hidden">
+      <div className="unity-toolbar bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 border-b-2 border-blue-800 relative overflow-hidden">
         {/* Animated data streams */}
         <div className="data-stream top-0 w-32 opacity-30" style={{ animationDelay: '0s' }} />
         <div className="data-stream top-1 w-24 opacity-20" style={{ animationDelay: '1s' }} />
@@ -45,17 +45,17 @@ export default function MainHub() {
               <div className="w-16 h-16 unity-panel p-1">
                 <LemmiAvatar variant="small" className="rounded" />
                 <div className="absolute -top-0.5 -left-0.5 w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
-                <div className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-cyan-400 rounded-full animate-pulse" />
+                <div className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-blue-800 rounded-full animate-pulse" />
               </div>
             </div>
             <div>
-              <h1 className="text-xl font-bold text-cyan-300 tracking-wider" style={{ fontFamily: 'Source Code Pro' }}>
+              <h1 className="text-xl font-bold text-blue-700 tracking-wider" style={{ fontFamily: 'Source Code Pro' }}>
                 LEMMI.RUN
               </h1>
               <div className="flex items-center space-x-2 text-xs font-mono">
                 <span className="text-green-400">v2.1.2006</span>
                 <span className="text-gray-400">•</span>
-                <span className="text-cyan-300">MAIN_HUB</span>
+                <span className="text-blue-700">MAIN_HUB</span>
                 <span className="text-gray-400">•</span>
                 <span className="text-orange-400">{frameRate}fps</span>
               </div>
@@ -88,8 +88,8 @@ export default function MainHub() {
                   <span className="text-green-300">LIVE</span>
                 </div>
                 <div className="flex items-center space-x-1">
-                  <Clock className="w-3 h-3 text-cyan-400" />
-                  <span className="text-cyan-300">{systemTime.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' })}</span>
+                  <Clock className="w-3 h-3 text-blue-800" />
+                  <span className="text-blue-700">{systemTime.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' })}</span>
                 </div>
               </div>
             </div>
@@ -122,7 +122,7 @@ export default function MainHub() {
             
             <div className="p-6">
               <div className="text-center mb-6">
-                <h2 className="text-3xl font-bold text-cyan-300 mb-2 tracking-wide" style={{ fontFamily: 'Source Code Pro' }}>
+                <h2 className="text-3xl font-bold text-blue-700 mb-2 tracking-wide" style={{ fontFamily: 'Source Code Pro' }}>
                   NEURAL INTERFACE v2.1
                 </h2>
                 <p className="text-gray-400 font-mono text-sm">
@@ -205,7 +205,7 @@ export default function MainHub() {
         </div>
 
         {/* Unity-style Bottom Status Bar */}
-        <div className="fixed bottom-0 left-0 right-0 unity-toolbar bg-gray-800/95 border-t border-cyan-400/50 backdrop-blur-sm z-50">
+        <div className="fixed bottom-0 left-0 right-0 unity-toolbar bg-gray-800/95 border-t border-blue-800/50 backdrop-blur-sm z-50">
           <div className="container mx-auto px-6 py-2">
             <div className="flex items-center justify-between text-xs font-mono">
               <div className="flex items-center space-x-4">
@@ -213,7 +213,7 @@ export default function MainHub() {
                   <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
                   <span>RUNTIME: ACTIVE</span>
                 </div>
-                <div className="text-cyan-300">CARDANO: CONNECTED</div>
+                <div className="text-blue-700">CARDANO: CONNECTED</div>
                 <div className="text-purple-300">LACE: READY</div>
               </div>
               
@@ -222,7 +222,7 @@ export default function MainHub() {
                 <div className="text-gray-400">•</div>
                 <span className="text-blue-300">BUILD {Date.now().toString().slice(-6)}</span>
                 <div className="text-gray-400">•</div>
-                <span className="text-cyan-300">{systemTime.toLocaleString('en-US', { 
+                <span className="text-blue-700">{systemTime.toLocaleString('en-US', { 
                   month: 'short', 
                   day: '2-digit', 
                   hour: '2-digit', 

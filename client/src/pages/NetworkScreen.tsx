@@ -16,18 +16,18 @@ export default function NetworkScreen() {
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Header */}
-      <div className="h-20 bg-gradient-to-r from-black via-gray-900 to-black border-b border-cyan-400 relative">
+      <div className="h-20 bg-gradient-to-r from-black via-gray-900 to-black border-b border-blue-800 relative">
         <div className="flex items-center justify-between h-full px-6">
           <Link href="/">
-            <button className="flex items-center space-x-2 text-cyan-400 hover:text-cyan-300 font-mono">
+            <button className="flex items-center space-x-2 text-blue-800 hover:text-blue-700 font-mono">
               <ArrowLeft className="w-4 h-4" />
               <span>BACK TO HUB</span>
             </button>
           </Link>
-          <h1 className="text-xl font-orbitron font-black text-cyan-400 tracking-wider">
+          <h1 className="text-xl font-orbitron font-black text-blue-800 tracking-wider">
             NETWORK
           </h1>
-          <div className="bg-black border border-cyan-400 px-3 py-1 font-mono text-xs">
+          <div className="bg-black border border-blue-800 px-3 py-1 font-mono text-xs">
             NEURAL_NETWORK.EXE
           </div>
         </div>
@@ -38,15 +38,15 @@ export default function NetworkScreen() {
         <div className="max-w-5xl mx-auto">
           
           {/* Network Status */}
-          <div className="bg-black border-2 border-cyan-400 p-8 mb-8 relative">
-            <div className="absolute top-4 left-4 w-6 h-6 border-t-2 border-l-2 border-cyan-400" />
-            <div className="absolute top-4 right-4 w-6 h-6 border-t-2 border-r-2 border-cyan-400" />
+          <div className="bg-black border-2 border-blue-800 p-8 mb-8 relative">
+            <div className="absolute top-4 left-4 w-6 h-6 border-t-2 border-l-2 border-blue-800" />
+            <div className="absolute top-4 right-4 w-6 h-6 border-t-2 border-r-2 border-blue-800" />
             
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-mono font-bold text-cyan-400 mb-2 tracking-wider">
+              <h2 className="text-3xl font-mono font-bold text-blue-800 mb-2 tracking-wider">
                 🌐 NEURAL STATUS
               </h2>
-              <p className="text-cyan-300/70 font-mono">Cardano Network Integration</p>
+              <p className="text-blue-700/70 font-mono">Cardano Network Integration</p>
             </div>
 
             {/* Connection Status */}
@@ -72,11 +72,11 @@ export default function NetworkScreen() {
 
             {/* Network Metrics Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              <div className="bg-gray-900 border border-cyan-500/50 p-6 text-center">
-                <div className="text-3xl text-cyan-400 font-mono font-bold mb-2">
+              <div className="bg-gray-900 border border-blue-800/50 p-6 text-center">
+                <div className="text-3xl text-blue-800 font-mono font-bold mb-2">
                   {networkStats.nodeCount.toLocaleString()}
                 </div>
-                <div className="text-sm text-cyan-300/70 font-mono">ACTIVE NODES</div>
+                <div className="text-sm text-blue-700/70 font-mono">ACTIVE NODES</div>
               </div>
               
               <div className="bg-gray-900 border border-purple-500/50 p-6 text-center">
@@ -104,12 +104,12 @@ export default function NetworkScreen() {
             {/* Sync Progress Bar */}
             <div className="mb-8">
               <div className="flex justify-between items-center mb-2">
-                <span className="text-cyan-400 font-mono text-sm">NETWORK SYNCHRONIZATION</span>
-                <span className="text-cyan-300 font-mono text-sm">{networkStats.syncProgress}%</span>
+                <span className="text-blue-800 font-mono text-sm">NETWORK SYNCHRONIZATION</span>
+                <span className="text-blue-700 font-mono text-sm">{networkStats.syncProgress}%</span>
               </div>
               <div className="w-full bg-gray-700 h-3 relative overflow-hidden">
                 <div 
-                  className="h-full bg-cyan-400 transition-all duration-1000"
+                  className="h-full bg-blue-800 transition-all duration-1000"
                   style={{ width: `${networkStats.syncProgress}%` }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse" />
@@ -117,8 +117,8 @@ export default function NetworkScreen() {
             </div>
 
             {/* Wallet Status */}
-            <div className="bg-gray-900 border border-cyan-500/50 p-6">
-              <h3 className="font-mono font-bold text-cyan-400 mb-4 text-center">
+            <div className="bg-gray-900 border border-blue-800/50 p-6">
+              <h3 className="font-mono font-bold text-blue-800 mb-4 text-center">
                 WALLET STATUS
               </h3>
               
@@ -153,7 +153,7 @@ export default function NetworkScreen() {
             {/* Action Buttons */}
             <div className="flex justify-center space-x-4 mt-8">
               <Link href="/wallet">
-                <button className="bg-cyan-600/20 border border-cyan-400 px-6 py-2 text-cyan-400 hover:bg-cyan-600/30 transition-colors font-mono">
+                <button className="bg-blue-800/20 border border-blue-800 px-6 py-2 text-blue-800 hover:bg-blue-800/30 transition-colors font-mono">
                   WALLET SETTINGS →
                 </button>
               </Link>

@@ -27,13 +27,13 @@ export function LemmiAvatar({ variant = 'small', className = '' }: LemmiAvatarPr
       />
       
       {/* Neural scan overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-cyan-400/0 via-cyan-400/20 to-cyan-400/0 animate-pulse" />
+      <div className="absolute inset-0 bg-gradient-to-b from-blue-800/0 via-blue-800/20 to-blue-800/0 animate-pulse" />
       
       {/* Scan lines */}
       <div 
         className="absolute inset-0 opacity-30"
         style={{
-          backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 255, 255, 0.3) 2px, rgba(0, 255, 255, 0.3) 4px)',
+          backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(30, 58, 138, 0.3) 2px, rgba(30, 58, 138, 0.3) 4px)',
           animation: 'scanlines 2s linear infinite'
         }}
       />
