@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import lemmiAvatar from '@assets/mi lemmi_1755245950570.jpg';
+import lemmiAvatar from '@assets/k2_1755247198375.png';
 
 interface LemmiAvatarProps {
   variant?: 'small' | 'large';
