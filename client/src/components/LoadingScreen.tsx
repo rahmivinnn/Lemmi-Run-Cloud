@@ -47,20 +47,28 @@ export function LoadingScreen({ onLoadingComplete }: LoadingScreenProps) {
     return () => clearInterval(timer);
   }, [onLoadingComplete]);
   
-  // Rotate gerbils every 2 seconds
+  // Rotate gerbils every 2.5 seconds, start immediately  
   useEffect(() => {
+    // Set first gerbil immediately
+    setCurrentGerbil(0);
+    
     const gerbilTimer = setInterval(() => {
       setCurrentGerbil(prev => (prev + 1) % gerbilCharacters.length);
-    }, 2000);
+    }, 2500);
     
     return () => clearInterval(gerbilTimer);
   }, []);
   
   // Update loading messages
   useEffect(() => {
-    const messageIndex = Math.floor((progress / 100) * (loadingMessages.length - 1));
+    const messageIndex = Math.min(Math.floor((progress / 100) * loadingMessages.length), loadingMessages.length - 1);
     setLoadingMessage(loadingMessages[messageIndex]);
   }, [progress]);
+  
+  // Set initial loading message
+  useEffect(() => {
+    setLoadingMessage(loadingMessages[0]);
+  }, []);
   
   return (
     <div className="fixed inset-0 bg-black flex items-center justify-center z-50 font-mono overflow-hidden">
@@ -139,7 +147,7 @@ export function LoadingScreen({ onLoadingComplete }: LoadingScreenProps) {
         <motion.div 
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
           className="mb-8 relative"
         >
           <AnimatePresence mode="wait">
@@ -148,7 +156,7 @@ export function LoadingScreen({ onLoadingComplete }: LoadingScreenProps) {
               initial={{ opacity: 0, rotateY: 90, scale: 0.8 }}
               animate={{ opacity: 1, rotateY: 0, scale: 1 }}
               exit={{ opacity: 0, rotateY: -90, scale: 0.8 }}
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 0.6 }}
               className="relative"
             >
               {/* Holographic Effect */}
@@ -207,7 +215,7 @@ export function LoadingScreen({ onLoadingComplete }: LoadingScreenProps) {
         <motion.div 
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
           className="w-full max-w-md"
         >
           {/* Loading Message */}
