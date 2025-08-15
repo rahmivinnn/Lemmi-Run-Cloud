@@ -40,7 +40,11 @@ export function useLaceWallet() {
 
   // Check if Lace is available
   const isLaceAvailable = (): boolean => {
-    return typeof window !== 'undefined' && !!window.cardano?.lace;
+    const available = typeof window !== 'undefined' && !!window.cardano?.lace;
+    if (available) {
+      console.log('Lace wallet detected and available');
+    }
+    return available;
   };
 
   // Connect to Lace wallet
@@ -103,27 +107,42 @@ export function useLaceWallet() {
     });
   };
 
-  // Check connection on mount
+  // Check connection on mount and detect Lace
   useEffect(() => {
     const checkConnection = async () => {
-      if (!isLaceAvailable()) return;
+      console.log('Lace wallet detected, checking connection...');
+      if (!isLaceAvailable()) {
+        console.log('Lace wallet not available yet, retrying...');
+        return;
+      }
 
       try {
         const laceAPI = window.cardano!.lace!;
+        console.log('Lace enabled:', await laceAPI.isEnabled());
         const isEnabled = await laceAPI.isEnabled();
         
         if (isEnabled) {
+          console.log('Lace already enabled, auto-connecting...');
           // Auto-reconnect if previously connected
           await connectWallet();
+        } else {
+          console.log('Lace available but not enabled');
         }
       } catch (error) {
-        console.error('Error checking wallet connection:', error);
+        console.error('Error checking Lace connection:', error);
       }
     };
 
-    // Wait a bit for the extension to load
-    const timer = setTimeout(checkConnection, 1000);
-    return () => clearTimeout(timer);
+    // Check multiple times to ensure Lace is loaded
+    const timer1 = setTimeout(checkConnection, 500);
+    const timer2 = setTimeout(checkConnection, 1500);
+    const timer3 = setTimeout(checkConnection, 3000);
+    
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      clearTimeout(timer3);
+    };
   }, []);
 
   return {

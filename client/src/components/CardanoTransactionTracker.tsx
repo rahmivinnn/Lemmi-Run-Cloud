@@ -143,7 +143,17 @@ export default function CardanoTransactionTracker({ walletAddress }: CardanoTran
     return (
       <div className="text-center p-8">
         <div className="text-6xl mb-4">🔗</div>
-        <p className="text-gray-400 font-mono">Connect Lace Wallet to track Cardano transactions</p>
+        <p className="text-gray-400 font-mono mb-4">Connect Lace Wallet to track Cardano transactions</p>
+        <div className="bg-black/60 border border-cyan-500/30 rounded-lg p-4 max-w-md mx-auto">
+          <p className="text-cyan-400 font-mono text-sm mb-2">✨ With Lace Connected You Get:</p>
+          <ul className="text-left text-gray-300 font-mono text-xs space-y-1">
+            <li>• Real-time transaction monitoring</li>
+            <li>• Direct CardanoScan.io links</li>
+            <li>• ADA & LEMMI token tracking</li>
+            <li>• NFT transaction history</li>
+            <li>• Smart contract interactions</li>
+          </ul>
+        </div>
       </div>
     );
   }
@@ -155,8 +165,11 @@ export default function CardanoTransactionTracker({ walletAddress }: CardanoTran
         <h2 className="text-2xl font-orbitron font-bold text-orange-400 mb-2">
           🔗 CARDANO TRANSACTION TRACKER
         </h2>
-        <p className="text-sm text-gray-400 font-mono">
+        <p className="text-sm text-gray-400 font-mono mb-2">
           Real-time blockchain transaction monitoring
+        </p>
+        <p className="text-xs text-cyan-400/70 font-mono">
+          All transactions link directly to CardanoScan.io
         </p>
       </div>
 
@@ -218,21 +231,32 @@ export default function CardanoTransactionTracker({ walletAddress }: CardanoTran
                 </div>
               </div>
 
-              {/* Transaction Hash */}
+              {/* Transaction Hash & CardanoScan Link */}
               <div className="flex items-center justify-between">
-                <p className="text-xs text-gray-400 font-mono truncate max-w-xs">
-                  Hash: {tx.hash}
-                </p>
+                <div className="flex-1">
+                  <p className="text-xs text-gray-400 font-mono truncate max-w-xs mb-1">
+                    Hash: {tx.hash}
+                  </p>
+                  <button
+                    className="text-xs text-cyan-400 hover:text-cyan-300 underline font-mono transition-colors"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openCardanoScan(tx.cardanoScanUrl);
+                    }}
+                  >
+                    🔗 View on CardanoScan.io →
+                  </button>
+                </div>
                 <Button
                   size="sm"
                   variant="outline"
-                  className="text-xs border-orange-500/50 text-orange-400 hover:bg-orange-500/10"
+                  className="text-xs border-cyan-500/70 text-cyan-400 hover:bg-cyan-500/20 hover:border-cyan-400 transition-all duration-200 shadow-sm shadow-cyan-500/20"
                   onClick={(e) => {
                     e.stopPropagation();
                     openCardanoScan(tx.cardanoScanUrl);
                   }}
                 >
-                  📊 CARDANOSCAN
+                  📊 EXPLORE TX
                 </Button>
               </div>
 
@@ -257,21 +281,35 @@ export default function CardanoTransactionTracker({ walletAddress }: CardanoTran
                     </div>
                   )}
 
-                  <div className="flex gap-2">
+                  <div className="flex flex-wrap gap-2">
                     <Button
                       size="sm"
-                      className="bg-orange-500/20 border border-orange-500 text-orange-400 hover:bg-orange-500/30"
+                      className="bg-cyan-500/20 border border-cyan-500 text-cyan-400 hover:bg-cyan-500/30 font-mono font-bold transition-all duration-200 shadow-md shadow-cyan-500/30"
                       onClick={() => openCardanoScan(tx.cardanoScanUrl)}
                     >
-                      🔍 VIEW FULL DETAILS
+                      🔍 CARDANOSCAN DETAILS
                     </Button>
                     <Button
                       size="sm"
                       variant="outline"
-                      className="border-gray-600 text-gray-400"
-                      onClick={() => navigator.clipboard.writeText(tx.hash)}
+                      className="border-gray-600 text-gray-400 hover:border-gray-500 hover:text-gray-300 font-mono"
+                      onClick={() => {
+                        navigator.clipboard.writeText(tx.hash);
+                        // Optional: show toast notification
+                      }}
                     >
                       📋 COPY HASH
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="border-purple-600/50 text-purple-400 hover:border-purple-500 hover:text-purple-300 font-mono"
+                      onClick={() => {
+                        navigator.clipboard.writeText(tx.cardanoScanUrl);
+                        // Optional: show toast notification
+                      }}
+                    >
+                      🔗 COPY SCAN LINK
                     </Button>
                   </div>
                 </div>
