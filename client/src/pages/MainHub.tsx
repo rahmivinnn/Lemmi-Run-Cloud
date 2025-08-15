@@ -49,13 +49,13 @@ export default function MainHub() {
               </div>
             </div>
             <div>
-              <h1 className="text-xl font-bold text-blue-700 tracking-wider" style={{ fontFamily: 'Source Code Pro' }}>
+              <h1 className="text-xl font-bold text-white tracking-wider" style={{ fontFamily: 'Source Code Pro' }}>
                 LEMMI.RUN
               </h1>
               <div className="flex items-center space-x-2 text-xs font-mono">
                 <span className="text-green-400">v2.1.2006</span>
                 <span className="text-gray-400">•</span>
-                <span className="text-blue-700">MAIN_HUB</span>
+                <span className="text-white">MAIN_HUB</span>
                 <span className="text-gray-400">•</span>
                 <span className="text-orange-400">{frameRate}fps</span>
               </div>
