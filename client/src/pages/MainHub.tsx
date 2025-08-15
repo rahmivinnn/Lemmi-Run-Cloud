@@ -1,115 +1,236 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'wouter';
 import { LemmiAvatar } from '@/components/LemmiAvatar';
 import { RetroWalletButton } from '@/components/RetroWalletButton';
+import { Activity, Cpu, HardDrive, Wifi, Battery, Clock } from 'lucide-react';
 
 export default function MainHub() {
   const [terminalText, setTerminalText] = useState("[READY] Neural interface active...");
+  const [systemTime, setSystemTime] = useState(new Date());
+  const [cpuUsage] = useState(Math.floor(Math.random() * 30) + 15);
+  const [memoryUsage] = useState(Math.floor(Math.random() * 40) + 30);
+  const [networkStatus] = useState('CONNECTED');
+  const [frameRate] = useState(Math.floor(Math.random() * 20) + 120);
+  
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSystemTime(new Date());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   const screens = [
-    { id: 'wallet', name: 'PLAYER ACCESS', icon: '🔗', path: '/wallet', color: 'green' },
-    { id: 'currency', name: 'CURRENCY', icon: '💎', path: '/currency', color: 'purple' },
-    { id: 'inventory', name: 'INVENTORY', icon: '🎒', path: '/inventory', color: 'blue' },
-    { id: 'collection', name: 'COLLECTION', icon: '🖼️', path: '/collection', color: 'orange' },
-    { id: 'skills', name: 'SKILLS', icon: '⚡', path: '/skills', color: 'yellow' },
-    { id: 'network', name: 'NETWORK', icon: '🌐', path: '/network', color: 'cyan' },
-    { id: 'chaos', name: 'CHAOS MODE', icon: '🔥', path: '/chaos', color: 'red' },
-    { id: 'game', name: 'RUN ARENA', icon: '🎮', path: '/game', color: 'green' }
+    { id: 'wallet', name: 'LACE WALLET', icon: '🔗', path: '/wallet', color: 'green', category: 'CORE', status: 'ACTIVE' },
+    { id: 'currency', name: 'CURRENCY SYS', icon: '💎', path: '/currency', color: 'purple', category: 'ECONOMY', status: 'LIVE' },
+    { id: 'inventory', name: 'INVENTORY MGR', icon: '🎒', path: '/inventory', color: 'blue', category: 'ASSETS', status: 'READY' },
+    { id: 'collection', name: 'NFT CLAIMS', icon: '🖼️', path: '/collection', color: 'orange', category: 'BLOCKCHAIN', status: 'SYNC' },
+    { id: 'skills', name: 'SKILL TREE', icon: '⚡', path: '/skills', color: 'yellow', category: 'PROGRESSION', status: 'DEV' },
+    { id: 'network', name: 'CARDANO NET', icon: '🌐', path: '/network', color: 'cyan', category: 'PROTOCOL', status: 'ONLINE' },
+    { id: 'chaos', name: 'CHAOS ENGINE', icon: '🔥', path: '/chaos', color: 'red', category: 'EXPERIMENTAL', status: 'BETA' },
+    { id: 'game', name: 'ARENA CORE', icon: '🎮', path: '/game', color: 'green', category: 'GAMEPLAY', status: 'READY' }
   ];
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Unity-style Header */}
-      <div className="h-24 bg-gradient-to-r from-black via-gray-900 to-black border-b border-cyan-400 relative overflow-hidden">
-        <div className="absolute inset-0" style={{
-          backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 255, 255, 0.03) 2px, rgba(0, 255, 255, 0.03) 4px)'
-        }} />
+    <div className="min-h-screen bg-black text-white overflow-hidden">
+      {/* Professional Unity-style Header */}
+      <div className="unity-toolbar bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 border-b-2 border-cyan-400 relative overflow-hidden">
+        {/* Animated data streams */}
+        <div className="data-stream top-0 w-32 opacity-30" style={{ animationDelay: '0s' }} />
+        <div className="data-stream top-1 w-24 opacity-20" style={{ animationDelay: '1s' }} />
         
-        <div className="flex items-center justify-between h-full px-8 relative z-10">
+        <div className="flex items-center justify-between h-20 px-6 relative z-10">
+          {/* Left: Project Info & Avatar */}
           <div className="flex items-center space-x-4">
-            <div className="w-16 h-16 border border-cyan-400 bg-black relative overflow-hidden">
-              <LemmiAvatar variant="small" />
-              <div className="absolute -top-1 -left-1 w-2 h-2 bg-cyan-400"></div>
-              <div className="absolute -top-1 -right-1 w-2 h-2 bg-cyan-400"></div>
-              <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-cyan-400"></div>
-              <div className="absolute -bottom-1 -right-1 w-2 h-2 bg-cyan-400"></div>
+            <div className="unity-gizmo">
+              <div className="w-16 h-16 unity-panel p-1">
+                <LemmiAvatar variant="small" className="rounded" />
+                <div className="absolute -top-0.5 -left-0.5 w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
+                <div className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-cyan-400 rounded-full animate-pulse" />
+              </div>
             </div>
             <div>
-              <h1 className="text-xl font-orbitron font-black text-cyan-400 tracking-widest">
+              <h1 className="text-xl font-bold text-cyan-300 tracking-wider" style={{ fontFamily: 'Source Code Pro' }}>
                 LEMMI.RUN
               </h1>
-              <p className="text-xs font-mono text-green-400/70">v2.1.2006 | MAIN_HUB</p>
+              <div className="flex items-center space-x-2 text-xs font-mono">
+                <span className="text-green-400">v2.1.2006</span>
+                <span className="text-gray-400">•</span>
+                <span className="text-cyan-300">MAIN_HUB</span>
+                <span className="text-gray-400">•</span>
+                <span className="text-orange-400">{frameRate}fps</span>
+              </div>
             </div>
           </div>
           
-          <div className="bg-black border border-green-400 px-4 py-2 font-mono">
-            <div className="text-xs text-green-400/60">NEURAL_LINK:</div>
-            <div className="text-sm text-green-300 font-bold">{terminalText}</div>
+          {/* Center: System Status */}
+          <div className="unity-console px-4 py-2 max-w-md">
+            <div className="flex items-center space-x-2 text-xs">
+              <Activity className="w-3 h-3 text-green-400" />
+              <span className="text-green-300 font-mono">{terminalText}</span>
+            </div>
           </div>
           
-          <RetroWalletButton />
+          {/* Right: System Stats & Wallet */}
+          <div className="flex items-center space-x-4">
+            {/* System Monitor */}
+            <div className="unity-panel px-3 py-2 text-xs font-mono">
+              <div className="grid grid-cols-2 gap-2">
+                <div className="flex items-center space-x-1">
+                  <Cpu className="w-3 h-3 text-blue-400" />
+                  <span className="text-blue-300">{cpuUsage}%</span>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <HardDrive className="w-3 h-3 text-purple-400" />
+                  <span className="text-purple-300">{memoryUsage}%</span>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <Wifi className="w-3 h-3 text-green-400" />
+                  <span className="text-green-300">LIVE</span>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <Clock className="w-3 h-3 text-cyan-400" />
+                  <span className="text-cyan-300">{systemTime.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' })}</span>
+                </div>
+              </div>
+            </div>
+            
+            <RetroWalletButton />
+          </div>
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="container mx-auto px-6 py-12">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-orbitron font-black text-cyan-400 mb-4 tracking-wider">
-            NEURAL INTERFACE
-          </h2>
-          <p className="text-gray-400 font-mono text-sm">
-            Select system module to access
-          </p>
-        </div>
+      {/* Unity-style Main Workspace */}
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 relative">
+        {/* Background grid pattern */}
+        <div className="absolute inset-0 opacity-5" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%2300ffff' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='m0 40l40-40h-40v40z'/%3E%3C/g%3E%3C/svg%3E")`
+        }} />
+        
+        <div className="container mx-auto px-6 py-8 relative z-10">
+          {/* Unity Inspector-style Header */}
+          <div className="unity-inspector mb-8">
+            <div className="unity-header flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                <span>LEMMI RUNTIME MANAGER</span>
+              </div>
+              <div className="flex items-center space-x-2 text-xs">
+                <Battery className="w-3 h-3 text-green-400" />
+                <span className="text-green-400">SYSTEMS ONLINE</span>
+              </div>
+            </div>
+            
+            <div className="p-6">
+              <div className="text-center mb-6">
+                <h2 className="text-3xl font-bold text-cyan-300 mb-2 tracking-wide" style={{ fontFamily: 'Source Code Pro' }}>
+                  NEURAL INTERFACE v2.1
+                </h2>
+                <p className="text-gray-400 font-mono text-sm">
+                  Select system module to initialize • {screens.length} modules loaded
+                </p>
+              </div>
+              
+              {/* Module Categories */}
+              <div className="flex justify-center space-x-6 mb-6">
+                {['CORE', 'ECONOMY', 'BLOCKCHAIN', 'GAMEPLAY'].map(category => {
+                  const moduleCount = screens.filter(s => s.category === category).length;
+                  return (
+                    <div key={category} className="hud-element">
+                      <div className="text-xs font-bold">{category}</div>
+                      <div className="text-xs opacity-70">{moduleCount} modules</div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
 
-        {/* Screen Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-          {screens.map((screen) => (
-            <Link key={screen.id} href={screen.path}>
-              <div className={`group bg-black border-2 border-${screen.color}-400 hover:border-${screen.color}-300 transition-all duration-300 cursor-pointer relative overflow-hidden`}>
-                <div className="absolute inset-0 bg-gradient-to-br from-black to-gray-900" />
-                <div className={`absolute inset-0 bg-${screen.color}-500/5 group-hover:bg-${screen.color}-500/10 transition-colors`} />
-                
-                {/* Corner brackets */}
-                <div className={`absolute top-2 left-2 w-4 h-4 border-t-2 border-l-2 border-${screen.color}-400`} />
-                <div className={`absolute top-2 right-2 w-4 h-4 border-t-2 border-r-2 border-${screen.color}-400`} />
-                <div className={`absolute bottom-2 left-2 w-4 h-4 border-b-2 border-l-2 border-${screen.color}-400`} />
-                <div className={`absolute bottom-2 right-2 w-4 h-4 border-b-2 border-r-2 border-${screen.color}-400`} />
-                
-                <div className="relative z-10 p-6 text-center">
-                  <div className="text-4xl mb-4 group-hover:scale-110 transition-transform">
-                    {screen.icon}
+          {/* Unity Hierarchy-style Module Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-7xl mx-auto">
+            {screens.map((screen, index) => (
+              <Link key={screen.id} href={screen.path}>
+                <div className={`game-ui-card group border-2 border-${screen.color}-400/60 hover:border-${screen.color}-400 transition-all duration-300 cursor-pointer relative`}
+                     style={{ animationDelay: `${index * 100}ms` }}>
+                  
+                  {/* Unity-style header bar */}
+                  <div className={`unity-tab active bg-${screen.color}-500/20 border-b border-${screen.color}-400/40 px-3 py-2`}>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <div className={`w-2 h-2 rounded-full bg-${screen.color}-400 animate-pulse`} />
+                        <span className="text-xs font-mono font-bold text-gray-300">{screen.category}</span>
+                      </div>
+                      <div className={`text-xs font-mono px-2 py-1 rounded bg-${screen.color}-500/30 text-${screen.color}-300`}>
+                        {screen.status}
+                      </div>
+                    </div>
                   </div>
-                  <h3 className={`font-mono font-bold text-${screen.color}-400 text-sm tracking-wider mb-2`}>
-                    {screen.name}
-                  </h3>
-                  <div className={`text-xs font-mono text-${screen.color}-300/60`}>
-                    [{screen.id.toUpperCase()}.EXE]
+                  
+                  {/* Module content */}
+                  <div className="p-6 text-center relative">
+                    {/* Unity gizmo-style icon */}
+                    <div className="unity-gizmo mb-4">
+                      <div className="text-4xl group-hover:scale-110 transition-transform duration-300 filter drop-shadow-lg">
+                        {screen.icon}
+                      </div>
+                    </div>
+                    
+                    <h3 className={`font-bold text-${screen.color}-300 text-base mb-2 tracking-wide`} style={{ fontFamily: 'Source Code Pro' }}>
+                      {screen.name}
+                    </h3>
+                    
+                    <div className={`text-xs font-mono text-${screen.color}-400/70 mb-4`}>
+                      {screen.id.toUpperCase()}_MODULE.dll
+                    </div>
+                    
+                    {/* Unity-style progress indicator */}
+                    <div className="w-full bg-gray-700 h-1 rounded-full overflow-hidden">
+                      <div className={`h-full bg-${screen.color}-400 transition-all duration-1000 group-hover:w-full`} 
+                           style={{ width: screen.status === 'ACTIVE' ? '100%' : screen.status === 'READY' ? '80%' : '60%' }} />
+                    </div>
+                    
+                    <div className={`text-xs font-mono text-${screen.color}-300/60 mt-2`}>
+                      {screen.status === 'ACTIVE' ? 'READY TO LAUNCH' : 
+                       screen.status === 'READY' ? 'SYSTEM LOADED' : 
+                       screen.status === 'LIVE' ? 'ONLINE SERVICE' : 
+                       screen.status === 'SYNC' ? 'SYNCING DATA' : 
+                       screen.status === 'DEV' ? 'IN DEVELOPMENT' :
+                       screen.status === 'ONLINE' ? 'NETWORK ACTIVE' :
+                       screen.status === 'BETA' ? 'BETA VERSION' : 'INITIALIZING...'}
+                    </div>
                   </div>
                 </div>
-                
-                {/* Scan lines */}
-                <div className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity" style={{
-                  backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 4px, rgba(255, 255, 255, 0.1) 4px, rgba(255, 255, 255, 0.1) 8px)'
-                }} />
-              </div>
-            </Link>
-          ))}
+              </Link>
+            ))}
+          </div>
         </div>
 
-        {/* Bottom Stats */}
-        <div className="flex justify-center mt-12 space-x-8">
-          <div className="bg-black border border-cyan-400 px-4 py-2 font-mono text-center">
-            <div className="text-xs text-cyan-400/60">ACCESS_LV</div>
-            <div className="text-2xl text-cyan-400 font-bold">01</div>
-          </div>
-          <div className="bg-black border border-yellow-400 px-4 py-2 font-mono text-center">
-            <div className="text-xs text-yellow-400/60">TOKENS</div>
-            <div className="text-2xl text-yellow-400 font-bold">0000</div>
-          </div>
-          <div className="bg-black border border-purple-400 px-4 py-2 font-mono text-center">
-            <div className="text-xs text-purple-400/60">XP</div>
-            <div className="text-2xl text-purple-400 font-bold">0000</div>
+        {/* Unity-style Bottom Status Bar */}
+        <div className="fixed bottom-0 left-0 right-0 unity-toolbar bg-gray-800/95 border-t border-cyan-400/50 backdrop-blur-sm z-50">
+          <div className="container mx-auto px-6 py-2">
+            <div className="flex items-center justify-between text-xs font-mono">
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-1 text-green-400">
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                  <span>RUNTIME: ACTIVE</span>
+                </div>
+                <div className="text-cyan-300">CARDANO: CONNECTED</div>
+                <div className="text-purple-300">LACE: READY</div>
+              </div>
+              
+              <div className="flex items-center space-x-4">
+                <span className="text-orange-300">GERBIL EDITION</span>
+                <div className="text-gray-400">•</div>
+                <span className="text-blue-300">BUILD {Date.now().toString().slice(-6)}</span>
+                <div className="text-gray-400">•</div>
+                <span className="text-cyan-300">{systemTime.toLocaleString('en-US', { 
+                  month: 'short', 
+                  day: '2-digit', 
+                  hour: '2-digit', 
+                  minute: '2-digit',
+                  hour12: false 
+                })}</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>

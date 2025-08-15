@@ -1,15 +1,68 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&family=JetBrains+Mono:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&family=JetBrains+Mono:wght@400;600&family=Space+Mono:wght@400;700&family=Source+Code+Pro:wght@400;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Unity-style animations for StoryScreen */
+/* Professional Unity-style UI System */
 @keyframes gridMove {
   0% {
     transform: translate(0, 0);
   }
   100% {
     transform: translate(60px, 60px);
+  }
+}
+
+/* Unity Inspector Panel Effects */
+@keyframes unityPulse {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(0, 255, 255, 0.3), 0 0 10px rgba(0, 255, 255, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5), 0 0 25px rgba(0, 255, 255, 0.2);
+  }
+}
+
+@keyframes unitySlideIn {
+  0% {
+    transform: translateX(-20px) scale(0.95);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes dataStreamRight {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100vw);
+    opacity: 0;
+  }
+}
+
+@keyframes consoleTyping {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+@keyframes hudBlink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
   }
 }
 
@@ -20,14 +73,37 @@
   }
   
   body {
-    font-family: 'Courier New', 'JetBrains Mono', monospace;
-    background: linear-gradient(45deg, #0a0a0a, #1a1a2e, #0f0f23);
+    font-family: 'Source Code Pro', 'JetBrains Mono', 'Space Mono', monospace;
+    background: linear-gradient(135deg, #000000 0%, #111111 25%, #0a0a0a 50%, #1a1a1a 75%, #000000 100%);
     background-size: 400% 400%;
-    animation: retroGradient 15s ease infinite;
+    animation: retroGradient 20s ease infinite;
     overflow-x: hidden;
     image-rendering: pixelated;
     image-rendering: -moz-crisp-edges;
     image-rendering: crisp-edges;
+    color: #e0e0e0;
+    letter-spacing: 0.5px;
+  }
+  
+  /* Unity-style scrollbars */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #1a1a1a;
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, #00ffff, #0080ff);
+    border-radius: 4px;
+    border: 1px solid #003d4d;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(45deg, #40ffff, #4090ff);
   }
 }
 
@@ -48,8 +124,236 @@
   20% { transform: translateX(2px) skewX(-1deg); }
   30% { transform: translateX(-1px) skewX(0.5deg); }
   40% { transform: translateX(1px) skewX(-0.5deg); }
-  50% { transform: translateX(-0.5px) skewX(0.2deg); }
-  60% { transform: translateX(0.5px) skewX(-0.2deg); }
+}
+
+/* Unity Professional UI Components */
+@layer components {
+  .unity-panel {
+    background: linear-gradient(145deg, #1a1a1a 0%, #2d2d30 50%, #1a1a1a 100%);
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    box-shadow: 
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 2px 4px rgba(0, 0, 0, 0.3),
+      0 0 10px rgba(0, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    position: relative;
+  }
+  
+  .unity-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.3), transparent);
+  }
+  
+  .unity-button {
+    background: linear-gradient(145deg, #2d2d30 0%, #393939 50%, #2d2d30 100%);
+    border: 1px solid #4a4a4a;
+    border-radius: 3px;
+    color: #e0e0e0;
+    font-family: 'Source Code Pro', monospace;
+    font-weight: 600;
+    padding: 8px 16px;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .unity-button:hover {
+    background: linear-gradient(145deg, #383838 0%, #454545 50%, #383838 100%);
+    border-color: #00ffff;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+    transform: translateY(-1px);
+  }
+  
+  .unity-button:active {
+    background: linear-gradient(145deg, #1a1a1a 0%, #2d2d30 50%, #1a1a1a 100%);
+    transform: translateY(0);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+  }
+  
+  .unity-input {
+    background: linear-gradient(145deg, #1a1a1a 0%, #252526 100%);
+    border: 1px solid #3c3c3c;
+    border-radius: 3px;
+    color: #e0e0e0;
+    font-family: 'Source Code Pro', monospace;
+    padding: 6px 10px;
+    transition: all 0.2s ease;
+  }
+  
+  .unity-input:focus {
+    border-color: #00ffff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+  }
+  
+  .unity-header {
+    background: linear-gradient(90deg, #1a1a1a 0%, #2d2d30 50%, #1a1a1a 100%);
+    border-bottom: 1px solid #4a4a4a;
+    padding: 8px 16px;
+    font-family: 'Source Code Pro', monospace;
+    font-weight: 700;
+    font-size: 12px;
+    color: #cccccc;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .unity-toolbar {
+    background: linear-gradient(180deg, #393939 0%, #2d2d30 100%);
+    border-bottom: 1px solid #1a1a1a;
+    padding: 4px 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .unity-inspector {
+    background: linear-gradient(145deg, #2d2d30 0%, #1a1a1a 100%);
+    border: 1px solid #4a4a4a;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  
+  .unity-hierarchy {
+    background: linear-gradient(180deg, #1a1a1a 0%, #252526 100%);
+    border-right: 1px solid #3c3c3c;
+    font-family: 'Source Code Pro', monospace;
+    font-size: 12px;
+  }
+  
+  .unity-console {
+    background: linear-gradient(180deg, #1a1a1a 0%, #0d1117 100%);
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    color: #00ff00;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .unity-console::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 255, 0, 0.03) 2px,
+      rgba(0, 255, 0, 0.03) 4px
+    );
+    pointer-events: none;
+  }
+  
+  .unity-tab {
+    background: linear-gradient(180deg, #393939 0%, #2d2d30 100%);
+    border: 1px solid #4a4a4a;
+    border-bottom: none;
+    border-radius: 4px 4px 0 0;
+    padding: 6px 12px;
+    font-family: 'Source Code Pro', monospace;
+    font-size: 11px;
+    color: #cccccc;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .unity-tab:hover {
+    background: linear-gradient(180deg, #454545 0%, #383838 100%);
+  }
+  
+  .unity-tab.active {
+    background: linear-gradient(180deg, #00ffff 0%, #0080ff 100%);
+    color: #000000;
+    font-weight: 700;
+  }
+  
+  .unity-gizmo {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .unity-gizmo::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #00ffff, #0080ff, #8000ff, #ff0080);
+    border-radius: 4px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+  }
+  
+  .unity-gizmo:hover::before {
+    opacity: 0.3;
+    animation: unityPulse 2s ease-in-out infinite;
+  }
+  
+  .data-stream {
+    position: absolute;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #00ffff, transparent);
+    animation: dataStreamRight 3s linear infinite;
+  }
+  
+  .hud-element {
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid rgba(0, 255, 255, 0.5);
+    border-radius: 2px;
+    backdrop-filter: blur(5px);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #00ffff;
+    padding: 4px 8px;
+    animation: hudBlink 3s ease-in-out infinite;
+  }
+  
+  .game-ui-card {
+    background: linear-gradient(145deg, rgba(26, 26, 26, 0.95) 0%, rgba(45, 45, 48, 0.9) 100%);
+    border: 1px solid rgba(60, 60, 60, 0.8);
+    border-radius: 6px;
+    backdrop-filter: blur(15px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .game-ui-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+    transition: left 0.5s ease;
+  }
+  
+  .game-ui-card:hover::before {
+    left: 100%;
+  }
+  
+  .game-ui-card:hover {
+    transform: translateY(-2px) scale(1.02);
+    border-color: rgba(0, 255, 255, 0.6);
+    box-shadow: 
+      0 8px 25px rgba(0, 0, 0, 0.5),
+      0 0 20px rgba(0, 255, 255, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
 }
 
 @layer components {

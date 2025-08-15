@@ -1,5 +1,5 @@
 import { Link } from 'wouter';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Shield, Key, Activity, Database, Cpu } from 'lucide-react';
 import { RetroWalletButton } from '@/components/RetroWalletButton';
 import { RetroWalletScanner } from '@/components/RetroWalletScanner';
 import { LemmiAvatar } from '@/components/LemmiAvatar';
@@ -9,128 +9,222 @@ export default function WalletScreen() {
   const { isConnected, address, balance, connectWallet } = useLaceWallet();
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Header */}
-      <div className="h-20 bg-gradient-to-r from-black via-gray-900 to-black border-b border-green-400 relative">
-        <div className="flex items-center justify-between h-full px-6">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white">
+      {/* Unity Professional Header */}
+      <div className="unity-toolbar bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 border-b-2 border-green-400 relative overflow-hidden">
+        <div className="data-stream top-0 w-20 opacity-20" style={{ animationDelay: '0.5s' }} />
+        <div className="data-stream top-2 w-16 opacity-30" style={{ animationDelay: '2s' }} />
+        
+        <div className="flex items-center justify-between h-16 px-6 relative z-10">
           <Link href="/">
-            <button className="flex items-center space-x-2 text-green-400 hover:text-green-300 font-mono">
+            <button className="unity-button flex items-center space-x-2 text-green-400 hover:text-green-300">
               <ArrowLeft className="w-4 h-4" />
-              <span>BACK TO HUB</span>
+              <span>RETURN TO HUB</span>
             </button>
           </Link>
-          <h1 className="text-xl font-orbitron font-black text-green-400 tracking-wider">
-            PLAYER ACCESS
-          </h1>
-          <div className="bg-black border border-green-400 px-3 py-1 font-mono text-xs">
-            ACCESS_CONTROL.EXE
+          
+          <div className="unity-header text-center">
+            <h1 className="text-lg font-bold text-green-300 tracking-wider" style={{ fontFamily: 'Source Code Pro' }}>
+              LACE WALLET INTERFACE
+            </h1>
+            <div className="text-xs text-green-400/70 font-mono">ACCESS_CONTROL_v2.1</div>
+          </div>
+          
+          <div className="hud-element">
+            <Shield className="w-4 h-4 mr-1" />
+            <span>SECURE</span>
           </div>
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="container mx-auto px-6 py-12">
-        <div className="max-w-4xl mx-auto">
+      {/* Unity Inspector-style Main Content */}
+      <div className="container mx-auto px-6 py-8">
+        <div className="max-w-6xl mx-auto">
           
-          {/* Player Access Panel */}
-          <div className="bg-black border-2 border-green-400 p-8 mb-8 relative">
-            <div className="absolute top-4 left-4 w-6 h-6 border-t-2 border-l-2 border-green-400" />
-            <div className="absolute top-4 right-4 w-6 h-6 border-t-2 border-r-2 border-green-400" />
-            <div className="absolute bottom-4 left-4 w-6 h-6 border-b-2 border-l-2 border-green-400" />
-            <div className="absolute bottom-4 right-4 w-6 h-6 border-b-2 border-r-2 border-green-400" />
+          {/* Primary Access Panel */}
+          <div className="unity-inspector mb-8">
+            <div className="unity-header">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                  <span>CARDANO WALLET MODULE</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Key className="w-3 h-3 text-green-400" />
+                  <span className="text-green-400 text-xs">AUTHENTICATION REQUIRED</span>
+                </div>
+              </div>
+            </div>
             
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-mono font-bold text-green-400 mb-2 tracking-wider">
-                🔗 ACCESS CONTROL
-              </h2>
-              <p className="text-green-300/70 font-mono">Gerbil NFT Verification</p>
+            <div className="p-6">
+              <div className="text-center mb-8">
+                <div className="unity-gizmo inline-block mb-4">
+                  <div className="text-6xl filter drop-shadow-lg">🔗</div>
+                </div>
+                <h2 className="text-2xl font-bold text-green-300 mb-2 tracking-wide" style={{ fontFamily: 'Source Code Pro' }}>
+                  LACE WALLET AUTHENTICATION
+                </h2>
+                <p className="text-gray-400 font-mono text-sm">Secure access to Cardano blockchain • Gerbil NFT verification</p>
+              </div>
+
+              {/* Connection Status Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                {/* Left Panel: Player Avatar & Status */}
+                <div className="game-ui-card p-6">
+                  <div className="unity-header mb-4">PLAYER IDENTITY</div>
+                  
+                  <div className="text-center mb-6">
+                    <div className="unity-gizmo inline-block mb-4">
+                      <div className="w-20 h-20 mx-auto">
+                        <LemmiAvatar variant="large" />
+                      </div>
+                    </div>
+                    
+                    <div className="font-mono text-sm text-gray-300 mb-4">
+                      GERBIL OPERATOR #{Math.floor(Math.random() * 9999).toString().padStart(4, '0')}
+                    </div>
+                    
+                    <div className={`hud-element inline-block ${isConnected ? 'text-green-400' : 'text-orange-400'}`}>
+                      <Activity className="w-3 h-3 mr-1" />
+                      <span className="text-xs font-bold">
+                        {isConnected ? 'AUTHENTICATED' : 'AWAITING AUTH'}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Player Stats */}
+                  <div className="space-y-3">
+                    <div className="unity-panel p-3">
+                      <div className="flex justify-between items-center text-xs font-mono">
+                        <span className="text-gray-400">ACCESS LEVEL:</span>
+                        <span className={isConnected ? 'text-green-400' : 'text-red-400'}>
+                          {isConnected ? 'BLOCKCHAIN_USER' : 'GUEST'}
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <div className="unity-panel p-3">
+                      <div className="flex justify-between items-center text-xs font-mono">
+                        <span className="text-gray-400">NFT STATUS:</span>
+                        <span className={isConnected ? 'text-green-400' : 'text-gray-500'}>
+                          {isConnected ? 'VERIFIED' : 'PENDING'}
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <div className="unity-panel p-3">
+                      <div className="flex justify-between items-center text-xs font-mono">
+                        <span className="text-gray-400">WALLET BALANCE:</span>
+                        <span className="text-purple-400">
+                          {balance ? `${balance} ADA` : '---.--- ADA'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Panel: Wallet Connection */}
+                <div className="game-ui-card p-6">
+                  <div className="unity-header mb-4">BLOCKCHAIN CONNECTION</div>
+                  
+                  {!isConnected ? (
+                    <div className="text-center">
+                      <div className="mb-6">
+                        <div className="text-4xl mb-4">🔐</div>
+                        <h3 className="text-lg text-orange-400 font-bold font-mono mb-2">
+                          LACE WALLET REQUIRED
+                        </h3>
+                        <p className="text-gray-400 text-sm font-mono mb-6">
+                          Connect your Lace wallet to access Gerbil NFTs and start claiming rewards
+                        </p>
+                      </div>
+                      
+                      <RetroWalletButton />
+                      
+                      <div className="mt-6 p-4 bg-yellow-600/20 border border-yellow-400/50 rounded">
+                        <div className="text-yellow-400 font-mono font-bold text-xs mb-2">⚠️ AUTHENTICATION REQUIRED</div>
+                        <div className="text-yellow-300/80 font-mono text-xs">
+                          Install and connect Lace wallet to access full functionality
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <div className="text-center mb-6">
+                        <div className="text-4xl mb-4 animate-pulse">✅</div>
+                        <h3 className="text-lg text-green-400 font-bold font-mono mb-2">
+                          CONNECTION ESTABLISHED
+                        </h3>
+                        <p className="text-gray-400 text-sm font-mono">
+                          Lace wallet authenticated • Blockchain access granted
+                        </p>
+                      </div>
+                      
+                      {/* Connected Wallet Details */}
+                      <div className="space-y-3">
+                        <div className="unity-console p-3">
+                          <div className="text-xs text-green-400 font-mono font-bold mb-1">WALLET ADDRESS:</div>
+                          <div className="text-xs text-green-300 font-mono break-all">
+                            {address ? `${address.slice(0, 16)}...${address.slice(-16)}` : 'Loading...'}
+                          </div>
+                        </div>
+                        
+                        <div className="unity-panel p-3">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center space-x-2">
+                              <Database className="w-4 h-4 text-cyan-400" />
+                              <span className="text-xs text-cyan-400 font-mono">CARDANO NETWORK</span>
+                            </div>
+                            <div className="text-xs text-green-400 font-mono">MAINNET</div>
+                          </div>
+                        </div>
+                        
+                        <div className="unity-panel p-3">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center space-x-2">
+                              <Cpu className="w-4 h-4 text-purple-400" />
+                              <span className="text-xs text-purple-400 font-mono">PROTOCOL</span>
+                            </div>
+                            <div className="text-xs text-green-400 font-mono">ACTIVE</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+              
+              {/* Security Scanner */}
+              {isConnected && (
+                <div className="mt-8">
+                  <div className="unity-panel p-6">
+                    <div className="unity-header mb-4">BLOCKCHAIN SCANNER</div>
+                    <RetroWalletScanner />
+                  </div>
+                </div>
+              )}
             </div>
+          </div>
 
-            {/* Wallet Status */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-6">
-                <div className="bg-gray-900 border border-green-500/50 p-6">
-                  <h3 className="font-mono font-bold text-green-400 mb-4 text-center">
-                    WALLET CONNECTION
-                  </h3>
-                  <div className="flex justify-center">
-                    <RetroWalletButton />
-                  </div>
-                </div>
-
-                <div className="bg-gray-900 border border-green-500/50 p-6">
-                  <h3 className="font-mono font-bold text-green-400 mb-4 text-center">
-                    NFT VERIFICATION
-                  </h3>
-                  <div className="flex justify-center">
-                    <RetroWalletScanner
-                      onConnect={connectWallet}
-                      isConnected={isConnected}
-                      address={address || undefined}
-                      hasNft={false}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-6">
-                {/* Access Level */}
-                <div className="bg-gray-900 border border-green-500/50 p-6">
-                  <h3 className="font-mono font-bold text-green-400 mb-4 text-center">
-                    ACCESS LEVEL
-                  </h3>
-                  <div className="text-center">
-                    <div className="text-4xl text-green-400 font-mono font-bold mb-2">
-                      {isConnected ? "GUEST" : "OFFLINE"}
-                    </div>
-                    <div className="text-sm text-green-300/70 font-mono">
-                      {isConnected ? "Limited access granted" : "No connection detected"}
-                    </div>
-                  </div>
-                </div>
-
-                {/* NFT Status */}
-                <div className="bg-gray-900 border border-green-500/50 p-6">
-                  <h3 className="font-mono font-bold text-green-400 mb-4 text-center">
-                    NFT STATUS
-                  </h3>
-                  <div className="text-center">
-                    <div className="text-2xl text-red-400 mb-2">❌</div>
-                    <div className="text-sm text-red-300 font-mono">
-                      NO NFT FOUND
-                    </div>
-                  </div>
-                </div>
-              </div>
+          {/* Additional System Info */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="game-ui-card p-4 text-center">
+              <div className="text-2xl mb-2">🛡️</div>
+              <div className="text-xs text-blue-400 font-mono font-bold mb-1">SECURITY LEVEL</div>
+              <div className="text-xs text-blue-300 font-mono">MAXIMUM</div>
             </div>
-
-            {/* Connection Instructions */}
-            {!isConnected && (
-              <div className="mt-8 bg-black/60 border border-green-400/30 p-6">
-                <h3 className="font-mono font-bold text-green-400 mb-4 text-center">
-                  CONNECTION PROTOCOL
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-                  <div className="font-mono text-sm">
-                    <div className="text-green-400 mb-2">STEP 1</div>
-                    <div className="text-green-300/70">Install Lace Wallet</div>
-                  </div>
-                  <div className="font-mono text-sm">
-                    <div className="text-green-400 mb-2">STEP 2</div>
-                    <div className="text-green-300/70">Connect to Network</div>
-                  </div>
-                  <div className="font-mono text-sm">
-                    <div className="text-green-400 mb-2">STEP 3</div>
-                    <div className="text-green-300/70">Verify Gerbil NFT</div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Active Pathways */}
-            <div className="mt-8 text-center">
-              <h3 className="font-mono font-bold text-green-400 mb-4">ACTIVE PATHWAYS</h3>
-              <div className="text-6xl text-green-400/20 font-mono">0/7</div>
+            
+            <div className="game-ui-card p-4 text-center">
+              <div className="text-2xl mb-2">⚡</div>
+              <div className="text-xs text-yellow-400 font-mono font-bold mb-1">CONNECTION SPEED</div>
+              <div className="text-xs text-yellow-300 font-mono">OPTIMAL</div>
+            </div>
+            
+            <div className="game-ui-card p-4 text-center">
+              <div className="text-2xl mb-2">🔥</div>
+              <div className="text-xs text-red-400 font-mono font-bold mb-1">SYSTEM STATUS</div>
+              <div className="text-xs text-red-300 font-mono">READY</div>
             </div>
           </div>
         </div>
