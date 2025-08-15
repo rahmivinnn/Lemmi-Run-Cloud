@@ -12,7 +12,9 @@ import {
   type GameScore,
   type InsertGameScore,
   type SkillReward,
-  type InsertSkillReward
+  type InsertSkillReward,
+  type WinksExchange,
+  type InsertWinksExchange
 } from "@shared/schema";
 import { randomUUID } from "crypto";
 
@@ -47,6 +49,9 @@ export interface IStorage {
   getSkillReward(walletAddress: string): Promise<SkillReward | undefined>;
   createSkillReward(reward: InsertSkillReward): Promise<SkillReward>;
   updateSkillReward(walletAddress: string, updates: Partial<SkillReward>): Promise<SkillReward | undefined>;
+  
+  getWinksExchanges(walletAddress: string): Promise<WinksExchange[]>;
+  createWinksExchange(exchange: InsertWinksExchange): Promise<WinksExchange>;
 }
 
 export class MemStorage implements IStorage {
@@ -57,6 +62,7 @@ export class MemStorage implements IStorage {
   private referrals: Map<string, Referral>;
   private gameScores: Map<string, GameScore>;
   private skillRewards: Map<string, SkillReward>;
+  private winksExchanges: Map<string, WinksExchange>;
 
   constructor() {
     this.users = new Map();
@@ -66,6 +72,7 @@ export class MemStorage implements IStorage {
     this.referrals = new Map();
     this.gameScores = new Map();
     this.skillRewards = new Map();
+    this.winksExchanges = new Map();
     
     // Initialize with Gerbil NFT data
     this.initializeGerbilNfts();
@@ -223,6 +230,7 @@ export class MemStorage implements IStorage {
       ...insertUser, 
       id,
       lemmiTokens: "0",
+      winks: 0,
       adaBalance: "0",
       createdAt: new Date(),
       updatedAt: new Date()
@@ -248,7 +256,8 @@ export class MemStorage implements IStorage {
     const id = randomUUID();
     const wallet: Wallet = { 
       ...insertWallet, 
-      id, 
+      id,
+      winks: insertWallet.winks || 0,
       createdAt: new Date()
     };
     this.wallets.set(wallet.address, wallet);
@@ -391,6 +400,23 @@ export class MemStorage implements IStorage {
     const updated = { ...reward, ...updates, updatedAt: new Date() };
     this.skillRewards.set(reward.id, updated);
     return updated;
+  }
+
+  async getWinksExchanges(walletAddress: string): Promise<WinksExchange[]> {
+    return Array.from(this.winksExchanges.values())
+      .filter(exchange => exchange.walletAddress === walletAddress)
+      .sort((a, b) => (b.createdAt?.getTime() || 0) - (a.createdAt?.getTime() || 0));
+  }
+
+  async createWinksExchange(insertExchange: InsertWinksExchange): Promise<WinksExchange> {
+    const id = randomUUID();
+    const exchange: WinksExchange = {
+      ...insertExchange,
+      id,
+      createdAt: new Date()
+    };
+    this.winksExchanges.set(id, exchange);
+    return exchange;
   }
 }
 

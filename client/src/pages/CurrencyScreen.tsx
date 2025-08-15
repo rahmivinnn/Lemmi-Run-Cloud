@@ -1,17 +1,25 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'wouter';
-import { ArrowLeft, TrendingUp, DollarSign, Zap, Coins, BarChart3, Activity } from 'lucide-react';
+import { ArrowLeft, TrendingUp, DollarSign, Zap, Coins, BarChart3, Activity, ArrowRightLeft, Eye, Calculator } from 'lucide-react';
 import { LemmiAvatar } from '@/components/LemmiAvatar';
 import { useLaceWallet } from '@/hooks/useLaceWallet';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { useToast } from '@/hooks/use-toast';
 
 export default function CurrencyScreen() {
   const { isConnected, balance } = useLaceWallet();
+  const { toast } = useToast();
   const [lemmiBalance] = useState(Math.floor(Math.random() * 5000) + 1000);
+  const [winksBalance] = useState(Math.floor(Math.random() * 15000) + 5000);
   const [lemmiPrice] = useState((Math.random() * 0.05 + 0.01).toFixed(6));
   const [dailyChange] = useState(((Math.random() - 0.5) * 20).toFixed(2));
   const [marketCap] = useState('$2.1M');
   const [volume24h] = useState('$156K');
   const [circulating] = useState('45.2M');
+  const [exchangeRate] = useState(100); // 100 winks = 1 LEMMI
+  const [winksToExchange, setWinksToExchange] = useState('');
+  const [isExchanging, setIsExchanging] = useState(false);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white">
@@ -188,6 +196,27 @@ export default function CurrencyScreen() {
                       </div>
                     </div>
                     
+                    {/* Winks Balance */}
+                    <div className="unity-panel p-4">
+                      <div className="flex justify-between items-center mb-2">
+                        <div className="flex items-center space-x-2">
+                          <div className="w-6 h-6 bg-yellow-500 rounded-full flex items-center justify-center">
+                            <Eye className="w-3 h-3 text-black" />
+                          </div>
+                          <span className="text-yellow-300 font-mono font-bold">WINKS</span>
+                        </div>
+                        <span className="text-yellow-400 text-xs font-mono">GAME CURRENCY</span>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-2xl font-bold text-yellow-300 font-mono">
+                          {winksBalance.toLocaleString()}
+                        </div>
+                        <div className="text-xs text-gray-400 font-mono">
+                          Earned through gameplay
+                        </div>
+                      </div>
+                    </div>
+                    
                     {/* ADA Balance */}
                     <div className="unity-panel p-4">
                       <div className="flex justify-between items-center mb-2">
@@ -211,6 +240,152 @@ export default function CurrencyScreen() {
                   </div>
                 </div>
 
+                {/* Winks Exchange */}
+                <div className="game-ui-card p-6 border-yellow-400/60">
+                  <div className="unity-header mb-4">
+                    <div className="flex items-center space-x-2">
+                      <ArrowRightLeft className="w-4 h-4 text-yellow-400" />
+                      <span>WINKS EXCHANGE</span>
+                    </div>
+                  </div>
+                  
+                  <div className="text-center mb-6">
+                    <div className="text-4xl mb-2">🪙</div>
+                    <h3 className="text-lg font-bold text-yellow-300 mb-2" style={{ fontFamily: 'Source Code Pro' }}>
+                      CONVERT WINKS TO LEMMI
+                    </h3>
+                    <p className="text-gray-400 font-mono text-sm">
+                      Exchange your gameplay rewards for valuable LEMMI tokens
+                    </p>
+                  </div>
+
+                  {/* Exchange Rate Display */}
+                  <div className="unity-panel p-4 mb-6 bg-yellow-600/10 border border-yellow-400/30">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <Calculator className="w-4 h-4 text-yellow-400" />
+                        <span className="text-yellow-300 font-mono font-bold">EXCHANGE RATE</span>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-lg font-bold text-yellow-300 font-mono">
+                          {exchangeRate} WINKS = 1 LEMMI
+                        </div>
+                        <div className="text-xs text-gray-400 font-mono">
+                          Current market rate
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Exchange Form */}
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-mono text-yellow-400 mb-2">
+                        WINKS TO EXCHANGE
+                      </label>
+                      <Input
+                        type="number"
+                        placeholder={`Max: ${winksBalance.toLocaleString()}`}
+                        value={winksToExchange}
+                        onChange={(e) => setWinksToExchange(e.target.value)}
+                        className="unity-input text-center text-lg font-mono"
+                        max={winksBalance}
+                      />
+                    </div>
+                    
+                    {winksToExchange && (
+                      <div className="unity-panel p-3 bg-purple-600/10 border border-purple-400/30">
+                        <div className="text-center">
+                          <div className="text-xs text-purple-400 font-mono mb-1">YOU WILL RECEIVE</div>
+                          <div className="text-xl font-bold text-purple-300 font-mono">
+                            {(parseInt(winksToExchange) / exchangeRate).toFixed(2)} LEMMI
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    
+                    <div className="flex space-x-2">
+                      <Button
+                        onClick={() => setWinksToExchange(String(Math.floor(winksBalance * 0.25)))}
+                        className="flex-1 unity-button text-xs"
+                        variant="outline"
+                      >
+                        25%
+                      </Button>
+                      <Button
+                        onClick={() => setWinksToExchange(String(Math.floor(winksBalance * 0.5)))}
+                        className="flex-1 unity-button text-xs"
+                        variant="outline"
+                      >
+                        50%
+                      </Button>
+                      <Button
+                        onClick={() => setWinksToExchange(String(Math.floor(winksBalance * 0.75)))}
+                        className="flex-1 unity-button text-xs"
+                        variant="outline"
+                      >
+                        75%
+                      </Button>
+                      <Button
+                        onClick={() => setWinksToExchange(String(winksBalance))}
+                        className="flex-1 unity-button text-xs"
+                        variant="outline"
+                      >
+                        MAX
+                      </Button>
+                    </div>
+                    
+                    <Button
+                      onClick={async () => {
+                        if (!winksToExchange || parseInt(winksToExchange) <= 0) {
+                          toast({
+                            title: "Invalid Amount",
+                            description: "Please enter a valid amount of winks to exchange",
+                            variant: "destructive"
+                          });
+                          return;
+                        }
+                        
+                        if (parseInt(winksToExchange) > winksBalance) {
+                          toast({
+                            title: "Insufficient Winks",
+                            description: "You don't have enough winks for this exchange",
+                            variant: "destructive"
+                          });
+                          return;
+                        }
+                        
+                        setIsExchanging(true);
+                        
+                        // Simulate exchange process
+                        await new Promise(resolve => setTimeout(resolve, 2000));
+                        
+                        toast({
+                          title: "Exchange Successful!",
+                          description: `Converted ${parseInt(winksToExchange).toLocaleString()} winks to ${(parseInt(winksToExchange) / exchangeRate).toFixed(2)} LEMMI`,
+                        });
+                        
+                        setWinksToExchange('');
+                        setIsExchanging(false);
+                      }}
+                      disabled={!winksToExchange || parseInt(winksToExchange) <= 0 || parseInt(winksToExchange) > winksBalance || isExchanging}
+                      className="w-full unity-button bg-yellow-600/20 border-yellow-400 text-yellow-300 hover:bg-yellow-600/40 font-mono font-bold py-3"
+                    >
+                      {isExchanging ? (
+                        <div className="flex items-center space-x-2">
+                          <div className="animate-spin w-4 h-4 border-2 border-yellow-400 border-t-transparent rounded-full" />
+                          <span>PROCESSING EXCHANGE...</span>
+                        </div>
+                      ) : (
+                        <div className="flex items-center space-x-2">
+                          <ArrowRightLeft className="w-4 h-4" />
+                          <span>EXCHANGE WINKS TO LEMMI</span>
+                        </div>
+                      )}
+                    </Button>
+                  </div>
+                </div>
+
                 {/* Token Utilities */}
                 <div className="game-ui-card p-6">
                   <div className="unity-header mb-4">TOKEN UTILITIES</div>
@@ -221,7 +396,17 @@ export default function CurrencyScreen() {
                         <div className="text-lg">🎮</div>
                         <div>
                           <div className="text-sm text-green-300 font-mono font-bold">GAMING REWARDS</div>
-                          <div className="text-xs text-gray-400 font-mono">Earn LEMMI by playing games</div>
+                          <div className="text-xs text-gray-400 font-mono">Earn winks & LEMMI by playing games</div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="unity-panel p-3">
+                      <div className="flex items-center space-x-3">
+                        <div className="text-lg">🪙</div>
+                        <div>
+                          <div className="text-sm text-yellow-300 font-mono font-bold">WINKS EXCHANGE</div>
+                          <div className="text-xs text-gray-400 font-mono">Convert gameplay winks to LEMMI tokens</div>
                         </div>
                       </div>
                     </div>

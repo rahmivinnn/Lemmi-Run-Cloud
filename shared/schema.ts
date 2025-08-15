@@ -10,6 +10,7 @@ export const users = pgTable("users", {
   password: text("password").notNull(),
   walletAddress: text("wallet_address"),
   lemmiTokens: decimal("lemmi_tokens", { precision: 18, scale: 8 }).default("0"),
+  winks: integer("winks").default(0),
   adaBalance: decimal("ada_balance", { precision: 18, scale: 6 }).default("0"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
@@ -21,6 +22,7 @@ export const wallets = pgTable("wallets", {
   chain: text("chain").notNull(), // 'cardano' for Lace wallet
   hasGerbilNft: boolean("has_gerbil_nft").default(false),
   lemmiBalance: integer("lemmi_balance").default(0),
+  winks: integer("winks").default(0),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -99,11 +101,23 @@ export const cardanoTransactionsRelations = relations(cardanoTransactions, ({ on
   }),
 }));
 
+// Winks Exchange Table
+export const winksExchanges = pgTable("winks_exchanges", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  walletAddress: text("wallet_address").notNull(),
+  winksAmount: integer("winks_amount").notNull(),
+  lemmiAmount: integer("lemmi_amount").notNull(),
+  exchangeRate: decimal("exchange_rate", { precision: 8, scale: 4 }).notNull(), // How many winks per 1 LEMMI
+  status: text("status").default("completed").notNull(), // completed, pending, failed
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 // Insert schemas
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   password: true,
   walletAddress: true,
+  winks: true,
 });
 
 export const insertWalletSchema = createInsertSchema(wallets).pick({
@@ -144,6 +158,11 @@ export const insertSkillRewardSchema = createInsertSchema(skillRewards).pick({
   totalRewards: true,
 });
 
+export const insertWinksExchangeSchema = createInsertSchema(winksExchanges).omit({
+  id: true,
+  createdAt: true,
+});
+
 // Types
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
@@ -159,6 +178,8 @@ export type InsertGameScore = z.infer<typeof insertGameScoreSchema>;
 export type GameScore = typeof gameScores.$inferSelect;
 export type InsertSkillReward = z.infer<typeof insertSkillRewardSchema>;
 export type SkillReward = typeof skillRewards.$inferSelect;
+export type InsertWinksExchange = z.infer<typeof insertWinksExchangeSchema>;
+export type WinksExchange = typeof winksExchanges.$inferSelect;
 
 // Wallet interface for frontend
 export interface WalletState {
@@ -166,23 +187,26 @@ export interface WalletState {
   isConnected: boolean;
   hasGerbilNft: boolean;
   lemmiBalance: number;
+  winks: number;
   chain: 'cardano' | null;
 }
 
 // Lace Wallet API Types for Cardano
+interface LaceAPI {
+  enable(): Promise<any>;
+  isEnabled(): Promise<boolean>;
+  getUsedAddresses(): Promise<string[]>;
+  getUnusedAddresses(): Promise<string[]>;
+  getBalance(): Promise<string>;
+  getUtxos(): Promise<any[]>;
+  signTx(tx: string): Promise<string>;
+  submitTx(tx: string): Promise<string>;
+}
+
 declare global {
   interface Window {
     cardano?: {
-      lace?: {
-        enable(): Promise<any>;
-        isEnabled(): Promise<boolean>;
-        getUsedAddresses(): Promise<string[]>;
-        getUnusedAddresses(): Promise<string[]>;
-        getBalance(): Promise<string>;
-        getUtxos(): Promise<any[]>;
-        signTx(tx: string): Promise<string>;
-        submitTx(tx: string): Promise<string>;
-      };
+      lace?: LaceAPI;
     };
   }
 }

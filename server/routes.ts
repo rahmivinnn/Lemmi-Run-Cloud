@@ -9,7 +9,8 @@ import {
   insertCardanoTransactionSchema,
   insertReferralSchema, 
   insertGameScoreSchema, 
-  insertSkillRewardSchema 
+  insertSkillRewardSchema,
+  insertWinksExchangeSchema
 } from "@shared/schema";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -283,6 +284,132 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(skills);
     } catch (error) {
       res.status(500).json({ error: "Failed to update skill rewards" });
+    }
+  });
+
+  // Get winks balance for wallet
+  app.get("/api/wallet/:address/winks", async (req, res) => {
+    try {
+      const { address } = req.params;
+      const wallet = await storage.getWallet(address);
+      
+      if (!wallet) {
+        return res.json({ balance: 0 });
+      }
+      
+      res.json({ balance: wallet.winks || 0 });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch winks balance" });
+    }
+  });
+
+  // Exchange winks to LEMMI
+  app.post("/api/exchange/winks-to-lemmi", async (req, res) => {
+    try {
+      const { walletAddress, winksAmount } = req.body;
+      
+      if (!walletAddress || !winksAmount || winksAmount <= 0) {
+        return res.status(400).json({ error: "Invalid exchange data" });
+      }
+      
+      const wallet = await storage.getWallet(walletAddress);
+      
+      if (!wallet) {
+        return res.status(404).json({ error: "Wallet not found" });
+      }
+      
+      const currentWinks = wallet.winks || 0;
+      
+      if (currentWinks < winksAmount) {
+        return res.status(400).json({ error: "Insufficient winks balance" });
+      }
+      
+      // Exchange rate: 100 winks = 1 LEMMI
+      const exchangeRate = 100;
+      const lemmiAmount = Math.floor(winksAmount / exchangeRate);
+      
+      if (lemmiAmount <= 0) {
+        return res.status(400).json({ error: "Minimum exchange is 100 winks" });
+      }
+      
+      // Create exchange record
+      const exchangeData = {
+        walletAddress,
+        winksAmount,
+        lemmiAmount,
+        exchangeRate: exchangeRate.toString(),
+        status: "completed"
+      };
+      
+      const exchange = await storage.createWinksExchange(exchangeData);
+      
+      // Update wallet balances
+      const updatedWallet = await storage.updateWallet(walletAddress, {
+        ...wallet,
+        winks: currentWinks - winksAmount,
+        lemmiBalance: (wallet.lemmiBalance || 0) + lemmiAmount
+      });
+      
+      res.json({
+        exchange,
+        newWinksBalance: updatedWallet.winks,
+        newLemmiBalance: updatedWallet.lemmiBalance,
+        exchangedAmount: lemmiAmount
+      });
+    } catch (error) {
+      console.error('Exchange error:', error);
+      res.status(500).json({ error: "Failed to process exchange" });
+    }
+  });
+
+  // Get exchange history for wallet
+  app.get("/api/exchange/:walletAddress/history", async (req, res) => {
+    try {
+      const { walletAddress } = req.params;
+      const exchanges = await storage.getWinksExchanges(walletAddress);
+      
+      res.json({ 
+        exchanges,
+        totalExchanged: exchanges.reduce((sum, ex) => sum + ex.winksAmount, 0),
+        totalLemmiReceived: exchanges.reduce((sum, ex) => sum + ex.lemmiAmount, 0)
+      });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch exchange history" });
+    }
+  });
+
+  // Add winks to wallet (for testing/gaming rewards)
+  app.post("/api/wallet/:address/add-winks", async (req, res) => {
+    try {
+      const { address } = req.params;
+      const { amount } = req.body;
+      
+      if (!amount || amount <= 0) {
+        return res.status(400).json({ error: "Invalid winks amount" });
+      }
+      
+      const wallet = await storage.getWallet(address);
+      
+      if (!wallet) {
+        // Create wallet if it doesn't exist
+        const newWallet = await storage.createWallet({
+          address,
+          chain: 'cardano',
+          hasGerbilNft: false,
+          lemmiBalance: 0,
+          winks: amount
+        });
+        return res.json({ balance: newWallet.winks });
+      }
+      
+      const updatedWallet = await storage.updateWallet(address, {
+        ...wallet,
+        winks: (wallet.winks || 0) + amount
+      });
+      
+      res.json({ balance: updatedWallet.winks });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to add winks" });
     }
   });
 
