@@ -782,14 +782,14 @@ export function Game3DRunner({ character, onGameEnd, onBack }: Game3DRunnerProps
         }
         
         // Animate glow effect
-        const glow = characterGroup.children.find(child => 
+        const glowEffect = characterGroup.children.find(child => 
           child instanceof THREE.Mesh && 
           child.geometry instanceof THREE.SphereGeometry &&
           child.position.y === 1.2
         );
-        if (glow) {
-          glow.material.opacity = 0.4 + Math.sin(runTime * 4) * 0.2;
-          glow.scale.setScalar(1 + Math.sin(runTime * 5) * 0.3);
+        if (glowEffect) {
+          glowEffect.material.opacity = 0.4 + Math.sin(runTime * 4) * 0.2;
+          glowEffect.scale.setScalar(1 + Math.sin(runTime * 5) * 0.3);
         }
       }
 
