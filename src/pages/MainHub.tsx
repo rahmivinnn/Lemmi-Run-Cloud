@@ -22,13 +22,12 @@ export default function MainHub() {
   const screens = [
     { id: 'wallet', name: 'LACE WALLET', icon: '🔗', path: '/wallet', color: 'green', category: 'CORE', status: 'ACTIVE' },
     { id: 'currency', name: 'CURRENCY SYS', icon: '💎', path: '/currency', color: 'purple', category: 'ECONOMY', status: 'LIVE' },
-    { id: 'inventory', name: 'INVENTORY MGR', icon: '🎒', path: '/inventory', color: 'blue', category: 'ASSETS', status: 'READY' },
+    { id: 'mission', name: 'START MISSION', icon: '🚀', path: '/game', color: 'green', category: 'MISSION', status: 'ACTIVE' },
     { id: 'collection', name: 'NFT CLAIMS', icon: '🖼️', path: '/collection', color: 'orange', category: 'BLOCKCHAIN', status: 'SYNC' },
     { id: 'skills', name: 'SKILL TREE', icon: '⚡', path: '/skills', color: 'yellow', category: 'PROGRESSION', status: 'DEV' },
     { id: 'network', name: 'CARDANO NET', icon: '🌐', path: '/network', color: 'cyan', category: 'PROTOCOL', status: 'ONLINE' },
     { id: 'chaos', name: 'CHAOS ENGINE', icon: '🔥', path: '/chaos', color: 'red', category: 'EXPERIMENTAL', status: 'BETA' },
-    { id: 'game', name: 'ARENA CORE', icon: '🎮', path: '/game', color: 'green', category: 'GAMEPLAY', status: 'READY' },
-    { id: 'lemmi-run', name: 'LEMMI RUN 3D', icon: '🐹', path: '/lemmi-run', color: 'orange', category: 'GAMEPLAY', status: 'LIVE' }
+    { id: 'game', name: 'ARENA CORE', icon: '🎮', path: '/game', color: 'green', category: 'GAMEPLAY', status: 'READY' }
   ];
 
   return (
@@ -139,7 +138,7 @@ export default function MainHub() {
               
               {/* Module Categories */}
               <div className="flex justify-center space-x-6 mb-6">
-                {['CORE', 'ECONOMY', 'BLOCKCHAIN', 'GAMEPLAY'].map(category => {
+                {['CORE', 'ECONOMY', 'BLOCKCHAIN', 'MISSION', 'GAMEPLAY'].map(category => {
                   const moduleCount = screens.filter(s => s.category === category).length;
                   return (
                     <div key={category} className="hud-element">
