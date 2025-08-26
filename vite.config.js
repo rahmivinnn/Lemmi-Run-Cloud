@@ -8,7 +8,8 @@ export default defineConfig({
   root: '.', // Set root to current directory
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src')
+      '@': path.resolve(__dirname, './src'),
+      '@assets': path.resolve(__dirname, './attached_assets')
     }
   },
   build: {
