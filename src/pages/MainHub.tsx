@@ -39,42 +39,42 @@ export default function MainHub() {
         <div className="data-stream top-0 w-32 opacity-30" style={{ animationDelay: '0s' }} />
         <div className="data-stream top-1 w-24 opacity-20" style={{ animationDelay: '1s' }} />
         
-        <div className="flex items-center justify-between h-20 px-6 relative z-10">
+        <div className="flex items-center justify-between h-16 md:h-20 px-3 md:px-6 relative z-10">
           {/* Left: Project Info & Avatar */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 md:space-x-4">
             <div className="unity-gizmo">
-              <div className="w-16 h-16 unity-panel p-1">
+              <div className="w-12 h-12 md:w-16 md:h-16 unity-panel p-1">
                 <LemmiAvatar variant="small" className="rounded" />
                 <div className="absolute -top-0.5 -left-0.5 w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
                 <div className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-blue-800 rounded-full animate-pulse" />
               </div>
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white tracking-wider" style={{ fontFamily: 'Source Code Pro' }}>
+              <h1 className="text-lg md:text-xl font-bold text-white tracking-wider" style={{ fontFamily: 'Source Code Pro' }}>
                 LEMMI.RUN
               </h1>
-              <div className="flex items-center space-x-2 text-xs font-mono">
+              <div className="flex items-center space-x-1 md:space-x-2 text-xs font-mono">
                 <span className="text-green-400">v2.1.2006</span>
-                <span className="text-gray-400">•</span>
-                <span className="text-white">MAIN_HUB</span>
-                <span className="text-gray-400">•</span>
-                <span className="text-orange-400">{frameRate}fps</span>
+                <span className="text-gray-400 hidden sm:inline">•</span>
+                <span className="text-white hidden sm:inline">MAIN_HUB</span>
+                <span className="text-gray-400 hidden md:inline">•</span>
+                <span className="text-orange-400 hidden md:inline">{frameRate}fps</span>
               </div>
             </div>
           </div>
           
           {/* Center: System Status */}
-          <div className="unity-console px-4 py-2 max-w-md">
+          <div className="unity-console px-2 md:px-4 py-1 md:py-2 max-w-xs md:max-w-md hidden lg:block">
             <div className="flex items-center space-x-2 text-xs">
               <Activity className="w-3 h-3 text-green-400" />
-              <span className="text-green-300 font-mono">{terminalText}</span>
+              <span className="text-green-300 font-mono truncate">{terminalText}</span>
             </div>
           </div>
           
           {/* Right: System Stats & Wallet */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 md:space-x-4">
             {/* System Monitor */}
-            <div className="unity-panel px-3 py-2 text-xs font-mono">
+            <div className="unity-panel px-2 md:px-3 py-1 md:py-2 text-xs font-mono hidden xl:block">
               <div className="grid grid-cols-2 gap-2">
                 <div className="flex items-center space-x-1">
                   <Cpu className="w-3 h-3 text-blue-400" />
@@ -93,6 +93,12 @@ export default function MainHub() {
                   <span className="text-blue-700">{systemTime.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' })}</span>
                 </div>
               </div>
+            </div>
+            
+            {/* Mobile System Status */}
+            <div className="xl:hidden flex items-center space-x-2 text-xs font-mono">
+              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+              <span className="text-blue-300 hidden sm:inline">{cpuUsage}%</span>
             </div>
             
             <RetroWalletButton />
@@ -147,39 +153,39 @@ export default function MainHub() {
           </div>
 
           {/* Unity Hierarchy-style Module Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 lg:gap-6 max-w-7xl mx-auto">
             {screens.map((screen, index) => (
               <Link key={screen.id} href={screen.path}>
                 <div className={`game-ui-card group border-2 border-${screen.color}-400/60 hover:border-${screen.color}-400 transition-all duration-300 cursor-pointer relative`}
                      style={{ animationDelay: `${index * 100}ms` }}>
                   
                   {/* Unity-style header bar */}
-                  <div className={`unity-tab active bg-${screen.color}-500/20 border-b border-${screen.color}-400/40 px-3 py-2`}>
+                  <div className={`unity-tab active bg-${screen.color}-500/20 border-b border-${screen.color}-400/40 px-2 md:px-3 py-1.5 md:py-2`}>
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-center space-x-1 md:space-x-2">
                         <div className={`w-2 h-2 rounded-full bg-${screen.color}-400 animate-pulse`} />
-                        <span className="text-xs font-mono font-bold text-gray-300">{screen.category}</span>
+                        <span className="text-xs font-mono font-bold text-gray-300 truncate">{screen.category}</span>
                       </div>
-                      <div className={`text-xs font-mono px-2 py-1 rounded bg-${screen.color}-500/30 text-${screen.color}-300`}>
+                      <div className={`text-xs font-mono px-1.5 md:px-2 py-0.5 md:py-1 rounded bg-${screen.color}-500/30 text-${screen.color}-300`}>
                         {screen.status}
                       </div>
                     </div>
                   </div>
                   
                   {/* Module content */}
-                  <div className="p-6 text-center relative">
+                  <div className="p-3 md:p-4 lg:p-6 text-center relative">
                     {/* Unity gizmo-style icon */}
-                    <div className="unity-gizmo mb-4">
-                      <div className="text-4xl group-hover:scale-110 transition-transform duration-300 filter drop-shadow-lg">
+                    <div className="unity-gizmo mb-2 md:mb-4">
+                      <div className="text-2xl md:text-3xl lg:text-4xl group-hover:scale-110 transition-transform duration-300 filter drop-shadow-lg">
                         {screen.icon}
                       </div>
                     </div>
                     
-                    <h3 className={`font-bold text-${screen.color}-300 text-base mb-2 tracking-wide`} style={{ fontFamily: 'Source Code Pro' }}>
+                    <h3 className={`font-bold text-${screen.color}-300 text-sm md:text-base mb-1 md:mb-2 tracking-wide`} style={{ fontFamily: 'Source Code Pro' }}>
                       {screen.name}
                     </h3>
                     
-                    <div className={`text-xs font-mono text-${screen.color}-400/70 mb-4`}>
+                    <div className={`text-xs font-mono text-${screen.color}-400/70 mb-2 md:mb-4 truncate`}>
                       {screen.id.toUpperCase()}_MODULE.dll
                     </div>
                     
@@ -207,22 +213,23 @@ export default function MainHub() {
 
         {/* Unity-style Bottom Status Bar */}
         <div className="fixed bottom-0 left-0 right-0 unity-toolbar bg-gray-800/95 border-t border-blue-800/50 backdrop-blur-sm z-50">
-          <div className="container mx-auto px-6 py-2">
+          <div className="container mx-auto px-3 md:px-6 py-2">
             <div className="flex items-center justify-between text-xs font-mono">
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2 md:space-x-4">
                 <div className="flex items-center space-x-1 text-green-400">
                   <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                  <span>RUNTIME: ACTIVE</span>
+                  <span className="hidden sm:inline">RUNTIME: ACTIVE</span>
+                  <span className="sm:hidden">ACTIVE</span>
                 </div>
-                <div className="text-blue-700">CARDANO: CONNECTED</div>
-                <div className="text-purple-300">LACE: READY</div>
+                <div className="text-blue-700 hidden md:inline">CARDANO: CONNECTED</div>
+                <div className="text-purple-300 hidden lg:inline">LACE: READY</div>
               </div>
               
-              <div className="flex items-center space-x-4">
-                <span className="text-orange-300">GERBIL EDITION</span>
-                <div className="text-gray-400">•</div>
-                <span className="text-blue-300">BUILD {Date.now().toString().slice(-6)}</span>
-                <div className="text-gray-400">•</div>
+              <div className="flex items-center space-x-2 md:space-x-4">
+                <span className="text-orange-300 hidden md:inline">GERBIL EDITION</span>
+                <div className="text-gray-400 hidden md:inline">•</div>
+                <span className="text-blue-300 hidden sm:inline">BUILD {Date.now().toString().slice(-6)}</span>
+                <div className="text-gray-400 hidden sm:inline">•</div>
                 <span className="text-blue-700">{systemTime.toLocaleString('en-US', { 
                   month: 'short', 
                   day: '2-digit', 

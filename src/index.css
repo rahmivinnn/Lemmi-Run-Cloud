@@ -74,15 +74,14 @@
   
   body {
     font-family: 'Source Code Pro', 'JetBrains Mono', 'Space Mono', monospace;
-    background: linear-gradient(135deg, #000000 0%, #111111 25%, #0a0a0a 50%, #1a1a1a 75%, #000000 100%);
-    background-size: 400% 400%;
-    animation: retroGradient 20s ease infinite;
+    background: linear-gradient(135deg, #000000 0%, #111111 50%, #000000 100%);
+    background-attachment: fixed;
     overflow-x: hidden;
     image-rendering: pixelated;
     image-rendering: -moz-crisp-edges;
     image-rendering: crisp-edges;
     color: #e0e0e0;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
   }
   
   /* Unity-style scrollbars */
@@ -107,10 +106,48 @@
   }
 }
 
-@keyframes retroGradient {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+/* Simplified animations for better performance */
+
+/* Responsive Grid Utilities */
+@layer utilities {
+  .grid-responsive {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+  
+  @media (min-width: 640px) {
+    .grid-responsive {
+      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .grid-responsive {
+      gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    }
+  }
+  
+  .container-responsive {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  
+  @media (min-width: 640px) {
+    .container-responsive {
+      padding: 0 1.5rem;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .container-responsive {
+      padding: 0 2rem;
+    }
+  }
 }
 
 @keyframes scanlines {
@@ -120,10 +157,7 @@
 
 @keyframes glitch {
   0%, 100% { transform: translateX(0); }
-  10% { transform: translateX(-2px) skewX(1deg); }
-  20% { transform: translateX(2px) skewX(-1deg); }
-  30% { transform: translateX(-1px) skewX(0.5deg); }
-  40% { transform: translateX(1px) skewX(-0.5deg); }
+  50% { transform: translateX(-1px) skewX(0.5deg); }
 }
 
 /* Unity Professional UI Components */
@@ -134,9 +168,8 @@
     border-radius: 4px;
     box-shadow: 
       inset 0 1px 0 rgba(255, 255, 255, 0.1),
-      0 2px 4px rgba(0, 0, 0, 0.3),
-      0 0 10px rgba(0, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
+      0 2px 4px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(5px);
     position: relative;
   }
   
@@ -238,21 +271,23 @@
     overflow: hidden;
   }
   
-  .unity-console::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 100%;
-    background: repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(0, 255, 0, 0.03) 2px,
-      rgba(0, 255, 0, 0.03) 4px
-    );
-    pointer-events: none;
+  @media (min-width: 768px) {
+    .unity-console::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 255, 0, 0.02) 2px,
+        rgba(0, 255, 0, 0.02) 4px
+      );
+      pointer-events: none;
+    }
   }
   
   .unity-tab {
@@ -283,18 +318,24 @@
     display: inline-block;
   }
   
-  .unity-gizmo::before {
-    content: '';
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    background: linear-gradient(45deg, #00ffff, #0080ff, #8000ff, #ff0080);
-    border-radius: 4px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: -1;
+  @media (min-width: 768px) {
+    .unity-gizmo::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, #00ffff, #0080ff);
+      border-radius: 4px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+    }
+    
+    .unity-gizmo:hover::before {
+      opacity: 0.3;
+    }
   }
   
   .unity-gizmo:hover::before {
