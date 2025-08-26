@@ -15,6 +15,7 @@ import NetworkScreen from "@/pages/NetworkScreen";
 import ChaosScreen from "@/pages/ChaosScreen";
 import TransactionsScreen from "@/pages/TransactionsScreen";
 import GameSystem from "@/pages/GameSystem";
+import LemmiRunGame from "@/pages/LemmiRunGame";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -30,6 +31,7 @@ function Router() {
       <Route path="/chaos" component={ChaosScreen} />
       <Route path="/transactions" component={TransactionsScreen} />
       <Route path="/game" component={GameSystem} />
+      <Route path="/lemmi-run" component={LemmiRunGame} />
       <Route component={NotFound} />
     </Switch>
   );

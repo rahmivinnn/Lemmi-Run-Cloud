@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neural Interface - Lemmi Protocol</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'orbitron': ['Orbitron', 'sans-serif'],
+                        'rajdhani': ['Rajdhani', 'sans-serif'],
+                        'mono': ['JetBrains Mono', 'monospace']
+                    },
+                    colors: {
+                        cyber: {
+                            cyan: '#00FFFF',
+                            magenta: '#FF00FF',
+                            green: '#00FF88',
+                            gold: '#FFD700',
+                            blue: '#1A1A2E',
+                            dark: '#0A0A0F',
+                            purple: '#16213E'
+                        }
+                    },
+                    animation: {
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'pulse-slow': 'pulse 3s ease-in-out infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'scanline': 'scanline 2s linear infinite',
+                        'glitch': 'glitch 0.3s ease-in-out infinite alternate',
+                        'typewriter': 'typewriter 3s steps(40) infinite'
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px #00FFFF, 0 0 10px #00FFFF, 0 0 15px #00FFFF; }
+            100% { box-shadow: 0 0 10px #00FFFF, 0 0 20px #00FFFF, 0 0 30px #00FFFF; }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100vh); }
+        }
+        
+        @keyframes glitch {
+            0% { transform: translateX(0); }
+            20% { transform: translateX(-2px); }
+            40% { transform: translateX(2px); }
+            60% { transform: translateX(-1px); }
+            80% { transform: translateX(1px); }
+            100% { transform: translateX(0); }
+        }
+        
+        @keyframes typewriter {
+            0%, 50% { border-right-color: transparent; }
+            51%, 100% { border-right-color: #00FFFF; }
+        }
+        
+        .glass-morph {
+            background: rgba(26, 26, 46, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+        }
+        
+        .neon-border {
+            border: 1px solid #00FFFF;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+        }
+        
+        .scanline-overlay::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00FFFF, transparent);
+            animation: scanline 2s linear infinite;
+            z-index: 1;
+        }
+        
+        .terminal-text {
+            border-right: 2px solid #00FFFF;
+            animation: typewriter 3s steps(40) infinite;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0A0A0F 0%, #1A1A2E 50%, #16213E 100%);
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body class="bg-cyber-dark text-white overflow-x-hidden">
+    <!-- Parallax Background -->
+    <div class="fixed inset-0 z-0">
+        <!-- Cyberpunk cityscape background -->
+        <div class="absolute inset-0" style="background-image: url('https://pixabay.com/get/g5baf0378b50a142b6f4072627941b1f744bc2cddf53597aafb7f158a0e5d25a8fe292183fed724010622dfd0c3cbe92a9f9f62ffaa47c6d5a7280dc536ccb961_1280.jpg'); background-size: cover; background-position: center; opacity: 0.3;"></div>
+        
+        <!-- Grid overlay -->
+        <div class="absolute inset-0" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 98px, rgba(0, 255, 255, 0.1) 100px), repeating-linear-gradient(90deg, transparent, transparent 98px, rgba(0, 255, 255, 0.1) 100px);"></div>
+        
+        <!-- Animated scanline -->
+        <div class="scanline-overlay absolute inset-0"></div>
+        
+        <!-- Floating particles -->
+        <div class="absolute inset-0">
+            <div class="w-2 h-2 bg-cyber-cyan rounded-full absolute top-1/4 left-1/4 animate-float opacity-60"></div>
+            <div class="w-1 h-1 bg-cyber-magenta rounded-full absolute top-1/3 right-1/3 animate-float opacity-40" style="animation-delay: -2s;"></div>
+            <div class="w-3 h-3 bg-cyber-green rounded-full absolute bottom-1/4 left-1/3 animate-float opacity-30" style="animation-delay: -4s;"></div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="relative z-10 min-h-screen">
+        <!-- Header -->
+        <header class="p-6 border-b border-cyber-cyan/20">
+            <div class="container mx-auto flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-cyber-cyan to-cyber-magenta p-0.5">
+                        <div class="w-full h-full rounded-lg bg-cyber-dark flex items-center justify-center">
+                            <span class="text-2xl font-orbitron font-bold">🧠</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-orbitron font-bold bg-gradient-to-r from-cyber-cyan to-cyber-magenta bg-clip-text text-transparent">
+                            NEURAL INTERFACE
+                        </h1>
+                        <p class="text-sm font-rajdhani text-cyber-cyan/70">Lemmi Protocol v2.1.0</p>
+                    </div>
+                </div>
+                
+                <!-- @COMPONENT: WalletConnect [wallet connection and status] -->
+                <div class="flex items-center space-x-4">
+                    <div class="glass-morph rounded-lg p-3 neon-border">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-3 h-3 bg-cyber-green rounded-full animate-pulse"></div>
+                            <span class="text-sm font-mono" data-mock="true">0x742d...a9b2</span>
+                        </div>
+                    </div>
+                    <button class="glass-morph rounded-lg px-4 py-2 neon-border hover:bg-cyber-cyan/10 transition-all duration-300 hover:animate-glow" data-event="click:connectWallet">
+                        <span class="font-orbitron text-sm">CONNECT</span>
+                    </button>
+                </div>
+                <!-- @END_COMPONENT: WalletConnect -->
+            </div>
+        </header>
+
+        <!-- Main Dashboard -->
+        <main class="container mx-auto p-6">
+            <!-- Status Terminal -->
+            <div class="glass-morph rounded-lg p-6 mb-8 neon-border">
+                <div class="flex items-center space-x-2 mb-4">
+                    <div class="w-3 h-3 bg-cyber-green rounded-full animate-pulse"></div>
+                    <span class="font-mono text-cyber-green">NEURAL_INTERFACE_STATUS</span>
+                </div>
+                <div class="font-mono text-sm">
+                    <div class="terminal-text inline-block" data-mock="true">
+                        [INITIALIZING] Neural pathways... ONLINE
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                
+                <!-- @COMPONENT: NeuralFeatureCard [Free Access NFT verification] -->
+                <div class="glass-morph rounded-lg p-6 neon-border hover:bg-cyber-cyan/5 transition-all duration-300 animate-float">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-cyber-green to-cyber-cyan p-0.5">
+                                <div class="w-full h-full rounded-lg bg-cyber-dark flex items-center justify-center">
+                                    <span class="text-lg">🐹</span>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-orbitron font-bold text-cyber-green">FREE ACCESS</h3>
+                                <p class="text-xs text-gray-400">Gerbil NFT Holders</p>
+                            </div>
+                        </div>
+                        <div class="w-3 h-3 bg-cyber-green rounded-full animate-pulse" data-bind="nftStatus"></div>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="bg-cyber-dark/50 rounded p-2 font-mono text-xs">
+                            <span class="text-cyber-cyan">NFT_COUNT:</span> <span data-mock="true">1 Gerbil</span>
+                        </div>
+                        <button class="w-full glass-morph rounded px-3 py-2 text-sm font-rajdhani hover:bg-cyber-green/10 transition-all" data-event="click:verifyNFT">
+                            VERIFY OWNERSHIP
+                        </button>
+                    </div>
+                </div>
+                <!-- @END_COMPONENT: NeuralFeatureCard -->
+
+                <!-- @COMPONENT: TokenDisplay [$Lemmi token balance] -->
+                <div class="glass-morph rounded-lg p-6 neon-border hover:bg-cyber-magenta/5 transition-all duration-300 animate-float" style="animation-delay: -1s;">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-cyber-magenta to-cyber-gold p-0.5">
+                                <div class="w-full h-full rounded-lg bg-cyber-dark flex items-center justify-center">
+                                    <span class="text-lg">💎</span>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-orbitron font-bold text-cyber-magenta">$LEMMI BALANCE</h3>
+                                <p class="text-xs text-gray-400">Token Payment System</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-mono font-bold text-cyber-gold" data-bind="lemmiBalance" data-mock="true">1,337</div>
+                            <div class="text-xs text-gray-400">$LEMMI</div>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="bg-cyber-dark/50 rounded p-2 font-mono text-xs">
+                            <span class="text-cyber-cyan">LAST_UPDATE:</span> <span data-mock="true">2m ago</span>
+                        </div>
+                        <button class="w-full glass-morph rounded px-3 py-2 text-sm font-rajdhani hover:bg-cyber-magenta/10 transition-all" data-event="click:refreshBalance">
+                            REFRESH BALANCE
+                        </button>
+                    </div>
+                </div>
+                <!-- @END_COMPONENT: TokenDisplay -->
+
+                <!-- @COMPONENT: SkillRewardPanel [Performance tracking] -->
+                <div class="glass-morph rounded-lg p-6 neon-border hover:bg-cyber-blue/5 transition-all duration-300 animate-float" style="animation-delay: -2s;">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-500 p-0.5">
+                                <div class="w-full h-full rounded-lg bg-cyber-dark flex items-center justify-center">
+                                    <span class="text-lg">⚡</span>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-orbitron font-bold text-blue-400">SKILL REWARDS</h3>
+                                <p class="text-xs text-gray-400">Performance Tracking</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-xl font-mono font-bold text-cyber-cyan" data-mock="true">95.2%</div>
+                            <div class="text-xs text-gray-400">Efficiency</div>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="bg-cyber-dark/50 rounded p-2">
+                            <div class="flex justify-between text-xs mb-1">
+                                <span>Neural Sync</span>
+                                <span data-mock="true">850/1000</span>
+                            </div>
+                            <div class="w-full bg-gray-700 rounded-full h-2">
+                                <div class="bg-gradient-to-r from-cyber-cyan to-cyber-green h-2 rounded-full" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <button class="w-full glass-morph rounded px-3 py-2 text-sm font-rajdhani hover:bg-blue-500/10 transition-all" data-event="click:viewStats">
+                            VIEW DETAILED STATS
+                        </button>
+                    </div>
+                </div>
+                <!-- @END_COMPONENT: SkillRewardPanel -->
+
+                <!-- @COMPONENT: ReferralPanel [Referral system] -->
+                <div class="glass-morph rounded-lg p-6 neon-border hover:bg-cyber-gold/5 transition-all duration-300 animate-float" style="animation-delay: -3s;">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-cyber-gold to-orange-500 p-0.5">
+                                <div class="w-full h-full rounded-lg bg-cyber-dark flex items-center justify-center">
+                                    <span class="text-lg">🔗</span>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-orbitron font-bold text-cyber-gold">REFERRAL SYSTEM</h3>
+                                <p class="text-xs text-gray-400">Generate Unique Links</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-xl font-mono font-bold text-cyber-green" data-mock="true">23</div>
+                            <div class="text-xs text-gray-400">Referred</div>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="bg-cyber-dark/50 rounded p-2 font-mono text-xs">
+                            <span class="text-cyber-cyan">REF_CODE:</span> <span data-mock="true">NRX-7B9A</span>
+                        </div>
+                        <button class="w-full glass-morph rounded px-3 py-2 text-sm font-rajdhani hover:bg-cyber-gold/10 transition-all" data-event="click:generateLink">
+                            GENERATE NEW LINK
+                        </button>
+                    </div>
+                </div>
+                <!-- @END_COMPONENT: ReferralPanel -->
+
+                <!-- @COMPONENT: DegenModeToggle [High risk mode] -->
+                <div class="glass-morph rounded-lg p-6 neon-border hover:bg-red-500/5 transition-all duration-300 animate-float" style="animation-delay: -4s;">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-red-500 to-pink-500 p-0.5">
+                                <div class="w-full h-full rounded-lg bg-cyber-dark flex items-center justify-center">
+                                    <span class="text-lg animate-glitch">🧨</span>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-orbitron font-bold text-red-400">DEGEN MODE</h3>
+                                <p class="text-xs text-gray-400">High Risk • Beta</p>
+                            </div>
+                        </div>
+                        <div class="relative">
+                            <input type="checkbox" class="sr-only" id="degen-toggle" data-event="change:toggleDegen">
+                            <label for="degen-toggle" class="block bg-gray-600 w-12 h-6 rounded-full cursor-pointer relative">
+                                <span class="block w-5 h-5 bg-red-500 rounded-full absolute top-0.5 left-0.5 transition-transform duration-300"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="bg-cyber-dark/50 rounded p-2 font-mono text-xs text-red-400">
+                            <span class="animate-pulse">⚠ EXPERIMENTAL FEATURES</span>
+                        </div>
+                        <button class="w-full glass-morph rounded px-3 py-2 text-sm font-rajdhani hover:bg-red-500/10 transition-all" data-event="click:activateDegen" data-implementation="Triple-click to activate mini-game">
+                            ACTIVATE CHAOS MODE
+                        </button>
+                    </div>
+                </div>
+                <!-- @END_COMPONENT: DegenModeToggle -->
+
+                <!-- @COMPONENT: KingLemmiViewer [Visual collection] -->
+                <div class="glass-morph rounded-lg p-6 neon-border hover:bg-purple-500/5 transition-all duration-300 animate-float" style="animation-delay: -5s;">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 p-0.5">
+                                <div class="w-full h-full rounded-lg bg-cyber-dark flex items-center justify-center">
+                                    <span class="text-lg">👑</span>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-orbitron font-bold text-purple-400">KING LEMMI</h3>
+                                <p class="text-xs text-gray-400">Visual Collection</p>
+                            </div>
+                        </div>
+                        <div class="w-8 h-8 rounded-full overflow-hidden border-2 border-purple-500 animate-pulse-slow">
+                            <!-- Cute character placeholder - a futuristic lemming character -->
+                            <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100" alt="King Lemmi character" data-mock-image="true" data-implementation="Replace with actual King Lemmi character asset" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="bg-cyber-dark/50 rounded p-2 font-mono text-xs">
+                            <span class="text-cyber-cyan">COLLECTION:</span> <span data-mock="true">5/10 Unlocked</span>
+                        </div>
+                        <button class="w-full glass-morph rounded px-3 py-2 text-sm font-rajdhani hover:bg-purple-500/10 transition-all" data-event="click:viewCollection">
+                            VIEW GALLERY
+                        </button>
+                    </div>
+                </div>
+                <!-- @END_COMPONENT: KingLemmiViewer -->
+            </div>
+
+            <!-- Monetization Hub -->
+            <div class="glass-morph rounded-lg p-6 mb-8 neon-border">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h2 class="text-2xl font-orbitron font-bold bg-gradient-to-r from-cyber-cyan to-cyber-gold bg-clip-text text-transparent">
+                            MONETIZATION HUB
+                        </h2>
+                        <p class="text-sm text-gray-400 font-rajdhani">Long-term Infrastructure • Status: READY</p>
+                    </div>
+                    <div class="flex space-x-3">
+                        <div class="w-8 h-8 bg-cyber-green/20 rounded-lg flex items-center justify-center">
+                            <span class="text-xs">💼</span>
+                        </div>
+                        <div class="w-8 h-8 bg-cyber-magenta/20 rounded-lg flex items-center justify-center">
+                            <span class="text-xs">🏢</span>
+                        </div>
+                        <div class="w-8 h-8 bg-cyber-cyan/20 rounded-lg flex items-center justify-center">
+                            <span class="text-xs">🌐</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-cyber-dark/30 rounded-lg p-4 border border-cyber-green/20">
+                        <h4 class="font-orbitron font-bold text-cyber-green mb-2">BRAND PARTNERSHIPS</h4>
+                        <p class="text-sm text-gray-400">Enterprise integration ready</p>
+                    </div>
+                    <div class="bg-cyber-dark/30 rounded-lg p-4 border border-cyber-magenta/20">
+                        <h4 class="font-orbitron font-bold text-cyber-magenta mb-2">NFT MARKETPLACE</h4>
+                        <p class="text-sm text-gray-400">Custom skin trading platform</p>
+                    </div>
+                    <div class="bg-cyber-dark/30 rounded-lg p-4 border border-cyber-cyan/20">
+                        <h4 class="font-orbitron font-bold text-cyber-cyan mb-2">API ECOSYSTEM</h4>
+                        <p class="text-sm text-gray-400">Developer-friendly integration</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jack In Button -->
+            <div class="text-center">
+                <button class="group relative px-12 py-4 bg-gradient-to-r from-cyber-cyan via-cyber-magenta to-cyber-green rounded-lg font-orbitron font-bold text-xl hover:animate-glow transition-all duration-300 disabled:opacity-50" data-event="click:jackIn" data-implementation="Only active when 3+ features are unlocked">
+                    <span class="relative z-10">JACK INTO THE NEURAL NETWORK</span>
+                    <div class="absolute inset-0 bg-gradient-to-r from-cyber-cyan via-cyber-magenta to-cyber-green opacity-20 rounded-lg blur-xl group-hover:opacity-40 transition-opacity"></div>
+                </button>
+                <p class="text-sm text-gray-400 mt-2 font-rajdhani">
+                    <span data-mock="true">3/7</span> neural pathways synchronized
+                </p>
+            </div>
+        </main>
+
+        <!-- Mini Game Modal (Hidden by default) -->
+        <!-- @COMPONENT: MiniGameTikus [Easter egg mini-game] -->
+        <div id="miniGameModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm">
+            <div class="flex items-center justify-center min-h-screen p-4">
+                <div class="glass-morph rounded-lg p-8 max-w-2xl w-full neon-border">
+                    <div class="text-center mb-6">
+                        <h2 class="text-3xl font-orbitron font-bold text-cyber-cyan mb-2">🐭 TIKUS NEURAL ESCAPE</h2>
+                        <p class="text-sm text-gray-400 font-rajdhani">Unauthorized rodent detected in neural subsystem!</p>
+                    </div>
+                    
+                    <div class="bg-cyber-dark/50 rounded-lg p-4 mb-4 border border-cyber-cyan/20">
+                        <div class="font-mono text-xs text-cyber-green mb-2">
+                            [GAME_CONTROLS] WASD: Move • CLICK: Eat Cheese • ESC: Exit
+                        </div>
+                        <div class="h-64 bg-gradient-to-br from-cyber-dark to-cyber-blue/20 rounded border border-cyber-cyan/30 relative">
+                            <div class="absolute inset-2 flex items-center justify-center text-6xl animate-float">
+                                🐭
+                            </div>
+                            <div class="absolute top-4 right-4 text-2xl animate-pulse">🧀</div>
+                            <div class="absolute bottom-4 left-4 text-red-500 text-2xl animate-pulse">⚡</div>
+                            <!-- @FUNCTIONALITY: This game area should implement WASD controls for mouse movement, click-to-collect cheese mechanics, and laser avoidance using canvas or DOM manipulation -->
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <div class="font-mono text-sm">
+                            <span class="text-cyber-cyan">SCORE:</span> <span data-mock="true">1337</span>
+                            <span class="text-cyber-magenta ml-4">HIGH:</span> <span data-mock="true">9999</span>
+                        </div>
+                        <button class="glass-morph rounded px-4 py-2 font-rajdhani hover:bg-red-500/10 transition-all" data-event="click:closeGame">
+                            EXIT NEURAL SUBSYSTEM
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: MiniGameTikus -->
+    </div>
+
+    <!-- Animated Lemmi Character (Bottom Right) -->
+    <div class="fixed bottom-6 right-6 z-20">
+        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-cyber-gold to-cyber-magenta p-1 animate-float">
+            <div class="w-full h-full rounded-full bg-cyber-dark flex items-center justify-center border-2 border-cyber-cyan/30">
+                <!-- Cute Lemmi character animation -->
+                <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100" alt="Animated Lemmi character" data-mock-image="true" data-implementation="Replace with actual animated Lemmi character" class="w-12 h-12 rounded-full object-cover animate-pulse-slow">
+            </div>
+        </div>
+        <div class="absolute -top-2 -left-2 w-4 h-4 bg-cyber-green rounded-full animate-ping"></div>
+    </div>
+
+    <!-- Audio System Placeholder -->
+    <script>
+        // TODO: Implement audio system using Howler.js or Web Audio API
+        (function() {
+            // Click sound effects
+            const playClickSound = () => {
+                // TODO: Load and play click.wav sound effect
+                console.log('🔊 Click sound played');
+            };
+            
+            // Hover sound effects
+            const playHoverSound = () => {
+                // TODO: Load and play hover beep sound
+                console.log('🔊 Hover sound played');
+            };
+            
+            // Add event listeners for sound effects
+            document.addEventListener('click', (e) => {
+                if (e.target.matches('button, [data-event]')) {
+                    playClickSound();
+                }
+            });
+            
+            document.addEventListener('mouseover', (e) => {
+                if (e.target.matches('button, .glass-morph')) {
+                    playHoverSound();
+                }
+            });
+        })();
+        
+        // Mock Web3 Integration
+        (function() {
+            let walletConnected = false;
+            let degenClicks = 0;
+            
+            // TODO: Implement MetaMask integration
+            window.connectWallet = async () => {
+                console.log('🔗 Connecting to MetaMask...');
+                walletConnected = true;
+                // TODO: Add real wallet connection logic
+            };
+            
+            // TODO: Implement Phantom wallet integration for Solana
+            window.connectPhantom = async () => {
+                console.log('🔗 Connecting to Phantom...');
+                // TODO: Add real Phantom wallet connection logic
+            };
+            
+            // Degen Mode Easter Egg
+            document.addEventListener('click', (e) => {
+                if (e.target.matches('[data-event*="activateDegen"]')) {
+                    degenClicks++;
+                    if (degenClicks >= 3) {
+                        document.getElementById('miniGameModal').classList.remove('hidden');
+                        degenClicks = 0;
+                        console.log('🐭 Tikus Neural Escape activated!');
+                    }
+                }
+            });
+            
+            // Close mini-game
+            document.addEventListener('click', (e) => {
+                if (e.target.matches('[data-event*="closeGame"]')) {
+                    document.getElementById('miniGameModal').classList.add('hidden');
+                }
+            });
+            
+            // TODO: Implement business logic for:
+            // - NFT verification via Moralis/Alchemy API
+            // - Token balance checking via smart contracts
+            // - Referral code generation and tracking
+            // - Skill rewards calculation
+            // - Real-time status updates
+        })();
+    </script>
+</body>
+</html>

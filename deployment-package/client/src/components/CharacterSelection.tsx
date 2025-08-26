@@ -22,28 +22,28 @@ export function CharacterSelection({ onCharacterSelect, onBack }: CharacterSelec
     {
       id: 'ashina',
       name: 'KING LEMMI',
-      image: '',
+      image: '/king-lemmi.png',
       description: 'Royal warrior with balanced abilities',
       stats: { speed: 8, jump: 7, special: 9 }
     },
     {
       id: 'cowboy',
       name: 'COWBOY GERBIL',
-      image: '',
+      image: '/cowboy-gerbil.png',
       description: 'Quick draw specialist',
       stats: { speed: 9, jump: 6, special: 7 }
     },
     {
       id: 'snow',
       name: 'SNOW GERBIL',
-      image: '',
+      image: '/snow-gerbil.png',
       description: 'Ice powers and agility',
       stats: { speed: 7, jump: 9, special: 8 }
     },
     {
       id: 'grim',
       name: 'GRIM REAPER',
-      image: '',
+      image: '/grim-reaper.png',
       description: 'Dark magic wielder',
       stats: { speed: 6, jump: 8, special: 10 }
     }
