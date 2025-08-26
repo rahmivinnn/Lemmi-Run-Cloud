@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { LoadingScreen } from '@/components/LoadingScreen';
 import { LemmiRun } from '@/components/LemmiRun';
+import { WalletConnector } from '@/components/CardanoWallet';
 import { Link } from 'wouter';
 
 export default function LemmiRunGame() {
@@ -121,6 +122,11 @@ export default function LemmiRunGame() {
               <div className="text-gray-300">ESC</div>
               <div className="text-cyan-400">Pause</div>
             </div>
+          </div>
+          
+          {/* Cardano Wallet Integration */}
+          <div className="mb-6 max-w-md">
+            <WalletConnector />
           </div>
           
           {/* Action Buttons */}

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+import { WalletConnector } from './CardanoWallet';
 
 interface Character {
   id: string;
@@ -680,7 +681,7 @@ export function Game3DRunner({ character, onGameEnd, onBack }: Game3DRunnerProps
       // Position obstacle in lane
       const lanes = [-6, -2, 2, 6];
       const randomLane = lanes[Math.floor(Math.random() * lanes.length)];
-      obstacleGroup.position.set(game.player.mesh.position.x + 20, -1.5, randomLane);
+      obstacleGroup.position.set(game.player.mesh.position.x + 20, 0, randomLane);
       
       scene.add(obstacleGroup);
       game.obstacles.push(obstacleGroup as any);
@@ -715,7 +716,7 @@ export function Game3DRunner({ character, onGameEnd, onBack }: Game3DRunnerProps
       // Position coins at proper height and in lanes
       const lanes = [-3, 0, 3]; // Left, center, right lanes
       const randomLane = lanes[Math.floor(Math.random() * lanes.length)];
-      coinGroup.position.set(game.player.mesh.position.x + 25, -0.5, randomLane); // Slightly above road surface
+      coinGroup.position.set(game.player.mesh.position.x + 25, 1.2, randomLane); // Proper height above ground
       coinGroup.castShadow = false; // Disable shadows for performance
       scene.add(coinGroup);
       game.coins.push(coinGroup);
@@ -883,7 +884,7 @@ export function Game3DRunner({ character, onGameEnd, onBack }: Game3DRunnerProps
         coin.rotation.y += 0.1;
         
         // Simplified floating animation
-        coin.position.y = 2.5 + Math.sin(currentTime * 0.002 + i) * 0.2;
+        coin.position.y = 1.2 + Math.sin(currentTime * 0.002 + i) * 0.2;
 
         // Collision detection - improved range
         const dx = game.player.mesh.position.x - coin.position.x;
@@ -1062,14 +1063,21 @@ export function Game3DRunner({ character, onGameEnd, onBack }: Game3DRunnerProps
         <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-orange-400"></div>
         <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-orange-400"></div>
         
-        <button
-          onClick={onBack}
-          className="bg-black border border-red-400 px-6 py-2 text-red-400 font-orbitron font-bold tracking-wider hover:bg-red-900/20 relative"
-        >
-          <div className="absolute -top-1 -left-1 w-2 h-2 bg-red-400"></div>
-          <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-400"></div>
-          EXIT
-        </button>
+        <div className="flex items-center space-x-4">
+          <button
+            onClick={onBack}
+            className="bg-black border border-red-400 px-6 py-2 text-red-400 font-orbitron font-bold tracking-wider hover:bg-red-900/20 relative"
+          >
+            <div className="absolute -top-1 -left-1 w-2 h-2 bg-red-400"></div>
+            <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-400"></div>
+            EXIT
+          </button>
+          
+          {/* Cardano Wallet Integration */}
+           <div className="max-w-xs">
+             <WalletConnector />
+           </div>
+        </div>
 
         <div className="flex items-center space-x-8">
           <div className="bg-black border border-orange-400 px-4 py-2 relative">

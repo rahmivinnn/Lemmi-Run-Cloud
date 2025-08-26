@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import Game3D from './Game3D';
+import { WalletConnector } from './CardanoWallet';
 
 // Import Gerbil characters
 import gerbilK1 from '@assets/k1_1755247198361.png';
@@ -732,6 +733,11 @@ export function GameRunner({ character, onGameEnd, onBack }: GameRunnerProps) {
                     <div className="text-white font-bold">{character.stats.special}/10</div>
                   </div>
                 </div>
+              </div>
+              
+              {/* Cardano Wallet Integration */}
+              <div className="mb-6">
+                <WalletConnector />
               </div>
               
               {/* Start Button */}
