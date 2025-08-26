@@ -59,12 +59,12 @@ export function Game3DRunner({ character, onGameEnd, onBack }: Game3DRunnerProps
 
     mountRef.current.appendChild(renderer.domElement);
 
-    // Enhanced lighting system for better visibility
-    const ambientLight = new THREE.AmbientLight(0x606090, 1.2); // Much brighter ambient
+    // Enhanced lighting system for maximum character visibility
+    const ambientLight = new THREE.AmbientLight(0x808080, 2.0); // Very bright ambient light
     scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5); // Increased intensity
-    directionalLight.position.set(20, 20, 10);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 2.0); // Very bright directional light
+    directionalLight.position.set(0, 20, 10); // Position above and behind character
     directionalLight.castShadow = true;
     directionalLight.shadow.mapSize.width = 512;
     directionalLight.shadow.mapSize.height = 512;
@@ -75,6 +75,11 @@ export function Game3DRunner({ character, onGameEnd, onBack }: Game3DRunnerProps
     directionalLight.shadow.camera.near = 0.1;
     directionalLight.shadow.camera.far = 50;
     scene.add(directionalLight);
+
+    // Additional front light to illuminate character from camera direction
+    const frontLight = new THREE.DirectionalLight(0xffffff, 1.0);
+    frontLight.position.set(-15, 5, 0); // Light from camera direction (behind character on X axis)
+    scene.add(frontLight);
 
     // Multiple point lights for better atmosphere
     const pointLight1 = new THREE.PointLight(0x00aaff, 0.8, 30);
@@ -400,21 +405,24 @@ export function Game3DRunner({ character, onGameEnd, onBack }: Game3DRunnerProps
       const headGeometry = new THREE.SphereGeometry(0.4, 16, 16);
       const limbGeometry = new THREE.CylinderGeometry(0.12, 0.12, 1.0, 8);
       
-      // Create materials with bright colors and emissive properties
+      // Create materials with very bright colors and strong emissive properties
       const bodyMaterial = new THREE.MeshPhongMaterial({ 
         color: new THREE.Color(0x4169E1), // Royal blue
-        emissive: new THREE.Color(0x001155),
-        emissiveIntensity: 0.4
+        emissive: new THREE.Color(0x002288),
+        emissiveIntensity: 0.8, // Much brighter
+        shininess: 100
       });
       const headMaterial = new THREE.MeshPhongMaterial({ 
         color: new THREE.Color(0xffdbac), // Skin color
-        emissive: new THREE.Color(0x332211),
-        emissiveIntensity: 0.3
+        emissive: new THREE.Color(0x664422),
+        emissiveIntensity: 0.6, // Much brighter
+        shininess: 100
       });
       const limbMaterial = new THREE.MeshPhongMaterial({ 
         color: new THREE.Color(0x8B4513), // Brown
-        emissive: new THREE.Color(0x221100),
-        emissiveIntensity: 0.3
+        emissive: new THREE.Color(0x442200),
+        emissiveIntensity: 0.6, // Much brighter
+        shininess: 100
       });
 
       // Create body parts
@@ -452,18 +460,30 @@ export function Game3DRunner({ character, onGameEnd, onBack }: Game3DRunnerProps
       rightLeg.castShadow = true;
       characterGroup.add(rightLeg);
 
-      // Add subtle glow effect without blocking the character
-       const glowGeometry = new THREE.SphereGeometry(0.1, 8, 8);
+      // Add bright glow effect for better visibility
+       const glowGeometry = new THREE.SphereGeometry(0.15, 8, 8);
        const glowMaterial = new THREE.MeshBasicMaterial({ 
          color: 0x00ffff, 
          transparent: true, 
-         opacity: 0.6,
+         opacity: 0.8,
          emissive: 0x00ffff,
-         emissiveIntensity: 0.5
+         emissiveIntensity: 1.0
        });
-       const glow = new THREE.Mesh(glowGeometry, glowMaterial);
-       glow.position.set(0, 1.2, 0); // Position at head level
-       characterGroup.add(glow);
+       const glowEffect = new THREE.Mesh(glowGeometry, glowMaterial);
+       glowEffect.position.set(0, 1.2, 0); // Position at head level
+       characterGroup.add(glowEffect);
+       
+       // Add outline effect for better character definition
+       const outlineGeometry = new THREE.SphereGeometry(1.2, 16, 16);
+       const outlineMaterial = new THREE.MeshBasicMaterial({ 
+         color: 0xffffff, 
+         transparent: true, 
+         opacity: 0.1,
+         side: THREE.BackSide
+       });
+       const outline = new THREE.Mesh(outlineGeometry, outlineMaterial);
+       outline.position.set(0, 0, 0);
+       characterGroup.add(outline);
       
       console.log(`Using enhanced fallback character for ${character.name} with improved visibility`);
     }
@@ -472,12 +492,12 @@ export function Game3DRunner({ character, onGameEnd, onBack }: Game3DRunnerProps
     characterGroup.castShadow = true;
     scene.add(characterGroup);
 
-    // Camera position - optimized third-person view
-    camera.position.set(-6, 3, 1); // Better angle for character visibility
+    // Camera position - behind character for better visibility (runner 3D style)
+    camera.position.set(-8, 4, 0); // Position camera behind character on X axis
     camera.lookAt(0, 0, 0); // Look at character center
     
     // Set camera field of view for better perspective
-    camera.fov = 65;
+    camera.fov = 75;
     camera.updateProjectionMatrix();
     
     console.log('Camera position:', camera.position);
@@ -890,24 +910,24 @@ export function Game3DRunner({ character, onGameEnd, onBack }: Game3DRunnerProps
         }
       }
 
-      // Dynamic camera positioning for better character visibility
-      const cameraDistance = 6;
-      const cameraHeight = 3;
-      const cameraOffset = 1; // Slight side offset for better view
+      // Dynamic camera positioning - always behind character (runner 3D style)
+      const cameraDistance = 8; // Distance behind character
+      const cameraHeight = 4; // Height above character
+      const cameraOffset = 0; // No side offset for straight behind view
       
-      // Camera follows player with smooth movement
-      const targetCameraX = game.player.mesh.position.x - cameraDistance;
+      // Camera follows player from behind with smooth movement
+      const targetCameraX = game.player.mesh.position.x - cameraDistance; // Behind character on X axis
       const targetCameraY = game.player.mesh.position.y + cameraHeight;
-      const targetCameraZ = game.player.mesh.position.z + cameraOffset;
+      const targetCameraZ = game.player.mesh.position.z; // Same Z as character for side-to-side movement
       
       // Smooth camera interpolation
       camera.position.x += (targetCameraX - camera.position.x) * 0.1;
       camera.position.y += (targetCameraY - camera.position.y) * 0.1;
       camera.position.z += (targetCameraZ - camera.position.z) * 0.1;
       
-      // Camera looks at character with slight forward prediction
+      // Camera always looks at character center
       const lookAtTarget = new THREE.Vector3(
-        game.player.mesh.position.x + game.player.forwardSpeed * 2,
+        game.player.mesh.position.x,
         game.player.mesh.position.y + 0.5,
         game.player.mesh.position.z
       );
