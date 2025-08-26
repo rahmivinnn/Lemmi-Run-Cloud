@@ -154,60 +154,145 @@ export default function MainHub() {
 
           {/* Unity Hierarchy-style Module Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 lg:gap-6 max-w-7xl mx-auto">
-            {screens.map((screen, index) => (
-              <Link key={screen.id} href={screen.path}>
-                <div className={`game-ui-card group border-2 border-${screen.color}-400/60 hover:border-${screen.color}-400 transition-all duration-300 cursor-pointer relative`}
-                     style={{ animationDelay: `${index * 100}ms` }}>
-                  
-                  {/* Unity-style header bar */}
-                  <div className={`unity-tab active bg-${screen.color}-500/20 border-b border-${screen.color}-400/40 px-2 md:px-3 py-1.5 md:py-2`}>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-1 md:space-x-2">
-                        <div className={`w-2 h-2 rounded-full bg-${screen.color}-400 animate-pulse`} />
-                        <span className="text-xs font-mono font-bold text-gray-300 truncate">{screen.category}</span>
+            {screens.map((screen, index) => {
+              // Define color mappings for proper Tailwind classes
+              const colorClasses = {
+                green: {
+                  border: 'border-green-400/60 hover:border-green-400',
+                  bg: 'bg-green-500/20',
+                  borderB: 'border-green-400/40',
+                  dot: 'bg-green-400',
+                  status: 'bg-green-500/30 text-green-300',
+                  title: 'text-green-300',
+                  subtitle: 'text-green-400/70',
+                  progress: 'bg-green-400',
+                  description: 'text-green-300/60'
+                },
+                purple: {
+                  border: 'border-purple-400/60 hover:border-purple-400',
+                  bg: 'bg-purple-500/20',
+                  borderB: 'border-purple-400/40',
+                  dot: 'bg-purple-400',
+                  status: 'bg-purple-500/30 text-purple-300',
+                  title: 'text-purple-300',
+                  subtitle: 'text-purple-400/70',
+                  progress: 'bg-purple-400',
+                  description: 'text-purple-300/60'
+                },
+                blue: {
+                  border: 'border-blue-400/60 hover:border-blue-400',
+                  bg: 'bg-blue-500/20',
+                  borderB: 'border-blue-400/40',
+                  dot: 'bg-blue-400',
+                  status: 'bg-blue-500/30 text-blue-300',
+                  title: 'text-blue-300',
+                  subtitle: 'text-blue-400/70',
+                  progress: 'bg-blue-400',
+                  description: 'text-blue-300/60'
+                },
+                orange: {
+                  border: 'border-orange-400/60 hover:border-orange-400',
+                  bg: 'bg-orange-500/20',
+                  borderB: 'border-orange-400/40',
+                  dot: 'bg-orange-400',
+                  status: 'bg-orange-500/30 text-orange-300',
+                  title: 'text-orange-300',
+                  subtitle: 'text-orange-400/70',
+                  progress: 'bg-orange-400',
+                  description: 'text-orange-300/60'
+                },
+                yellow: {
+                  border: 'border-yellow-400/60 hover:border-yellow-400',
+                  bg: 'bg-yellow-500/20',
+                  borderB: 'border-yellow-400/40',
+                  dot: 'bg-yellow-400',
+                  status: 'bg-yellow-500/30 text-yellow-300',
+                  title: 'text-yellow-300',
+                  subtitle: 'text-yellow-400/70',
+                  progress: 'bg-yellow-400',
+                  description: 'text-yellow-300/60'
+                },
+                cyan: {
+                  border: 'border-cyan-400/60 hover:border-cyan-400',
+                  bg: 'bg-cyan-500/20',
+                  borderB: 'border-cyan-400/40',
+                  dot: 'bg-cyan-400',
+                  status: 'bg-cyan-500/30 text-cyan-300',
+                  title: 'text-cyan-300',
+                  subtitle: 'text-cyan-400/70',
+                  progress: 'bg-cyan-400',
+                  description: 'text-cyan-300/60'
+                },
+                red: {
+                  border: 'border-red-400/60 hover:border-red-400',
+                  bg: 'bg-red-500/20',
+                  borderB: 'border-red-400/40',
+                  dot: 'bg-red-400',
+                  status: 'bg-red-500/30 text-red-300',
+                  title: 'text-red-300',
+                  subtitle: 'text-red-400/70',
+                  progress: 'bg-red-400',
+                  description: 'text-red-300/60'
+                }
+              };
+              
+              const colors = colorClasses[screen.color as keyof typeof colorClasses] || colorClasses.blue;
+              
+              return (
+                <Link key={screen.id} href={screen.path}>
+                  <div className={`game-ui-card group border-2 ${colors.border} transition-all duration-300 cursor-pointer relative`}
+                       style={{ animationDelay: `${index * 100}ms` }}>
+                    
+                    {/* Unity-style header bar */}
+                    <div className={`unity-tab active ${colors.bg} border-b ${colors.borderB} px-2 md:px-3 py-1.5 md:py-2`}>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-1 md:space-x-2">
+                          <div className={`w-2 h-2 rounded-full ${colors.dot} animate-pulse`} />
+                          <span className="text-xs font-mono font-bold text-gray-300 truncate">{screen.category}</span>
+                        </div>
+                        <div className={`text-xs font-mono px-1.5 md:px-2 py-0.5 md:py-1 rounded ${colors.status}`}>
+                          {screen.status}
+                        </div>
                       </div>
-                      <div className={`text-xs font-mono px-1.5 md:px-2 py-0.5 md:py-1 rounded bg-${screen.color}-500/30 text-${screen.color}-300`}>
-                        {screen.status}
+                    </div>
+                    
+                    {/* Module content */}
+                    <div className="p-3 md:p-4 lg:p-6 text-center relative">
+                      {/* Unity gizmo-style icon */}
+                      <div className="unity-gizmo mb-2 md:mb-4">
+                        <div className="text-2xl md:text-3xl lg:text-4xl group-hover:scale-110 transition-transform duration-300 filter drop-shadow-lg">
+                          {screen.icon}
+                        </div>
+                      </div>
+                      
+                      <h3 className={`font-bold ${colors.title} text-sm md:text-base mb-1 md:mb-2 tracking-wide`} style={{ fontFamily: 'Source Code Pro' }}>
+                        {screen.name}
+                      </h3>
+                      
+                      <div className={`text-xs font-mono ${colors.subtitle} mb-2 md:mb-4 truncate`}>
+                        {screen.id.toUpperCase()}_MODULE.dll
+                      </div>
+                      
+                      {/* Unity-style progress indicator */}
+                      <div className="w-full bg-gray-700 h-1 rounded-full overflow-hidden">
+                        <div className={`h-full ${colors.progress} transition-all duration-1000 group-hover:w-full`} 
+                             style={{ width: screen.status === 'ACTIVE' ? '100%' : screen.status === 'READY' ? '80%' : '60%' }} />
+                      </div>
+                      
+                      <div className={`text-xs font-mono ${colors.description} mt-2`}>
+                        {screen.status === 'ACTIVE' ? 'READY TO LAUNCH' : 
+                         screen.status === 'READY' ? 'SYSTEM LOADED' : 
+                         screen.status === 'LIVE' ? 'ONLINE SERVICE' : 
+                         screen.status === 'SYNC' ? 'SYNCING DATA' : 
+                         screen.status === 'DEV' ? 'IN DEVELOPMENT' :
+                         screen.status === 'ONLINE' ? 'NETWORK ACTIVE' :
+                         screen.status === 'BETA' ? 'BETA VERSION' : 'INITIALIZING...'}
                       </div>
                     </div>
                   </div>
-                  
-                  {/* Module content */}
-                  <div className="p-3 md:p-4 lg:p-6 text-center relative">
-                    {/* Unity gizmo-style icon */}
-                    <div className="unity-gizmo mb-2 md:mb-4">
-                      <div className="text-2xl md:text-3xl lg:text-4xl group-hover:scale-110 transition-transform duration-300 filter drop-shadow-lg">
-                        {screen.icon}
-                      </div>
-                    </div>
-                    
-                    <h3 className={`font-bold text-${screen.color}-300 text-sm md:text-base mb-1 md:mb-2 tracking-wide`} style={{ fontFamily: 'Source Code Pro' }}>
-                      {screen.name}
-                    </h3>
-                    
-                    <div className={`text-xs font-mono text-${screen.color}-400/70 mb-2 md:mb-4 truncate`}>
-                      {screen.id.toUpperCase()}_MODULE.dll
-                    </div>
-                    
-                    {/* Unity-style progress indicator */}
-                    <div className="w-full bg-gray-700 h-1 rounded-full overflow-hidden">
-                      <div className={`h-full bg-${screen.color}-400 transition-all duration-1000 group-hover:w-full`} 
-                           style={{ width: screen.status === 'ACTIVE' ? '100%' : screen.status === 'READY' ? '80%' : '60%' }} />
-                    </div>
-                    
-                    <div className={`text-xs font-mono text-${screen.color}-300/60 mt-2`}>
-                      {screen.status === 'ACTIVE' ? 'READY TO LAUNCH' : 
-                       screen.status === 'READY' ? 'SYSTEM LOADED' : 
-                       screen.status === 'LIVE' ? 'ONLINE SERVICE' : 
-                       screen.status === 'SYNC' ? 'SYNCING DATA' : 
-                       screen.status === 'DEV' ? 'IN DEVELOPMENT' :
-                       screen.status === 'ONLINE' ? 'NETWORK ACTIVE' :
-                       screen.status === 'BETA' ? 'BETA VERSION' : 'INITIALIZING...'}
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              );
+            })}
           </div>
         </div>
 
