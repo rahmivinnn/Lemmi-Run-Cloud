@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 
 // Import game flow and screens
 import GameFlow from "@/pages/GameFlow";
+import MainHub from "@/pages/MainHub";
 import WalletScreen from "@/pages/WalletScreen";
 import CurrencyScreen from "@/pages/CurrencyScreen";
 import InventoryScreen from "@/pages/InventoryScreen";
@@ -22,6 +23,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={GameFlow} />
+      <Route path="/mainhub" component={MainHub} />
       <Route path="/wallet" component={WalletScreen} />
       <Route path="/currency" component={CurrencyScreen} />
       <Route path="/inventory" component={InventoryScreen} />

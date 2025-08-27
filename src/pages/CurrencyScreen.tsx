@@ -29,7 +29,7 @@ export default function CurrencyScreen() {
         <div className="data-stream top-1 w-18 opacity-15" style={{ animationDelay: '3s' }} />
         
         <div className="flex items-center justify-between h-16 px-6 relative z-10">
-          <Link href="/">
+          <Link href="/mainhub">
             <button className="unity-button flex items-center space-x-2 text-purple-400 hover:text-purple-300">
               <ArrowLeft className="w-4 h-4" />
               <span>RETURN TO HUB</span>

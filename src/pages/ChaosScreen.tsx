@@ -20,7 +20,7 @@ export default function ChaosScreen() {
       {/* Header */}
       <div className="h-20 bg-gradient-to-r from-black via-gray-900 to-black border-b border-red-400 relative">
         <div className="flex items-center justify-between h-full px-6">
-          <Link href="/">
+          <Link href="/mainhub">
             <button className="flex items-center space-x-2 text-red-400 hover:text-red-300 font-mono">
               <ArrowLeft className="w-4 h-4" />
               <span>BACK TO HUB</span>

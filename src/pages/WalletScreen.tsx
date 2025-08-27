@@ -16,8 +16,8 @@ export default function WalletScreen() {
         <div className="data-stream top-2 w-16 opacity-30" style={{ animationDelay: '2s' }} />
         
         <div className="flex items-center justify-between h-16 px-6 relative z-10">
-          <Link href="/">
-            <button className="unity-button flex items-center space-x-2 text-green-400 hover:text-green-300">
+          <Link href="/mainhub">
+            <button className="unity-button flex items-center space-x-2 text-purple-400 hover:text-purple-300">
               <ArrowLeft className="w-4 h-4" />
               <span>RETURN TO HUB</span>
             </button>

@@ -22,12 +22,12 @@ export default function MainHub() {
   const screens = [
     { id: 'wallet', name: 'LACE WALLET', icon: '🔗', path: '/wallet', color: 'green', category: 'CORE', status: 'ACTIVE' },
     { id: 'currency', name: 'CURRENCY SYS', icon: '💎', path: '/currency', color: 'purple', category: 'ECONOMY', status: 'LIVE' },
-    { id: 'mission', name: 'START MISSION', icon: '🚀', path: '/game', color: 'green', category: 'MISSION', status: 'ACTIVE' },
+    { id: 'inventory', name: 'INVENTORY MGR', icon: '🎒', path: '/inventory', color: 'blue', category: 'ASSETS', status: 'READY' },
     { id: 'collection', name: 'NFT CLAIMS', icon: '🖼️', path: '/collection', color: 'orange', category: 'BLOCKCHAIN', status: 'SYNC' },
     { id: 'skills', name: 'SKILL TREE', icon: '⚡', path: '/skills', color: 'yellow', category: 'PROGRESSION', status: 'DEV' },
     { id: 'network', name: 'CARDANO NET', icon: '🌐', path: '/network', color: 'cyan', category: 'PROTOCOL', status: 'ONLINE' },
     { id: 'chaos', name: 'CHAOS ENGINE', icon: '🔥', path: '/chaos', color: 'red', category: 'EXPERIMENTAL', status: 'BETA' },
-    { id: 'game', name: 'ARENA CORE', icon: '🎮', path: '/game', color: 'green', category: 'GAMEPLAY', status: 'READY' }
+    { id: 'arena', name: 'ARENA CORE', icon: '🎮', path: '/game', color: 'green', category: 'GAMEPLAY', status: 'READY' }
   ];
 
   return (
@@ -100,138 +100,82 @@ export default function MainHub() {
               <span className="text-blue-800 hidden sm:inline">{cpuUsage}%</span>
             </div>
             
-            <RetroWalletButton />
+            <div className="absolute top-0 right-0 m-2">
+              <RetroWalletButton />
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Unity-style Main Workspace */}
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 relative">
-        {/* Background grid pattern */}
-        <div className="absolute inset-0 opacity-5" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%2300ffff' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='m0 40l40-40h-40v40z'/%3E%3C/g%3E%3C/svg%3E")`
-        }} />
+      {/* Cyberpunk Retro Main Workspace */}
+      <div className="min-h-screen bg-black relative overflow-hidden">
+        {/* Background - Hitam */}
+        <div className="fixed inset-0 z-0">
+          {/* Background Hitam */}
+          <div className="absolute inset-0 bg-black" />
+          
+
+        </div>
         
         <div className="container mx-auto px-6 py-8 relative z-10">
-          {/* Unity Inspector-style Header */}
-          <div className="unity-inspector mb-8">
-            <div className="unity-header flex items-center justify-between px-4 py-3">
-              <div className="flex items-center space-x-3">
-                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                <span className="font-mono text-sm font-semibold">LEMMI RUNTIME MANAGER</span>
-              </div>
-              <div className="flex items-center space-x-2 text-xs">
-                <Battery className="w-3 h-3 text-green-400" />
-                <span className="text-green-400 font-mono">SYSTEMS ONLINE</span>
-              </div>
-            </div>
-            
-            <div className="px-6 py-8">
-              <div className="text-center mb-8">
-                <h2 className="text-4xl font-bold text-white mb-3 tracking-wide" style={{ fontFamily: 'Source Code Pro' }}>
-                  LEMMI RUN v2.1
-                </h2>
-                <p className="text-gray-400 font-mono text-sm leading-relaxed">
-                  Select system module to initialize • {screens.length} modules loaded
-                </p>
-              </div>
-              
-              {/* Module Categories */}
-              <div className="flex justify-center flex-wrap gap-4 md:gap-6 mb-8">
-                {['CORE', 'ECONOMY', 'BLOCKCHAIN', 'MISSION', 'GAMEPLAY'].map(category => {
-                  const moduleCount = screens.filter(s => s.category === category).length;
-                  return (
-                    <div key={category} className="hud-element px-3 py-2">
-                      <div className="text-xs font-bold font-mono">{category}</div>
-                      <div className="text-xs opacity-70 font-mono">{moduleCount} modules</div>
-                    </div>
-                  );
-                })}
-              </div>
+          {/* Retro Terminal Header */}
+          <div className="relative z-10 pt-8 pb-4">
+            <div className="text-center mb-8">
+              <h2 className="retro-title text-4xl font-bold mb-3 tracking-widest" style={{ fontFamily: 'Courier New' }}>
+                NEURAL INTERFACE
+              </h2>
+              <p className="text-cyan-400 font-mono text-sm leading-relaxed">
+                &gt; SELECT_MODULE.EXE • {screens.length} SYSTEMS LOADED
+              </p>
             </div>
           </div>
 
-          {/* Unity Hierarchy-style Module Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 lg:gap-8 max-w-7xl mx-auto">
+          {/* Retro Gaming Module Grid - 4 kolom landscape */}
+          <div className="relative z-10 grid grid-cols-4 gap-4 max-w-6xl mx-auto px-4">
             {screens.map((screen, index) => {
-              // Define color mappings for proper Tailwind classes
+              // Define retro color mappings
               const colorClasses = {
                 green: {
-                  border: 'border-green-400/60 hover:border-green-400',
-                  bg: 'bg-green-500/20',
-                  borderB: 'border-green-400/40',
-                  dot: 'bg-green-400',
-                  status: 'bg-green-500/30 text-green-300',
-                  title: 'text-green-300',
-                  subtitle: 'text-green-400/70',
-                  progress: 'bg-green-400',
-                  description: 'text-green-300/60'
+                  border: 'border-green-400',
+                  glow: 'shadow-green-400/50',
+                  text: 'text-green-400',
+                  bg: 'bg-green-400/10'
                 },
                 purple: {
-                  border: 'border-purple-400/60 hover:border-purple-400',
-                  bg: 'bg-purple-500/20',
-                  borderB: 'border-purple-400/40',
-                  dot: 'bg-purple-400',
-                  status: 'bg-purple-500/30 text-purple-300',
-                  title: 'text-purple-300',
-                  subtitle: 'text-purple-400/70',
-                  progress: 'bg-purple-400',
-                  description: 'text-purple-300/60'
+                  border: 'border-purple-400',
+                  glow: 'shadow-purple-400/50',
+                  text: 'text-purple-400',
+                  bg: 'bg-purple-400/10'
                 },
                 blue: {
-                  border: 'border-blue-400/60 hover:border-blue-400',
-                  bg: 'bg-blue-500/20',
-                  borderB: 'border-blue-400/40',
-                  dot: 'bg-blue-400',
-                  status: 'bg-blue-500/30 text-blue-300',
-                  title: 'text-blue-300',
-                  subtitle: 'text-blue-400/70',
-                  progress: 'bg-blue-400',
-                  description: 'text-blue-300/60'
+                  border: 'border-blue-400',
+                  glow: 'shadow-blue-400/50',
+                  text: 'text-blue-400',
+                  bg: 'bg-blue-400/10'
                 },
                 orange: {
-                  border: 'border-orange-400/60 hover:border-orange-400',
-                  bg: 'bg-orange-500/20',
-                  borderB: 'border-orange-400/40',
-                  dot: 'bg-orange-400',
-                  status: 'bg-orange-500/30 text-orange-300',
-                  title: 'text-orange-300',
-                  subtitle: 'text-orange-400/70',
-                  progress: 'bg-orange-400',
-                  description: 'text-orange-300/60'
+                  border: 'border-orange-400',
+                  glow: 'shadow-orange-400/50',
+                  text: 'text-orange-400',
+                  bg: 'bg-orange-400/10'
                 },
                 yellow: {
-                  border: 'border-yellow-400/60 hover:border-yellow-400',
-                  bg: 'bg-yellow-500/20',
-                  borderB: 'border-yellow-400/40',
-                  dot: 'bg-yellow-400',
-                  status: 'bg-yellow-500/30 text-yellow-300',
-                  title: 'text-yellow-300',
-                  subtitle: 'text-yellow-400/70',
-                  progress: 'bg-yellow-400',
-                  description: 'text-yellow-300/60'
+                  border: 'border-yellow-400',
+                  glow: 'shadow-yellow-400/50',
+                  text: 'text-yellow-400',
+                  bg: 'bg-yellow-400/10'
                 },
                 cyan: {
-                  border: 'border-cyan-400/60 hover:border-cyan-400',
-                  bg: 'bg-cyan-500/20',
-                  borderB: 'border-cyan-400/40',
-                  dot: 'bg-cyan-400',
-                  status: 'bg-cyan-500/30 text-cyan-300',
-                  title: 'text-cyan-300',
-                  subtitle: 'text-cyan-400/70',
-                  progress: 'bg-cyan-400',
-                  description: 'text-cyan-300/60'
+                  border: 'border-cyan-400',
+                  glow: 'shadow-cyan-400/50',
+                  text: 'text-cyan-400',
+                  bg: 'bg-cyan-400/10'
                 },
                 red: {
-                  border: 'border-red-400/60 hover:border-red-400',
-                  bg: 'bg-red-500/20',
-                  borderB: 'border-red-400/40',
-                  dot: 'bg-red-400',
-                  status: 'bg-red-500/30 text-red-300',
-                  title: 'text-red-300',
-                  subtitle: 'text-red-400/70',
-                  progress: 'bg-red-400',
-                  description: 'text-red-300/60'
+                  border: 'border-red-400',
+                  glow: 'shadow-red-400/50',
+                  text: 'text-red-400',
+                  bg: 'bg-red-400/10'
                 }
               };
               
@@ -239,46 +183,44 @@ export default function MainHub() {
               
               return (
                 <Link key={screen.id} href={screen.path}>
-                  <div className={`game-ui-card group border-2 ${colors.border} transition-all duration-300 cursor-pointer relative`}
+                  <div className={`retro-panel group cursor-pointer relative transition-all duration-300 hover:scale-105 hover:shadow-lg ${colors.glow}`}
                        style={{ animationDelay: `${index * 100}ms` }}>
                     
-                    {/* Unity-style header bar */}
-                    <div className={`unity-tab active ${colors.bg} border-b ${colors.borderB} px-3 py-2`}>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
-                          <div className={`w-2 h-2 rounded-full ${colors.dot} animate-pulse`} />
-                          <span className="text-xs font-mono font-bold text-gray-300 truncate">{screen.category}</span>
-                        </div>
-                        <div className={`text-xs font-mono px-2 py-1 rounded ${colors.status}`}>
+                    {/* Retro corner brackets */}
+                    <div className="absolute top-1 left-1 w-4 h-4">
+                      <div className={`absolute top-0 left-0 w-2 h-0.5 ${colors.bg}`}></div>
+                      <div className={`absolute top-0 left-0 w-0.5 h-2 ${colors.bg}`}></div>
+                    </div>
+                    <div className="absolute top-1 right-1 w-4 h-4">
+                      <div className={`absolute top-0 right-0 w-2 h-0.5 ${colors.bg}`}></div>
+                      <div className={`absolute top-0 right-0 w-0.5 h-2 ${colors.bg}`}></div>
+                    </div>
+                    
+                    {/* Module content - Compact untuk 4 kolom */}
+                    <div className="p-3 text-center relative">
+                      {/* Status indicator */}
+                      <div className="absolute top-2 right-2">
+                        <div className={`text-xs font-mono px-2 py-1 ${colors.border} ${colors.text} border rounded`}>
                           {screen.status}
                         </div>
                       </div>
-                    </div>
-                    
-                    {/* Module content */}
-                    <div className="p-4 md:p-5 lg:p-6 text-center relative">
-                      {/* Unity gizmo-style icon */}
-                      <div className="unity-gizmo mb-4">
-                        <div className="text-3xl md:text-4xl group-hover:scale-110 transition-transform duration-300 filter drop-shadow-lg">
+                      
+                      {/* Gaming icon - Smaller untuk 4 kolom */}
+                      <div className="mb-2">
+                        <div className={`text-2xl group-hover:scale-110 transition-transform duration-300 ${colors.text}`}>
                           {screen.icon}
                         </div>
                       </div>
                       
-                      <h3 className={`font-bold ${colors.title} text-base mb-2 tracking-wide`} style={{ fontFamily: 'Source Code Pro' }}>
+                      <h3 className={`font-bold ${colors.text} text-sm mb-1 tracking-widest`} style={{ fontFamily: 'Courier New' }}>
                         {screen.name}
                       </h3>
                       
-                      <div className={`text-xs font-mono ${colors.subtitle} mb-4 truncate`}>
+                      <div className="text-xs font-mono text-cyan-400/70 mb-2">
                         {screen.id.toUpperCase()}_MODULE.dll
                       </div>
                       
-                      {/* Unity-style progress indicator */}
-                      <div className="w-full bg-gray-700 h-1.5 rounded-full overflow-hidden mb-3">
-                        <div className={`h-full ${colors.progress} transition-all duration-1000 group-hover:w-full`} 
-                             style={{ width: screen.status === 'ACTIVE' ? '100%' : screen.status === 'READY' ? '80%' : '60%' }} />
-                      </div>
-                      
-                      <div className={`text-xs font-mono ${colors.description} leading-relaxed`}>
+                      <div className="text-xs font-mono text-gray-400 leading-tight">
                         {screen.status === 'ACTIVE' ? 'READY TO LAUNCH' : 
                          screen.status === 'READY' ? 'SYSTEM LOADED' : 
                          screen.status === 'LIVE' ? 'ONLINE SERVICE' : 
@@ -295,26 +237,26 @@ export default function MainHub() {
           </div>
         </div>
 
-        {/* Unity-style Bottom Status Bar */}
-        <div className="fixed bottom-0 left-0 right-0 unity-toolbar bg-gray-800/95 border-t border-blue-900/50 backdrop-blur-sm z-50">
+        {/* Retro Bottom Status Bar */}
+        <div className="fixed bottom-0 left-0 right-0 bg-black/90 border-t-2 border-cyan-400 backdrop-blur-sm z-50">
           <div className="container mx-auto px-4 md:px-6 py-3">
             <div className="flex items-center justify-between text-xs font-mono">
               <div className="flex items-center space-x-3 md:space-x-6">
                 <div className="flex items-center space-x-2 text-green-400">
                   <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                  <span className="hidden sm:inline font-semibold">RUNTIME: ACTIVE</span>
+                  <span className="hidden sm:inline font-semibold">&gt; NEURAL_LINK: ACTIVE</span>
                   <span className="sm:hidden font-semibold">ACTIVE</span>
                 </div>
-                <div className="text-blue-800 hidden md:inline font-medium">CARDANO: CONNECTED</div>
-                <div className="text-purple-300 hidden lg:inline font-medium">LACE: READY</div>
+                <div className="text-cyan-400 hidden md:inline font-medium">&gt; CARDANO: CONNECTED</div>
+                <div className="text-purple-400 hidden lg:inline font-medium">&gt; LACE: READY</div>
               </div>
               
               <div className="flex items-center space-x-3 md:space-x-4">
-                <span className="text-orange-300 hidden md:inline font-medium">GERBIL EDITION</span>
-                <div className="text-gray-500 hidden md:inline">•</div>
-                <span className="text-blue-800 hidden sm:inline font-medium">BUILD {Date.now().toString().slice(-6)}</span>
-                <div className="text-gray-500 hidden sm:inline">•</div>
-                <span className="text-blue-900 font-semibold">{systemTime.toLocaleString('en-US', { 
+                <span className="text-orange-400 hidden md:inline font-medium">GERBIL_EDITION</span>
+                <div className="text-gray-500 hidden md:inline">|</div>
+                <span className="text-cyan-400 hidden sm:inline font-medium">BUILD_{Date.now().toString().slice(-6)}</span>
+                <div className="text-gray-500 hidden sm:inline">|</div>
+                <span className="text-cyan-400 font-semibold">{systemTime.toLocaleString('en-US', { 
                   month: 'short', 
                   day: '2-digit', 
                   hour: '2-digit', 

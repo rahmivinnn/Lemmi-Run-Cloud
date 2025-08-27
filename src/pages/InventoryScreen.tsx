@@ -11,8 +11,8 @@ export default function InventoryScreen() {
       {/* Header */}
       <div className="h-20 bg-gradient-to-r from-black via-gray-900 to-black border-b border-blue-400 relative">
         <div className="flex items-center justify-between h-full px-6">
-          <Link href="/">
-            <button className="flex items-center space-x-2 text-blue-400 hover:text-blue-300 font-mono">
+          <Link href="/mainhub">
+            <button className="flex items-center space-x-2 text-green-400 hover:text-green-300 font-mono">
               <ArrowLeft className="w-4 h-4" />
               <span>BACK TO HUB</span>
             </button>

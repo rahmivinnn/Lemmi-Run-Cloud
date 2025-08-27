@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { WalletConnector } from './CardanoWallet';
+import { SkyboxController, getSkyboxForCharacter } from './SkyboxController';
 
 interface Character {
   id: string;
@@ -24,6 +25,7 @@ interface Game3DRunnerProps {
 export function Game3DRunner({ character, onGameEnd, onBack }: Game3DRunnerProps) {
   const mountRef = useRef<HTMLDivElement>(null);
   const gameRef = useRef<any>(null);
+  const skyboxControllerRef = useRef<SkyboxController | null>(null);
   const [score, setScore] = useState(0);
   const [gameActive, setGameActive] = useState(true);
   const [gameOver, setGameOver] = useState(false);
@@ -34,18 +36,13 @@ export function Game3DRunner({ character, onGameEnd, onBack }: Game3DRunnerProps
 
     // Scene setup
     const scene = new THREE.Scene();
-    scene.fog = new THREE.Fog(0x001122, 30, 200);
     
-    // Skybox/Background
-    const skyboxGeometry = new THREE.SphereGeometry(500, 32, 32);
-    const skyboxMaterial = new THREE.MeshBasicMaterial({
-      color: 0x001122,
-      side: THREE.BackSide,
-      transparent: true,
-      opacity: 0.8
-    });
-    const skybox = new THREE.Mesh(skyboxGeometry, skyboxMaterial);
-    scene.add(skybox);
+    // Initialize interactive skybox system based on character
+    const characterSkyboxConfig = getSkyboxForCharacter(character.id);
+    const skyboxController = new SkyboxController(scene, characterSkyboxConfig);
+    skyboxControllerRef.current = skyboxController;
+    
+    console.log(`Initialized skybox for character ${character.name} with ${characterSkyboxConfig.timeOfDay} theme`);
 
     const camera = new THREE.PerspectiveCamera(60, 800 / 400, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ 
@@ -60,51 +57,29 @@ export function Game3DRunner({ character, onGameEnd, onBack }: Game3DRunnerProps
 
     mountRef.current.appendChild(renderer.domElement);
 
-    // Enhanced lighting system for maximum character visibility
-    const ambientLight = new THREE.AmbientLight(0x808080, 2.0); // Very bright ambient light
-    scene.add(ambientLight);
-
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 2.0); // Very bright directional light
-    directionalLight.position.set(0, 20, 10); // Position above and behind character
-    directionalLight.castShadow = true;
-    directionalLight.shadow.mapSize.width = 512;
-    directionalLight.shadow.mapSize.height = 512;
-    directionalLight.shadow.camera.left = -30;
-    directionalLight.shadow.camera.right = 30;
-    directionalLight.shadow.camera.top = 30;
-    directionalLight.shadow.camera.bottom = -30;
-    directionalLight.shadow.camera.near = 0.1;
-    directionalLight.shadow.camera.far = 50;
-    scene.add(directionalLight);
-
+    // Lighting biar keliatan
+    scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+    dirLight.position.set(0, 20, 10);
+    scene.add(dirLight);
+    
     // Additional front light to illuminate character from camera direction
     const frontLight = new THREE.DirectionalLight(0xffffff, 1.0);
     frontLight.position.set(-15, 5, 0); // Light from camera direction (behind character on X axis)
     scene.add(frontLight);
 
-    // Multiple point lights for better atmosphere
-    const pointLight1 = new THREE.PointLight(0x00aaff, 0.8, 30);
-    pointLight1.position.set(0, 8, 0);
-    scene.add(pointLight1);
-    
-    const pointLight2 = new THREE.PointLight(0xffaa00, 0.6, 25);
-    pointLight2.position.set(-10, 6, -5);
-    scene.add(pointLight2);
-    
-    const pointLight3 = new THREE.PointLight(0xaa00ff, 0.6, 25);
-    pointLight3.position.set(10, 6, 5);
-    scene.add(pointLight3);
-
-    // Enhanced Road System - More visible and realistic
-    const roadGeometry = new THREE.PlaneGeometry(1000, 12); // Road width
-    const roadMaterial = new THREE.MeshLambertMaterial({
-      color: 0x2a2a2a, // Dark asphalt color
-      transparent: false
-    });
-    const road = new THREE.Mesh(roadGeometry, roadMaterial);
-    road.rotation.x = -Math.PI / 2;
-    road.position.y = -1.95;
-    scene.add(road);
+    // Jalan panjang dengan repeat
+    const roadTex = new THREE.MeshStandardMaterial({ color: 0x222222 });
+    for (let i = 0; i < 10; i++) {
+      let road = new THREE.Mesh(
+        new THREE.PlaneGeometry(10, 50),
+        roadTex
+      );
+      road.rotation.x = -Math.PI / 2;
+      road.position.z = i * 50;
+      road.position.y = -1.95;
+      scene.add(road);
+    }
 
     // Road side areas (grass/ground)
     const sideGeometry = new THREE.PlaneGeometry(1000, 100);
@@ -237,41 +212,22 @@ export function Game3DRunner({ character, onGameEnd, onBack }: Game3DRunnerProps
       return buildingGroup;
     };
     
-    // Left side cityscape
-    for (let i = 0; i < 8; i++) {
-      const height = 15 + Math.random() * 25;
-      const width = 8 + Math.random() * 6;
-      const depth = 6 + Math.random() * 4;
-      const x = -50 - Math.random() * 100;
-      const z = -20 - i * 15;
+    // Loop gedung di kiri dan kanan
+    for (let i = 0; i < 50; i++) {
+      let z = i * 20;
       
-      const building = createBuilding(width, height, depth, x, z);
-      scene.add(building);
-    }
-    
-    // Right side cityscape
-    for (let i = 0; i < 8; i++) {
-      const height = 15 + Math.random() * 25;
-      const width = 8 + Math.random() * 6;
-      const depth = 6 + Math.random() * 4;
-      const x = 30 + Math.random() * 50; // Moved closer to be visible
-      const z = -20 - i * 15;
+      // Gedung kiri
+      let buildingL = new THREE.Mesh(
+        new THREE.BoxGeometry(5, Math.random() * 20 + 10, 5),
+        new THREE.MeshStandardMaterial({ color: 0x2233ff })
+      );
+      buildingL.position.set(-15, buildingL.geometry.parameters.height / 2, z);
+      scene.add(buildingL);
       
-      const building = createBuilding(width, height, depth, x, z);
-      scene.add(building);
-    }
-    
-    // Background buildings (further away)
-    for (let i = 0; i < 12; i++) {
-      const height = 20 + Math.random() * 30;
-      const width = 10 + Math.random() * 8;
-      const depth = 8 + Math.random() * 6;
-      const x = -200 + Math.random() * 400;
-      const z = -200 - Math.random() * 100;
-      
-      const building = createBuilding(width, height, depth, x, z);
-      building.scale.setScalar(0.7); // Make background buildings smaller
-      scene.add(building);
+      // Gedung kanan
+      let buildingR = buildingL.clone();
+      buildingR.position.x = 15;
+      scene.add(buildingR);
     }
 
     // Model configurations for each character
@@ -681,7 +637,7 @@ export function Game3DRunner({ character, onGameEnd, onBack }: Game3DRunnerProps
       // Position obstacle in lane
       const lanes = [-6, -2, 2, 6];
       const randomLane = lanes[Math.floor(Math.random() * lanes.length)];
-      obstacleGroup.position.set(game.player.mesh.position.x + 20, 0, randomLane);
+      obstacleGroup.position.set(game.player.mesh.position.x + 20, 1, randomLane); // Y = 1 (setengah tinggi obstacle) biar nempel tanah
       
       scene.add(obstacleGroup);
       game.obstacles.push(obstacleGroup as any);
@@ -911,28 +867,13 @@ export function Game3DRunner({ character, onGameEnd, onBack }: Game3DRunnerProps
         }
       }
 
-      // Dynamic camera positioning - always behind character (runner 3D style)
-      const cameraDistance = 8; // Distance behind character
-      const cameraHeight = 4; // Height above character
-      const cameraOffset = 0; // No side offset for straight behind view
-      
-      // Camera follows player from behind with smooth movement
-      const targetCameraX = game.player.mesh.position.x - cameraDistance; // Behind character on X axis
-      const targetCameraY = game.player.mesh.position.y + cameraHeight;
-      const targetCameraZ = game.player.mesh.position.z; // Same Z as character for side-to-side movement
-      
-      // Smooth camera interpolation
-      camera.position.x += (targetCameraX - camera.position.x) * 0.1;
-      camera.position.y += (targetCameraY - camera.position.y) * 0.1;
-      camera.position.z += (targetCameraZ - camera.position.z) * 0.1;
-      
-      // Camera always looks at character center
-      const lookAtTarget = new THREE.Vector3(
-        game.player.mesh.position.x,
-        game.player.mesh.position.y + 0.5,
-        game.player.mesh.position.z
+      // Camera follow system - kamera selalu menghadap karakter
+      camera.position.set(
+        game.player.mesh.position.x, 
+        game.player.mesh.position.y + 5, 
+        game.player.mesh.position.z - 10
       );
-      camera.lookAt(lookAtTarget);
+      camera.lookAt(game.player.mesh.position);
 
       // Gradually increase game speed and difficulty
       game.gameSpeed += 0.0002;
@@ -1034,6 +975,11 @@ export function Game3DRunner({ character, onGameEnd, onBack }: Game3DRunnerProps
           }
         });
       });
+      
+      // Clean up skybox controller
+      if (skyboxControllerRef.current) {
+        skyboxControllerRef.current.dispose();
+      }
       
       // Dispose renderer and clear arrays
       renderer.dispose();
