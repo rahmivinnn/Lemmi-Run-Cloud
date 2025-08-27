@@ -12,7 +12,7 @@ export default function TransactionsScreen() {
       <div className="h-20 bg-gradient-to-r from-black via-gray-900 to-black border-b border-blue-800 relative">
         <div className="flex items-center justify-between h-full px-6">
           <Link href="/mainhub">
-            <button className="flex items-center space-x-2 text-blue-800 hover:text-blue-700 font-mono">
+            <button className="flex items-center space-x-2 text-blue-900 hover:text-blue-900 font-mono">
               <ArrowLeft className="w-4 h-4" />
               <span>BACK TO HUB</span>
             </button>
@@ -28,7 +28,7 @@ export default function TransactionsScreen() {
 
       {/* Main Content */}
       <div className="container mx-auto px-6 py-12">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           
           {/* Transaction Tracker */}
           <div className="bg-black border-2 border-blue-800 p-8 relative">

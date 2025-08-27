@@ -28,7 +28,7 @@ export default function InventoryScreen() {
 
       {/* Main Content */}
       <div className="container mx-auto px-6 py-12">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           
           {/* Inventory Grid */}
           <div className="bg-black border-2 border-blue-400 p-8 relative">

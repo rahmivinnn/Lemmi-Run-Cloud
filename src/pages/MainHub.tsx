@@ -131,7 +131,7 @@ export default function MainHub() {
           </div>
 
           {/* Retro Gaming Module Grid - 4 kolom landscape */}
-          <div className="relative z-10 grid grid-cols-4 gap-4 max-w-6xl mx-auto px-4">
+          <div className="relative z-10 grid grid-cols-4 gap-4 max-w-4xl mx-auto px-4">
             {screens.map((screen, index) => {
               // Define retro color mappings
               const colorClasses = {

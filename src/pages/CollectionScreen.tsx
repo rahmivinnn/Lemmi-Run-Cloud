@@ -154,7 +154,7 @@ export default function CollectionScreen() {
 
       {/* Main Content */}
       <div className="container mx-auto px-6 py-12">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           
           {/* Daily Claims Header */}
           <div className="bg-black border-2 border-purple-400 p-8 mb-8 relative overflow-hidden">

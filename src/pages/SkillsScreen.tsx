@@ -36,7 +36,7 @@ export default function SkillsScreen() {
 
       {/* Main Content */}
       <div className="container mx-auto px-6 py-12">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           
           {/* Skills Overview */}
           <div className="bg-black border-2 border-yellow-400 p-8 mb-8 relative">
@@ -124,8 +124,8 @@ export default function SkillsScreen() {
                   <div className="text-green-300/70">Earn XP by finishing levels</div>
                 </div>
                 <div className="font-mono text-sm">
-                  <div className="text-blue-400 mb-2">HIGH SCORES</div>
-                  <div className="text-blue-300/70">Bonus XP for top performance</div>
+                  <div className="text-blue-900 mb-2">HIGH SCORES</div>
+                      <div className="text-blue-900/70">Bonus XP for top performance</div>
                 </div>
                 <div className="font-mono text-sm">
                   <div className="text-purple-400 mb-2">DAILY QUESTS</div>

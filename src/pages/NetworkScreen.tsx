@@ -19,7 +19,7 @@ export default function NetworkScreen() {
       <div className="h-20 bg-gradient-to-r from-black via-gray-900 to-black border-b border-blue-800 relative">
         <div className="flex items-center justify-between h-full px-6">
           <Link href="/mainhub">
-            <button className="flex items-center space-x-2 text-blue-800 hover:text-blue-700 font-mono">
+            <button className="flex items-center space-x-2 text-blue-900 hover:text-blue-900 font-mono">
               <ArrowLeft className="w-4 h-4" />
               <span>BACK TO HUB</span>
             </button>
@@ -35,7 +35,7 @@ export default function NetworkScreen() {
 
       {/* Main Content */}
       <div className="container mx-auto px-6 py-12">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           
           {/* Network Status */}
           <div className="bg-black border-2 border-blue-800 p-8 mb-8 relative">
@@ -46,7 +46,7 @@ export default function NetworkScreen() {
               <h2 className="text-3xl font-mono font-bold text-blue-800 mb-2 tracking-wider">
                 🌐 NEURAL STATUS
               </h2>
-              <p className="text-blue-700/70 font-mono">Cardano Network Integration</p>
+              <p className="text-blue-900/70 font-mono">Cardano Network Integration</p>
             </div>
 
             {/* Connection Status */}
@@ -76,7 +76,7 @@ export default function NetworkScreen() {
                 <div className="text-3xl text-blue-800 font-mono font-bold mb-2">
                   {networkStats.nodeCount.toLocaleString()}
                 </div>
-                <div className="text-sm text-blue-700/70 font-mono">ACTIVE NODES</div>
+                <div className="text-sm text-blue-900/70 font-mono">ACTIVE NODES</div>
               </div>
               
               <div className="bg-gray-900 border border-purple-500/50 p-6 text-center">
@@ -105,7 +105,7 @@ export default function NetworkScreen() {
             <div className="mb-8">
               <div className="flex justify-between items-center mb-2">
                 <span className="text-blue-800 font-mono text-sm">NETWORK SYNCHRONIZATION</span>
-                <span className="text-blue-700 font-mono text-sm">{networkStats.syncProgress}%</span>
+                <span className="text-blue-900 font-mono text-sm">{networkStats.syncProgress}%</span>
               </div>
               <div className="w-full bg-gray-700 h-3 relative overflow-hidden">
                 <div 

@@ -39,7 +39,7 @@ export default function WalletScreen() {
 
       {/* Unity Inspector-style Main Content */}
       <div className="container mx-auto px-6 py-8">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           
           {/* Primary Access Panel */}
           <div className="unity-inspector mb-8">
@@ -216,8 +216,8 @@ export default function WalletScreen() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="game-ui-card p-4 text-center">
               <div className="text-2xl mb-2">🛡️</div>
-              <div className="text-xs text-blue-400 font-mono font-bold mb-1">SECURITY LEVEL</div>
-              <div className="text-xs text-blue-300 font-mono">MAXIMUM</div>
+              <div className="text-xs text-blue-900 font-mono font-bold mb-1">SECURITY LEVEL</div>
+                        <div className="text-xs text-blue-900 font-mono">MAXIMUM</div>
             </div>
             
             <div className="game-ui-card p-4 text-center">

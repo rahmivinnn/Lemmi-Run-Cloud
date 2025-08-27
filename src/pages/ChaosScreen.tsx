@@ -37,7 +37,7 @@ export default function ChaosScreen() {
 
       {/* Main Content */}
       <div className="container mx-auto px-6 py-12">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           
           {/* Chaos Control Panel */}
           <div className="bg-black border-2 border-red-400 p-8 mb-8 relative overflow-hidden">
