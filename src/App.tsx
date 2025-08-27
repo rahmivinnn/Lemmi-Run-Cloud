@@ -44,6 +44,18 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
+        {/* Maintenance Overlay */}
+        <div className="fixed inset-0 bg-black bg-opacity-95 z-50 flex items-center justify-center">
+          <div className="text-center">
+            <div className="mb-8">
+              <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            </div>
+            <h1 className="text-4xl font-bold text-white mb-4">UNDER MAINTENANCE</h1>
+            <p className="text-xl text-gray-300 mb-2">Lemmi Run - Web3</p>
+            <p className="text-lg text-gray-400">We're working to improve your experience</p>
+            <p className="text-sm text-gray-500 mt-4">Please check back soon</p>
+          </div>
+        </div>
         <Router />
       </TooltipProvider>
     </QueryClientProvider>
