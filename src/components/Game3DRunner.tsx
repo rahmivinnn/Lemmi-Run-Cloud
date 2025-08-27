@@ -31,6 +31,30 @@ export function Game3DRunner({ character, onGameEnd, onBack }: Game3DRunnerProps
   const [gameOver, setGameOver] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  // Show maintenance overlay
+  return (
+    <div className="relative w-full h-full">
+      {/* Maintenance Overlay */}
+      <div className="fixed inset-0 bg-black bg-opacity-95 z-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="mb-8">
+            <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          </div>
+          <h1 className="text-4xl font-bold text-white mb-4">UNDER MAINTENANCE</h1>
+          <p className="text-xl text-gray-300 mb-2">Lemmi Run - Web3</p>
+          <p className="text-lg text-gray-400">We're working to improve your experience</p>
+          <p className="text-sm text-gray-500 mt-4">Please check back soon</p>
+          <button 
+            onClick={onBack}
+            className="mt-6 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+          >
+            Back to Main Hub
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
   useEffect(() => {
     if (!mountRef.current) return;
 
