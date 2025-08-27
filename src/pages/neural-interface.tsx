@@ -20,6 +20,7 @@ import { HDCharacterAnimation } from "@/components/HDCharacterAnimation";
 import { LemmiAvatar } from "@/components/LemmiAvatar";
 import { useWallet } from "@/hooks/useWallet";
 import { useAudio } from "@/hooks/useAudio";
+import { GameNotificationSystem, useGameNotifications } from "@/components/GameNotification";
 import AshinaImage from "@assets/ashina_1754580592322.webp";
 
 interface Character {
@@ -42,6 +43,7 @@ export default function NeuralInterface() {
   const [terminalText, setTerminalText] = useState("");
   const { walletAddress, isConnected, connectWallet, hasGerbilNft } = useWallet();
   const { playClick, playHover } = useAudio();
+  const { notifications, addNotification, removeNotification } = useGameNotifications();
 
   const { data: features } = useQuery({
     queryKey: ["/api/features", walletAddress],
@@ -671,6 +673,12 @@ export default function NeuralInterface() {
           </div>
         </div>
       </div>
+      
+      {/* Game Notification System */}
+      <GameNotificationSystem 
+        notifications={notifications} 
+        onClose={removeNotification} 
+      />
     </div>
   );
 }

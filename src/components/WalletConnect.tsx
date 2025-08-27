@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useAudio } from "@/hooks/useAudio";
+import { useGameNotifications, createSuccessNotification, createErrorNotification } from "@/components/GameNotification";
 
 interface WalletConnectProps {
   onConnect: () => Promise<void>;
@@ -12,12 +13,22 @@ interface WalletConnectProps {
 export default function WalletConnect({ onConnect, isConnected, address, hasNft }: WalletConnectProps) {
   const [isConnecting, setIsConnecting] = useState(false);
   const { playClick, playHover } = useAudio();
+  const { addNotification } = useGameNotifications();
 
   const handleConnect = async () => {
     setIsConnecting(true);
     playClick();
     try {
       await onConnect();
+      addNotification(createSuccessNotification(
+        "Wallet Connected!",
+        "Lace wallet successfully connected to LEMMI RUN"
+      ));
+    } catch (error) {
+      addNotification(createErrorNotification(
+        "Connection Failed",
+        "Failed to connect Lace wallet. Please try again."
+      ));
     } finally {
       setIsConnecting(false);
     }

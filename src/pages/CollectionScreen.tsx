@@ -3,6 +3,7 @@ import { Link } from 'wouter';
 import { ArrowLeft, Clock, Star, Gift, Zap } from 'lucide-react';
 import { LemmiAvatar } from '@/components/LemmiAvatar';
 import { useLaceWallet } from '@/hooks/useLaceWallet';
+import { GameNotificationSystem, useGameNotifications, createSuccessNotification, createWarningNotification, createErrorNotification } from '@/components/GameNotification';
 
 // Import Gerbil claim characters
 import gerbilK1 from '@assets/k1_1755247198361.png';
@@ -34,6 +35,7 @@ export default function CollectionScreen() {
   const [claimHistory, setClaimHistory] = useState<ClaimHistory[]>([]);
   const [currentStreak, setCurrentStreak] = useState(0);
   const [totalClaimed, setTotalClaimed] = useState(0);
+  const { notifications, addNotification, removeNotification } = useGameNotifications();
   
   // Mock owned NFTs - In real implementation, this would come from blockchain
   const [ownedNFTs, setOwnedNFTs] = useState<OwnedNFT[]>([
@@ -75,18 +77,27 @@ export default function CollectionScreen() {
 
   const handleNFTClaim = async (nftId: string) => {
     if (!isConnected) {
-      alert('⚠️ Connect Lace wallet first to access your Gerbil NFTs!');
+      addNotification(createWarningNotification(
+        'WALLET CONNECTION REQUIRED',
+        'Connect Lace wallet first to access your Gerbil NFTs!'
+      ));
       return;
     }
     
     const nft = ownedNFTs.find(n => n.id === nftId);
     if (!nft) {
-      alert('❌ NFT not found in your collection!');
+      addNotification(createErrorNotification(
+        'NFT NOT FOUND',
+        'NFT not found in your collection!'
+      ));
       return;
     }
 
     if (!canClaimNFT(nft)) {
-      alert(`⏰ ${nft.name} is on cooldown. ${getRemainingCooldown(nft)}`);
+      addNotification(createWarningNotification(
+        'COOLDOWN ACTIVE',
+        `${nft.name} is on cooldown. ${getRemainingCooldown(nft)}`
+      ));
       return;
     }
 
@@ -117,7 +128,11 @@ export default function CollectionScreen() {
     setTotalClaimed(prev => prev + totalReward);
     
     setIsLoading(false);
-    alert(`🎉 Successfully claimed ${totalReward} $LEMMI from ${nft.name}! Streak: ${currentStreak + 1}`);
+    addNotification(createSuccessNotification(
+      'CLAIM SUCCESSFUL',
+      `Successfully claimed ${totalReward} $LEMMI from ${nft.name}! Streak: ${currentStreak + 1}`,
+      6000
+    ));
   };
 
   // Update claimable status based on cooldowns
@@ -392,6 +407,12 @@ export default function CollectionScreen() {
       <audio id="claim-sound" preload="auto">
         {/* Add claim sound effect */}
       </audio>
+      
+      {/* Game Notification System */}
+       <GameNotificationSystem 
+         notifications={notifications} 
+         onClose={removeNotification} 
+       />
     </div>
   );
 }

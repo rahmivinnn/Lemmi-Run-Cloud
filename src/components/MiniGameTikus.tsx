@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { useAudio } from "@/hooks/useAudio";
-import { useToast } from "@/hooks/use-toast";
+import { useGameNotifications, createSuccessNotification, createErrorNotification, createInfoNotification } from "@/components/GameNotification";
 import { apiRequest } from "@/lib/queryClient";
 
 interface MiniGameTikusProps {
@@ -38,7 +38,7 @@ export default function MiniGameTikus({ onClose, walletAddress }: MiniGameTikusP
   const [highScore, setHighScore] = useState(0);
   const gameAreaRef = useRef<HTMLDivElement>(null);
   const { playClick, playHover, playSuccess, playError } = useAudio();
-  const { toast } = useToast();
+  const { addNotification } = useGameNotifications();
   const queryClient = useQueryClient();
 
   // Load high score on mount
@@ -63,10 +63,10 @@ export default function MiniGameTikus({ onClose, walletAddress }: MiniGameTikusP
     onSuccess: (data) => {
       if (data.isNewRecord) {
         playSuccess();
-        toast({
-          title: "New High Score!",
-          description: `Congratulations! Score: ${data.score}`,
-        });
+        addNotification(createSuccessNotification(
+          "New High Score!",
+          `Congratulations! Score: ${data.score}`
+        ));
       }
       queryClient.invalidateQueries({ queryKey: ["/api/game"] });
     },

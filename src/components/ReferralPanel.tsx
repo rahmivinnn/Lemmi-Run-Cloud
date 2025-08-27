@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { useAudio } from "@/hooks/useAudio";
-import { useToast } from "@/hooks/use-toast";
+import { useGameNotifications, createSuccessNotification, createErrorNotification } from "@/components/GameNotification";
 import { apiRequest } from "@/lib/queryClient";
 
 interface ReferralPanelProps {
@@ -12,7 +12,7 @@ interface ReferralPanelProps {
 export default function ReferralPanel({ walletAddress }: ReferralPanelProps) {
   const [generatedLink, setGeneratedLink] = useState<string>("");
   const { playClick, playHover, playSuccess } = useAudio();
-  const { toast } = useToast();
+  const { addNotification } = useGameNotifications();
   const queryClient = useQueryClient();
 
   const { data: referralData } = useQuery({
@@ -28,10 +28,10 @@ export default function ReferralPanel({ walletAddress }: ReferralPanelProps) {
     onSuccess: (data) => {
       setGeneratedLink(data.link);
       playSuccess();
-      toast({
-        title: "Referral Link Generated!",
-        description: `Code: ${data.code}`,
-      });
+      addNotification(createSuccessNotification(
+        "Referral Link Generated!",
+        `Code: ${data.code}`
+      ));
       queryClient.invalidateQueries({ queryKey: ["/api/referral", walletAddress] });
     },
   });
@@ -47,10 +47,10 @@ export default function ReferralPanel({ walletAddress }: ReferralPanelProps) {
     playClick();
     if (generatedLink) {
       navigator.clipboard.writeText(generatedLink);
-      toast({
-        title: "Copied!",
-        description: "Referral link copied to clipboard",
-      });
+      addNotification(createSuccessNotification(
+        "Copied!",
+        "Referral link copied to clipboard"
+      ));
     }
   };
 
